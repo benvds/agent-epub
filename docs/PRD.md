@@ -72,7 +72,7 @@ The initial conformance target is an EPUB 3.3 reflowable publication using this 
 | P12 | Work without interactive prompts. | Agents can discover requirements, submit a complete request and retrieve a result through their available tools. |
 | P13 | Return predictable, compact results. | Success and failure include a status, artifact location where applicable, check coverage and actionable findings. No hidden conversation state is required. |
 | P14 | Include a supplied cover image. | Supported image types are declared; the cover is packaged, identified correctly and readable in tested readers. Invalid images produce actionable errors. |
-| P15 | Demonstrate cross-agent usability. | The same documented workflow succeeds with ChatGPT, Claude and an Ollama-backed agent using a suitable model and tool access. |
+| P15 | Demonstrate agent usability. | Release evaluation uses the ChatGPT-authenticated OpenAI Codex CLI. Claude and Ollama evaluations are deferred at the user's request; their live compatibility is not claimed. The generic request contract remains the intended interface for all capable agent runtimes. |
 
 An agent supplies final writing. The product does not need to generate prose, call an AI model, or understand a provider's private conversation history.
 

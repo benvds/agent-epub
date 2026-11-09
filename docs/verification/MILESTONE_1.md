@@ -26,4 +26,6 @@ The application inventory showed Apple Books, but opening it for verification fa
 
 The roadmap's manual reader gate remains open. `v0.1.0` marks the completed implementation and automated verification checkpoint, rather than completion of that manual gate. Reader review can proceed independently while milestone 2 development begins.
 
-Cross-agent usability, general book requests and cover images belong to milestone 2. [Usage](../USAGE.md), [roadmap](../ROADMAP.md).
+Subsequent milestone 2 checks successfully opened the covered publication in Apple Books 9.0 and exercised cover rendering, contents and chapter links in EPUB.js 0.3.93. Enlarged text was also inspected in a phone-width browser reader. These checks apply to the milestone 2 build, rather than retroactively testing the `v0.1.0` binary. [Milestone 2 record](MILESTONE_2.md).
+
+General book requests and cover images belong to milestone 2. [Usage](../USAGE.md), [roadmap](../ROADMAP.md).

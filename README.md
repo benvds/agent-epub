@@ -28,8 +28,10 @@ Every build runs structural profile checks. Optional `--epubcheck <executable>` 
 
 Images, tables, notes, task lists and raw HTML are rejected in milestone 1. Full EPUB support is outside the roadmap.
 
-Milestone 2 is in progress: [general agent requests, streamed input, structured results and JPEG/PNG covers](docs/AGENT_INTERFACE.md) are implemented. Live cross-agent evaluations and reader review remain open.
+Milestone 2 is complete for the agreed scope: [general agent requests, streamed input, structured results and JPEG/PNG covers](docs/AGENT_INTERFACE.md). The live OpenAI agent passed all 20 evaluation tasks. Claude and Ollama evaluations are deferred at the user's request.
 
 See `agent-epub --help` and `agent-epub build --help` for options.
 
 [Detailed usage and supported subset](docs/USAGE.md). Milestone 1 is implemented; [verification and remaining reader review](docs/verification/MILESTONE_1.md) are recorded separately.
+
+[Milestone 2 verification, reader checks and benchmark](docs/verification/MILESTONE_2.md).

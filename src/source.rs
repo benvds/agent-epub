@@ -168,7 +168,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                     let unsupported = match &event {
                         Event::Html(_) | Event::InlineHtml(_) => Some("raw HTML"),
                         Event::Start(Tag::Image { .. }) => {
-                            Some("images (cover support arrives in milestone 2)")
+                            Some("inline images (use the separate cover option for a cover)")
                         }
                         Event::Start(Tag::Table(_)) => Some("tables"),
                         Event::Start(Tag::FootnoteDefinition(_)) | Event::FootnoteReference(_) => {

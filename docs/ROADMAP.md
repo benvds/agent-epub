@@ -4,7 +4,7 @@ Updated 9 November 2026. Deliver a useful, tested subset in three milestones. Da
 
 ## Milestone 1 Text and Markdown reading editions
 
-Status: implementation and automated checks complete at `v0.1.0`; manual two-reader review remains open. See the [verification record](verification/MILESTONE_1.md).
+Status: implementation and automated checks complete at `v0.1.0`. Subsequent reader checks exercise the same reading features in the milestone 2 build. See the [milestone 1 record](verification/MILESTONE_1.md) and [milestone 2 reader record](verification/MILESTONE_2.md).
 
 Create reflowable EPUBs from plain text or Markdown, with a table of contents and reliable chapter navigation.
 
@@ -32,7 +32,7 @@ Exit gates:
 
 ## Milestone 2 General agent inputs and cover images
 
-Status: in progress. Generic requests, streamed input, discovery, structured results and JPEG/PNG covers are implemented and tested. Live cross-agent evaluation and reader review remain open. See the [agent interface](AGENT_INTERFACE.md).
+Status: complete for the user-approved release scope at `v0.2.0`. Generic requests, streamed input, discovery, structured results, JPEG/PNG covers, reader checks and the live OpenAI-agent evaluation are complete. Claude and Ollama evaluations are deferred at the user's request. See the [verification record](verification/MILESTONE_2.md).
 
 Let different agents create books through one predictable, unattended workflow, and add a supplied cover image.
 
@@ -43,7 +43,7 @@ Deliver:
 - Capability discovery and compact structured success, warning and error results.
 - Explicit behavior for missing information, conflicting options and repeated requests.
 - Supplied JPEG or PNG covers, correct cover identification and image validation.
-- Examples and task evaluations for ChatGPT, Claude and a capable Ollama-backed agent.
+- Provider-neutral examples and a live evaluation using the ChatGPT-authenticated OpenAI Codex CLI. Claude and Ollama evaluations are explicitly deferred for this release.
 
 Exit gates:
 
@@ -51,7 +51,7 @@ Exit gates:
 2. Equivalent direct-file and structured requests produce equivalent reading content and navigation.
 3. Invalid requests, paths and cover files produce stable, actionable outcomes.
 4. Covers work in independently validated files and tested readers.
-5. Each agent environment meets the PRD completion target, with versions and results recorded.
+5. The evaluated OpenAI environment meets the PRD completion target, with versions and results recorded. Claude and Ollama are excluded from the release gate at the user's request; no live compatibility result is claimed for them.
 
 ## Milestone 3 Selected conveniences
 

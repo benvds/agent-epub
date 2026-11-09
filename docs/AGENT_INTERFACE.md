@@ -1,6 +1,6 @@
 # Agent interface
 
-Milestone 2 is in progress. Generic book requests, streamed input, capability discovery, structured results and supplied cover images are implemented. Live cross-agent evaluations are the remaining acceptance work.
+Milestone 2 supports generic book requests, streamed input, capability discovery, structured results and supplied cover images. The live OpenAI-agent evaluation passed all 20 corpus tasks. Claude and Ollama evaluations are deferred at the user's request. [Evaluation details](verification/AGENT_EVALUATIONS.md).
 
 ## Discover and build
 
@@ -51,4 +51,10 @@ JPEG and PNG are supported. The tool checks the actual image data, completely de
 
 The cover is identified in publication metadata and appears before the contents page. It is excluded from chapter counts and the chapter table of contents. Chapter previous/next links continue to connect chapters. Supplied alternative text must be nonempty; when omitted, the tool uses `Cover of <book title>`. A successful JSON result reports `cover: true` when a cover is present.
 
-The request schema is available in [book-request.v1.json](../schemas/book-request.v1.json). The [roadmap](ROADMAP.md) tracks remaining agent evaluations. Live-provider results will be recorded separately from deterministic tests.
+## Use from an agent runtime
+
+Give the agent permission to invoke the executable and access only the sources and output directory it needs. A useful instruction is: discover capabilities, construct a versioned request, build with `--json`, inspect the result and report any failed or unrun checks. Streamed requests avoid creating intermediate manuscript files.
+
+ChatGPT-authenticated Codex CLI was tested through actual tool calls. Claude Code can use the same shell commands when configured with tool access; its live evaluation is deferred. An Ollama-backed runtime can expose a tool that forwards request JSON to the CLI and returns structured stdout; the selected model must support that runtime's tool use. No provider-specific conversation parsing is required, and no live Ollama result is claimed.
+
+The request schema is available in [book-request.v1.json](../schemas/book-request.v1.json). See the [release verification](verification/MILESTONE_2.md) for the tested scope and remaining limitations.
