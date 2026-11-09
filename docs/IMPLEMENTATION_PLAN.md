@@ -1,0 +1,135 @@
+# Rust CLI implementation plan
+
+Updated 9 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. The [PRD](PRD.md) stays independent of these programming choices.
+
+## Milestone 1 Implementation sequence
+
+### Checkpoint 1 Project foundation
+
+Create a Rust binary and library with CLI argument handling, shared errors and a documented usage example. Commit the dependency lockfile. Keep generated EPUBs and build outputs out of Git.
+
+Proposed command:
+
+```sh
+agent-epub build --input introduction.txt --input chapters.md \
+  --output book.epub --title "Example book" --language en \
+  --author "Example author"
+```
+
+Require title and language, accept an optional author, preserve repeated input order and infer format only from supported file extensions. Reject ambiguous extensions instead of guessing. UTF-8 is the initial text encoding. `--overwrite` explicitly permits replacing an output; it must not allow replacing an input source.
+
+Define stable exit categories: success, invalid arguments/content, I/O failure, publication-check failure and external-validator failure or unavailability. Write diagnostics to stderr. Reserve structured machine output for milestone 2.
+
+Deliver a compiling executable, help text, argument tests and a checkpoint commit.
+
+### Checkpoint 2 Source normalization and chapter model
+
+Create a shared book model containing metadata, ordered chapters, heading identifiers and unresolved links. Retain source paths and line/offset information for diagnostics. Read and validate all sources before opening the destination.
+
+Plain-text policy:
+
+- Each source file becomes one chapter, named from its filename.
+- Blank lines separate paragraphs; preserve line breaks within paragraphs.
+- Escape text literally, including angle brackets, ampersands and Markdown-looking characters.
+
+Markdown policy:
+
+- Use CommonMark parsing with a documented subset: headings, paragraphs, emphasis, strong emphasis, lists, quotations, code, thematic breaks and links.
+- Each source starts a chapter; top-level headings split further chapters. Preserve any preamble as its own chapter. A source without a top-level heading remains one chapter.
+- Reject images and raw HTML with an actionable unsupported-feature error. Detect table and note extensions explicitly, rather than quietly interpreting requested advanced formatting as ordinary text.
+- Generate unique chapter filenames and heading identifiers, including repeated or non-Latin headings. Give empty chapter headings a predictable visible fallback.
+- Resolve links to supplied sources and heading fragments after all chapters are known. Allow ordinary web and email links; reject unresolved local destinations and unsupported schemes.
+
+Reject empty books, invalid XML characters and unsupported content before publishing. Preserve all supported text. Do not fetch remote resources.
+
+Commit source handling with focused tests for preambles, mixed sources, duplicate titles, Unicode and link resolution.
+
+### Checkpoint 3 EPUB generation
+
+Write XML-safe XHTML from the parsed content. Generate navigation and reading order from the same chapter model, so the visible contents, reader navigation and chapter sequence agree.
+
+Package at least:
+
+```text
+mimetype
+META-INF/container.xml
+EPUB/package.opf
+EPUB/nav.xhtml
+EPUB/style.css
+EPUB/chapter-0001.xhtml
+EPUB/chapter-0002.xhtml
+...
+```
+
+The EPUB `mimetype` entry must be first, uncompressed and contain exactly `application/epub+zip`. Constrain ZIP settings to EPUB-compatible options. Generate correct namespaces, metadata, manifest, spine, language declarations and modification metadata for an EPUB 3.3 publication. Include a navigation entry for every chapter. Do not add legacy NCX unless reader testing demonstrates a need.
+
+Include the visible contents page in the spine. Add previous/next chapter links at chapter boundaries and a return link to contents. Package one conservative stylesheet with relative typography and wrapping for long text and code.
+
+Use a temporary output in the destination directory. Finish and check it before publishing. Default publication must fail if the target exists; explicit overwrite replaces it only after success. Prevent output paths that alias input paths, including symbolic-link aliases.
+
+Commit generation once a minimal book is usable and its package tests pass.
+
+### Checkpoint 4 Checks, independent validation and documentation
+
+Reopen generated archives and verify:
+
+- ZIP integrity, entry uniqueness, mimetype placement and expected package location.
+- XML well-formedness, required namespaces and metadata.
+- Manifest resources, spine references and chapter order.
+- Contents destinations, all generated navigation links and heading fragments.
+- Absence of unsupported unbundled local references.
+
+Expose `agent-epub validate book.epub` for these structural checks. It is scoped to the generated profile and must not claim full conformance. Provide an optional EPUBCheck invocation through `--epubcheck <executable>`; the validator must be invoked without shell interpolation. Missing or unsuccessful validators must not be reported as a pass. During build, optional independent validation happens before publication of the output.
+
+For independent release validation, run EPUBCheck against every accepted fixture. Keep synthetic fixtures only; do not copy private source publications into Git. Test CLI behavior as a subprocess, including output conflicts, unsupported features and a simulated validator failure. Run formatting, linting and the Rust test suite.
+
+Measure generation on a synthetic 100,000-word, 40-chapter book, with process startup and built-in checks included. Keep external-validator timing separate. Record actual values and environment; do not convert a local measurement into a general guarantee.
+
+Record manual reading results separately. If two readers cannot be exercised, mark that roadmap gate outstanding. Commit verification, examples, documentation and the measured status.
+
+## Proposed components and dependency choices
+
+| Component | Responsibility | Proposed dependency |
+| --- | --- | --- |
+| CLI | Commands, options and help | [clap](https://docs.rs/clap/latest/clap/) |
+| Input and book model | Source validation, metadata and chapter ordering | Standard library and explicit domain types |
+| Markdown | Parse supported source structure | [pulldown-cmark](https://docs.rs/pulldown-cmark/latest/pulldown_cmark/) |
+| XML/XHTML | Escape content, write and inspect package documents | [quick-xml](https://docs.rs/quick-xml/latest/quick_xml/) or a dedicated XML parser where namespace validation is needed |
+| ZIP package | Store mimetype and compress publication resources | [zip](https://docs.rs/zip/latest/zip/) with restricted compression features |
+| Output publication | Temporary file and safe final replacement | [tempfile](https://docs.rs/tempfile/latest/tempfile/) |
+| Identifier | Generate a publication identifier | [uuid](https://docs.rs/uuid/latest/uuid/) |
+
+Select compatible released versions during setup and commit the lockfile. Dependency support for extra features does not make those features part of the product. Keep parsing, rendering, packaging and checking separable for meaningful tests, without introducing a service or plugin system.
+
+## Milestone 2 Implementation sequence
+
+1. Define a versioned book-request schema and matching structured result format. Use [serde_json](https://docs.rs/serde_json/latest/serde_json/) for request/result handling.
+2. Add `build --request book.json` and streamed request input. Define precedence explicitly: structured requests and direct content flags are mutually exclusive. Resolve relative file references from the request file's directory; require an explicit base for streamed requests containing file references.
+3. Add `capabilities` and machine-readable results. Separate status, output location, warnings, checks, errors and timing. Keep logs off structured stdout. Reject unknown fields where they could hide mistakes; identify schema versions and unsupported versions clearly.
+4. Add JPEG/PNG covers, content-based image verification and bounded size/dimension checks. Evaluate [image](https://docs.rs/image/latest/image/) with only required formats enabled. Package the image and cover page with correct cover metadata and reading order.
+5. Publish the same small examples for all target agents. Run recorded tasks against ChatGPT, Claude and an Ollama-backed agent with a tool-capable model. Preserve the generic contract rather than adding provider-specific conversation parsers.
+
+Suggested commit boundaries: request contract; streamed inputs and paths; structured results/discovery; covers; cross-agent evaluation and documentation.
+
+## Milestone 3 Implementation sequence
+
+Choose additions from user evidence. For each selected feature, define semantics and diagnostics, add fixtures, implement it through the shared book model, and run the existing corpus before committing.
+
+Simple tables should preserve header relationships and all cell content. Notes should preserve references and return navigation. Inline images require supplied alternative text or a clear decorative-image choice. Style presets must remain readable with user font settings. Automated accessibility reports must identify their coverage and remaining manual checks.
+
+Consider batch processing and deterministic output only after real repeated-generation needs are demonstrated. Do not introduce fixed layout, multimedia, DRM or full EPUB support through incidental parser options.
+
+## Verification and completion record
+
+| Gate | Required evidence |
+| --- | --- |
+| Source fidelity | Synthetic text, Unicode, Markdown, preamble, duplicate-heading and mixed-source tests. |
+| Navigation | Contents, previous/next, same-file and cross-source links, and missing-fragment tests. |
+| Package validity | Reopened-package checks plus independent EPUBCheck results. |
+| Safe failure | Existing-output preservation, input/output alias protection and failed-validator tests. |
+| Speed | Reproducible synthetic workload and measured wall-clock result. |
+| Reading behavior | Two independently tested readers with recorded versions, or an explicit outstanding gate. |
+
+Push the documentation checkpoint first. During implementation, commit after each working checkpoint and push progress so pausing does not strand work locally. Keep the roadmap status consistent with evidence, including any manual gates that remain open.
+
+References: [EPUB 3.3](https://www.w3.org/TR/epub-33/), [EPUBCheck](https://www.w3.org/publishing/epubcheck/), and the primary dependency documentation linked above.

@@ -1,0 +1,363 @@
+{
+  "audit_date": "2026-11-09",
+  "scope": "Read-only inspection of six pre-existing local EPUBs. Provenance to a particular ChatGPT session/model is unverified. No new ChatGPT generation or EPUBCheck/reader testing was performed.",
+  "privacy": "Book text, titles, source filenames and author values are omitted. SHA-256 identifies each original file.",
+  "method": "Python stdlib zipfile, ElementTree, urllib.parse and posixpath; inspect ZIP CRC/mimetype, parse package and XHTML, count elements and resources, resolve XHTML href/src and manifest resources. Does not validate CSS URLs, NCX targets or full EPUB conformance.",
+  "builder_sha256": "cbc4921409180d108e3b1cd9a60d2d4124af94fd79cf2ec1e60cbb34cc74febf",
+  "samples": [
+    {
+      "sample_id": "A01",
+      "sha256": "b12cf501cb416331ec05dca0740ab146653cc11efc5ea563fcaf6f18453e2f7b",
+      "bytes": 30304,
+      "package_version": "3.0",
+      "generator_metadata": [],
+      "metadata_fields": [
+        "date",
+        "description",
+        "identifier",
+        "language",
+        "meta",
+        "title"
+      ],
+      "languages": [
+        "nl"
+      ],
+      "resource_types": {
+        "application/xhtml+xml": 20,
+        "text/css": 1,
+        "application/x-dtbncx+xml": 1
+      },
+      "spine_items": 20,
+      "nav_documents": 1,
+      "ncx_documents": 1,
+      "content_element_counts": {
+        "a": 65,
+        "body": 20,
+        "em": 19,
+        "h1": 2,
+        "h2": 19,
+        "h3": 2,
+        "head": 20,
+        "html": 20,
+        "li": 37,
+        "link": 20,
+        "nav": 1,
+        "ol": 3,
+        "p": 110,
+        "strong": 18,
+        "table": 1,
+        "tbody": 1,
+        "td": 18,
+        "th": 3,
+        "thead": 1,
+        "title": 20,
+        "tr": 7
+      },
+      "references": {
+        "internal": 39,
+        "external": 46
+      },
+      "zip_crc_ok": true,
+      "mimetype_first_stored_correct": true,
+      "xml_parse_errors": [],
+      "missing_manifest_resources": 0,
+      "broken_xhtml_references": {},
+      "embedded_font_declarations": 0,
+      "has_fixed_layout_metadata": false,
+      "has_accessibility_metadata": false,
+      "has_encryption_xml": false
+    },
+    {
+      "sample_id": "A02",
+      "sha256": "bf64444532f62bcbbd20b6f854169978313bbe6d3f550d1a8549b7ed7494a52c",
+      "bytes": 16784,
+      "package_version": "3.0",
+      "generator_metadata": [],
+      "metadata_fields": [
+        "description",
+        "identifier",
+        "language",
+        "meta",
+        "title"
+      ],
+      "languages": [
+        "nl"
+      ],
+      "resource_types": {
+        "application/xhtml+xml": 13,
+        "text/css": 1,
+        "application/x-dtbncx+xml": 1
+      },
+      "spine_items": 12,
+      "nav_documents": 1,
+      "ncx_documents": 1,
+      "content_element_counts": {
+        "a": 41,
+        "body": 13,
+        "h1": 2,
+        "h2": 11,
+        "h3": 5,
+        "head": 13,
+        "html": 13,
+        "li": 30,
+        "link": 13,
+        "meta": 13,
+        "nav": 1,
+        "ol": 1,
+        "p": 56,
+        "strong": 12,
+        "title": 13,
+        "ul": 2
+      },
+      "references": {
+        "internal": 25,
+        "external": 29
+      },
+      "zip_crc_ok": true,
+      "mimetype_first_stored_correct": true,
+      "xml_parse_errors": [],
+      "missing_manifest_resources": 0,
+      "broken_xhtml_references": {},
+      "embedded_font_declarations": 0,
+      "has_fixed_layout_metadata": false,
+      "has_accessibility_metadata": false,
+      "has_encryption_xml": false
+    },
+    {
+      "sample_id": "A03",
+      "sha256": "26dca35612687c2f139ddfc34497455dcf7507ed4b1629ca271c8f903f30eb9b",
+      "bytes": 56741,
+      "package_version": "3.0",
+      "generator_metadata": [],
+      "metadata_fields": [
+        "date",
+        "description",
+        "identifier",
+        "language",
+        "meta",
+        "title"
+      ],
+      "languages": [
+        "nl"
+      ],
+      "resource_types": {
+        "text/css": 1,
+        "application/xhtml+xml": 29,
+        "application/x-dtbncx+xml": 1
+      },
+      "spine_items": 29,
+      "nav_documents": 1,
+      "ncx_documents": 1,
+      "content_element_counts": {
+        "a": 242,
+        "blockquote": 2,
+        "body": 29,
+        "dd": 193,
+        "div": 14,
+        "dl": 93,
+        "dt": 193,
+        "h1": 2,
+        "h2": 27,
+        "h3": 144,
+        "head": 29,
+        "html": 29,
+        "li": 134,
+        "link": 29,
+        "meta": 29,
+        "nav": 1,
+        "ol": 7,
+        "p": 264,
+        "section": 94,
+        "strong": 58,
+        "title": 29,
+        "ul": 11
+      },
+      "references": {
+        "internal": 70,
+        "external": 201
+      },
+      "zip_crc_ok": true,
+      "mimetype_first_stored_correct": true,
+      "xml_parse_errors": [],
+      "missing_manifest_resources": 0,
+      "broken_xhtml_references": {},
+      "embedded_font_declarations": 0,
+      "has_fixed_layout_metadata": false,
+      "has_accessibility_metadata": false,
+      "has_encryption_xml": false
+    },
+    {
+      "sample_id": "A04",
+      "sha256": "8c1ac32c9584cf9cfcd1deb3bc4f4a3da7ecf76e756808e2e27926bd319b3be2",
+      "bytes": 26264,
+      "package_version": "3.0",
+      "generator_metadata": [],
+      "metadata_fields": [
+        "creator",
+        "date",
+        "identifier",
+        "language",
+        "meta",
+        "title"
+      ],
+      "languages": [
+        "nl"
+      ],
+      "resource_types": {
+        "text/css": 1,
+        "application/xhtml+xml": 11,
+        "application/x-dtbncx+xml": 1
+      },
+      "spine_items": 10,
+      "nav_documents": 1,
+      "ncx_documents": 1,
+      "content_element_counts": {
+        "a": 79,
+        "body": 11,
+        "dd": 100,
+        "div": 47,
+        "dl": 46,
+        "dt": 100,
+        "h1": 10,
+        "h2": 18,
+        "head": 11,
+        "html": 11,
+        "li": 40,
+        "link": 11,
+        "nav": 2,
+        "ol": 7,
+        "p": 153,
+        "section": 4,
+        "title": 11,
+        "ul": 1
+      },
+      "references": {
+        "internal": 40,
+        "external": 50
+      },
+      "zip_crc_ok": true,
+      "mimetype_first_stored_correct": true,
+      "xml_parse_errors": [],
+      "missing_manifest_resources": 0,
+      "broken_xhtml_references": {},
+      "embedded_font_declarations": 0,
+      "has_fixed_layout_metadata": false,
+      "has_accessibility_metadata": false,
+      "has_encryption_xml": false
+    },
+    {
+      "sample_id": "A05",
+      "sha256": "da69781c05b09dfc361ed160429e4ab61f8f1d4add3ad5e2efe4702731dc745b",
+      "bytes": 28075,
+      "package_version": "3.0",
+      "generator_metadata": [],
+      "metadata_fields": [
+        "creator",
+        "description",
+        "identifier",
+        "language",
+        "meta",
+        "title"
+      ],
+      "languages": [
+        "nl"
+      ],
+      "resource_types": {
+        "application/xhtml+xml": 18,
+        "application/x-dtbncx+xml": 1,
+        "text/css": 1
+      },
+      "spine_items": 17,
+      "nav_documents": 1,
+      "ncx_documents": 1,
+      "content_element_counts": {
+        "a": 39,
+        "body": 18,
+        "br": 1,
+        "em": 14,
+        "h1": 18,
+        "head": 18,
+        "html": 18,
+        "li": 24,
+        "link": 18,
+        "meta": 18,
+        "nav": 1,
+        "ol": 1,
+        "p": 105,
+        "section": 17,
+        "title": 18,
+        "ul": 1
+      },
+      "references": {
+        "internal": 34,
+        "external": 23
+      },
+      "zip_crc_ok": true,
+      "mimetype_first_stored_correct": true,
+      "xml_parse_errors": [],
+      "missing_manifest_resources": 0,
+      "broken_xhtml_references": {},
+      "embedded_font_declarations": 0,
+      "has_fixed_layout_metadata": false,
+      "has_accessibility_metadata": false,
+      "has_encryption_xml": false
+    },
+    {
+      "sample_id": "A06",
+      "sha256": "9b61558cb8415e9cd59cd02bccfe1e2ff55edb98e28f091171f5f0574d6ef2c9",
+      "bytes": 27902,
+      "package_version": "3.0",
+      "generator_metadata": [],
+      "metadata_fields": [
+        "creator",
+        "description",
+        "identifier",
+        "language",
+        "meta",
+        "title"
+      ],
+      "languages": [
+        "nl"
+      ],
+      "resource_types": {
+        "application/xhtml+xml": 18,
+        "application/x-dtbncx+xml": 1,
+        "text/css": 1
+      },
+      "spine_items": 17,
+      "nav_documents": 1,
+      "ncx_documents": 1,
+      "content_element_counts": {
+        "a": 34,
+        "body": 18,
+        "br": 1,
+        "em": 10,
+        "h1": 18,
+        "head": 18,
+        "html": 18,
+        "li": 24,
+        "link": 18,
+        "meta": 18,
+        "nav": 1,
+        "ol": 1,
+        "p": 108,
+        "section": 17,
+        "title": 18,
+        "ul": 1
+      },
+      "references": {
+        "internal": 34,
+        "external": 18
+      },
+      "zip_crc_ok": true,
+      "mimetype_first_stored_correct": true,
+      "xml_parse_errors": [],
+      "missing_manifest_resources": 0,
+      "broken_xhtml_references": {},
+      "embedded_font_declarations": 0,
+      "has_fixed_layout_metadata": false,
+      "has_accessibility_metadata": false,
+      "has_encryption_xml": false
+    }
+  ]
+}
