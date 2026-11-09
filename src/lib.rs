@@ -1,5 +1,7 @@
 use std::{fmt, path::PathBuf};
 
+mod source;
+
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
