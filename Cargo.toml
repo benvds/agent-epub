@@ -1,0 +1,18 @@
+[package]
+name = "agent-epub"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Focused EPUB generation for AI agents"
+license = "MIT"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+percent-encoding = "2"
+pulldown-cmark = "0.13"
+roxmltree = "0.21"
+tempfile = "3"
+time = { version = "0.3", features = ["formatting"] }
+url = "2"
+uuid = { version = "1", features = ["v4"] }
+zip = { version = "2.4", default-features = false, features = ["deflate"] }
