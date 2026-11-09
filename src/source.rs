@@ -10,6 +10,7 @@ use crate::{Error, ErrorKind, Metadata, Result, valid_xml_text, xml_text};
 pub(crate) struct Book {
     pub metadata: Metadata,
     pub chapters: Vec<Chapter>,
+    pub cover: Option<crate::cover::Cover>,
 }
 
 #[derive(Debug)]
@@ -330,7 +331,11 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
             body,
         });
     }
-    Ok(Book { metadata, chapters })
+    Ok(Book {
+        metadata,
+        chapters,
+        cover: None,
+    })
 }
 
 fn heading_number(level: HeadingLevel) -> u8 {

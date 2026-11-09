@@ -157,6 +157,7 @@ pub fn validate(path: &Path) -> Result<Summary> {
     let mut items = HashMap::new();
     let mut resources = HashSet::new();
     let mut navs = Vec::new();
+    let mut covers = Vec::new();
     for item in manifest
         .children()
         .filter(|n| n.has_tag_name((OPF, "item")))
@@ -191,6 +192,14 @@ pub fn validate(path: &Path) -> Result<Summary> {
             }
             navs.push(target);
         }
+        if item
+            .attribute("properties")
+            .unwrap_or("")
+            .split_whitespace()
+            .any(|p| p == "cover-image")
+        {
+            covers.push((items[id].0.clone(), media));
+        }
     }
     if navs.len() != 1 {
         return Err(failure("Expected exactly one navigation resource."));
@@ -215,10 +224,40 @@ pub fn validate(path: &Path) -> Result<Summary> {
         }
         order.push(target.clone());
     }
-    if order.first() != Some(&navs[0]) || order.len() < 2 {
+    if covers.len() > 1 {
+        return Err(failure("Expected at most one cover image."));
+    }
+    let nav_index = usize::from(!covers.is_empty());
+    if order.get(nav_index) != Some(&navs[0]) || order.len() < nav_index + 2 {
         return Err(failure(
-            "This profile requires visible contents followed by at least one chapter.",
+            "This profile requires an optional cover, visible contents and at least one chapter.",
         ));
+    }
+    if let Some((image, media)) = covers.first() {
+        crate::cover::validate_packaged(&files[image], media, Path::new(image))?;
+        let page = documents
+            .get(order[0].as_str())
+            .ok_or_else(|| failure("Cover page must be XHTML."))?;
+        if !page.descendants().any(|n| {
+            n.attribute((EPUB, "type"))
+                .is_some_and(|s| s.split_whitespace().any(|p| p == "cover"))
+        }) {
+            return Err(failure("The first reading page must identify the cover."));
+        }
+        let images = page
+            .descendants()
+            .filter(|n| n.has_tag_name((XHTML, "img")))
+            .collect::<Vec<_>>();
+        if images.len() != 1
+            || images[0]
+                .attribute("alt")
+                .is_none_or(|s| s.trim().is_empty())
+            || local_target(&order[0], images[0].attribute("src").unwrap_or(""))?.0 != *image
+        {
+            return Err(failure(
+                "Cover page must reference its declared cover image and provide alternative text.",
+            ));
+        }
     }
     for (name, document) in &documents {
         if !name.ends_with(".xhtml") {
@@ -300,16 +339,17 @@ pub fn validate(path: &Path) -> Result<Summary> {
             Ok(local_target(&navs[0], href)?.0)
         })
         .collect::<Result<Vec<_>>>()?;
-    if links != order[1..] {
+    let chapters = &order[nav_index + 1..];
+    if links != chapters {
         return Err(failure(
             "Contents order does not match chapter reading order.",
         ));
     }
-    for (index, chapter) in order[1..].iter().enumerate() {
+    for (index, chapter) in chapters.iter().enumerate() {
         let document = &documents[chapter.as_str()];
         for (relation, expected) in [
-            ("prev", index.checked_sub(1).map(|i| &order[i + 1])),
-            ("next", order.get(index + 2)),
+            ("prev", index.checked_sub(1).map(|i| &chapters[i])),
+            ("next", chapters.get(index + 1)),
         ] {
             let links = document
                 .descendants()
@@ -339,7 +379,8 @@ pub fn validate(path: &Path) -> Result<Summary> {
         }
     }
     Ok(Summary {
-        chapters: order.len() - 1,
+        chapters: chapters.len(),
+        cover: !covers.is_empty(),
         independent_validation: false,
     })
 }

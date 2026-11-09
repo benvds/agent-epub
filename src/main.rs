@@ -1,5 +1,5 @@
 use agent_epub::{
-    BuildOptions, Error, ErrorKind, Metadata, Result, Summary,
+    BuildOptions, CoverOptions, Error, ErrorKind, Metadata, Result, Summary,
     agent::{self, RequestOptions},
 };
 use clap::{Parser, Subcommand};
@@ -33,7 +33,7 @@ enum Commands {
             conflicts_with = "request"
         )]
         inputs: Vec<PathBuf>,
-        #[arg(long, conflicts_with_all = ["inputs", "title", "language", "author"], help = "Book request JSON file, or - for stdin")]
+        #[arg(long, conflicts_with_all = ["inputs", "title", "language", "author", "cover", "cover_alt"], help = "Book request JSON file, or - for stdin")]
         request: Option<PathBuf>,
         #[arg(
             long,
@@ -49,6 +49,14 @@ enum Commands {
         language: Option<String>,
         #[arg(long)]
         author: Option<String>,
+        #[arg(long, help = "Supplied JPEG or PNG cover image")]
+        cover: Option<PathBuf>,
+        #[arg(
+            long,
+            requires = "cover",
+            help = "Cover alternative text; defaults to Cover of <title>"
+        )]
+        cover_alt: Option<String>,
         #[arg(long)]
         overwrite: bool,
         #[arg(
@@ -137,6 +145,8 @@ fn main() {
             title,
             language,
             author,
+            cover,
+            cover_alt,
             overwrite,
             epubcheck,
         } => {
@@ -154,17 +164,25 @@ fn main() {
                     )
                 })
             } else {
-                agent_epub::build(&BuildOptions {
-                    inputs,
-                    output: output.clone(),
-                    metadata: Metadata {
-                        title: title.unwrap_or_default(),
-                        language: language.unwrap_or_default(),
-                        author,
+                agent_epub::build_with_cover(
+                    &BuildOptions {
+                        inputs,
+                        output: output.clone(),
+                        metadata: Metadata {
+                            title: title.unwrap_or_default(),
+                            language: language.unwrap_or_default(),
+                            author,
+                        },
+                        overwrite,
+                        epubcheck,
                     },
-                    overwrite,
-                    epubcheck,
-                })
+                    cover
+                        .map(|path| CoverOptions {
+                            path,
+                            alt: cover_alt,
+                        })
+                        .as_ref(),
+                )
             };
             ("build", Some(output), outcome)
         }

@@ -8,6 +8,7 @@ description = "Focused EPUB generation for AI agents"
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 language-tags = "0.3"
+image = { version = "0.25", default-features = false, features = ["jpeg", "png"] }
 percent-encoding = "2"
 pulldown-cmark = "0.13"
 roxmltree = "0.21"

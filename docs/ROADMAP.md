@@ -32,7 +32,7 @@ Exit gates:
 
 ## Milestone 2 General agent inputs and cover images
 
-Status: in progress. Generic requests, streamed input, discovery and structured results are implemented in the first checkpoint. Cover images and live cross-agent evaluation remain open. See the [agent interface](AGENT_INTERFACE.md).
+Status: in progress. Generic requests, streamed input, discovery, structured results and JPEG/PNG covers are implemented and tested. Live cross-agent evaluation and reader review remain open. See the [agent interface](AGENT_INTERFACE.md).
 
 Let different agents create books through one predictable, unattended workflow, and add a supplied cover image.
 

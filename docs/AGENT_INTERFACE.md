@@ -1,6 +1,6 @@
 # Agent interface
 
-Milestone 2 is in progress. The first checkpoint supports generic book requests, streamed input, capability discovery and structured results. Cover support and live cross-agent evaluations follow separately.
+Milestone 2 is in progress. Generic book requests, streamed input, capability discovery, structured results and supplied cover images are implemented. Live cross-agent evaluations are the remaining acceptance work.
 
 ## Discover and build
 
@@ -43,4 +43,12 @@ Failure results contain an error code and message, and do not identify a newly c
 
 Independent-validator reports may appear on stderr; they do not contaminate structured stdout. `--help` and `--version` keep their standard command-line behavior. A success result with `epubcheck: not_run` describes built-in checking only.
 
-The request schema is available in [book-request.v1.json](../schemas/book-request.v1.json). The [roadmap](ROADMAP.md) tracks cover support and remaining agent evaluations. No live ChatGPT, Claude or Ollama evaluation has been run yet.
+## Supply a cover
+
+Add `"cover": {"path": "cover.png", "alt": "Cover of A guide"}` to a book request. Relative paths follow the same base-directory rules as input files. A streamed request containing a cover needs `--base-dir`. Direct-file builds use `--cover cover.png` and optionally `--cover-alt "Cover of A guide"`; these flags cannot be mixed with request mode.
+
+JPEG and PNG are supported. The tool checks the actual image data, completely decodes it under bounded limits, and preserves the original encoded bytes. Limits are 10 MiB, 8,000 pixels per side and 16 million pixels total. The package uses the detected format even when the supplied filename has a different extension. Empty, corrupt, oversized or unsupported images fail without replacing a previous output.
+
+The cover is identified in publication metadata and appears before the contents page. It is excluded from chapter counts and the chapter table of contents. Chapter previous/next links continue to connect chapters. Supplied alternative text must be nonempty; when omitted, the tool uses `Cover of <book title>`. A successful JSON result reports `cover: true` when a cover is present.
+
+The request schema is available in [book-request.v1.json](../schemas/book-request.v1.json). The [roadmap](ROADMAP.md) tracks remaining agent evaluations. Live-provider results will be recorded separately from deterministic tests.

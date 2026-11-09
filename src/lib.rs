@@ -1,11 +1,12 @@
 use std::{fmt, path::PathBuf};
 
 pub mod agent;
+mod cover;
 mod package;
 mod source;
 mod validation;
 
-pub use package::build;
+pub use package::{build, build_with_cover};
 pub use validation::validate;
 
 pub fn validate_with_epubcheck(
@@ -70,9 +71,17 @@ pub struct BuildOptions {
     pub epubcheck: Option<PathBuf>,
 }
 
+#[derive(Debug, Clone, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CoverOptions {
+    pub path: PathBuf,
+    pub alt: Option<String>,
+}
+
 #[derive(Debug)]
 pub struct Summary {
     pub chapters: usize,
+    pub cover: bool,
     pub independent_validation: bool,
 }
 

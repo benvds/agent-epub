@@ -1,5 +1,5 @@
 use crate::{
-    BuildOptions, Error, ErrorKind, Result, Summary,
+    BuildOptions, CoverOptions, Error, ErrorKind, Result, Summary,
     source::{Book, chapter_file, prepare},
     validate, xml_text,
 };
@@ -10,8 +10,17 @@ use uuid::Uuid;
 use zip::{CompressionMethod, ZipWriter, write::SimpleFileOptions};
 
 pub fn build(options: &BuildOptions) -> Result<Summary> {
-    let book = prepare(&options.inputs, options.metadata.clone())?;
-    publish(options, &book)
+    build_with_cover(options, None)
+}
+
+pub fn build_with_cover(options: &BuildOptions, cover: Option<&CoverOptions>) -> Result<Summary> {
+    let mut book = prepare(&options.inputs, options.metadata.clone())?;
+    let mut options = options.clone();
+    if let Some(cover) = cover {
+        book.cover = Some(crate::cover::load(cover, &book.metadata.title)?);
+        options.inputs.push(cover.path.clone());
+    }
+    publish(&options, &book)
 }
 
 pub(crate) fn publish(options: &BuildOptions, book: &Book) -> Result<Summary> {
@@ -173,9 +182,25 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
     )?;
     put(
         "EPUB/style.css",
-        "body { margin: 5%; line-height: 1.5; }\nh1, h2, h3 { line-height: 1.2; }\np { margin: 0.7em 0; }\npre { white-space: pre-wrap; word-wrap: break-word; }\na, code { word-wrap: break-word; }\nnav { margin: 1em 0; }\n",
+        "body { margin: 5%; line-height: 1.5; }\nh1, h2, h3 { line-height: 1.2; }\np { margin: 0.7em 0; }\npre { white-space: pre-wrap; word-wrap: break-word; }\na, code { word-wrap: break-word; }\nnav { margin: 1em 0; }\n.cover { text-align: center; }\n.cover img { max-width: 100%; max-height: 90vh; width: auto; height: auto; }\n",
         deflated,
     )?;
+    if let Some(cover) = &book.cover {
+        let body = format!(
+            "<div epub:type=\"cover\" class=\"cover\"><img src=\"{}\" alt=\"{}\" /></div>",
+            cover.filename,
+            xml_text(&cover.alt)
+        );
+        put(
+            "EPUB/cover.xhtml",
+            &page(
+                &format!("{}: Cover", book.metadata.title),
+                &book.metadata.language,
+                &body,
+            ),
+            deflated,
+        )?;
+    }
     let mut contents = String::from("<nav epub:type=\"toc\" id=\"toc\"><h1>Contents</h1><ol>");
     for (index, chapter) in book.chapters.iter().enumerate() {
         contents.push_str(&format!(
@@ -238,6 +263,9 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
         package.push_str(&format!("<dc:creator>{}</dc:creator>", xml_text(author)));
     }
     package.push_str("</metadata><manifest><item id=\"nav\" href=\"nav.xhtml\" media-type=\"application/xhtml+xml\" properties=\"nav\" /><item id=\"style\" href=\"style.css\" media-type=\"text/css\" />");
+    if let Some(cover) = &book.cover {
+        package.push_str(&format!("<item id=\"cover-image\" href=\"{}\" media-type=\"{}\" properties=\"cover-image\" /><item id=\"cover-page\" href=\"cover.xhtml\" media-type=\"application/xhtml+xml\" />", cover.filename, cover.media_type));
+    }
     for index in 0..book.chapters.len() {
         package.push_str(&format!(
             "<item id=\"ch-{}\" href=\"{}\" media-type=\"application/xhtml+xml\" />",
@@ -245,12 +273,24 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
             chapter_file(index)
         ));
     }
-    package.push_str("</manifest><spine><itemref idref=\"nav\" />");
+    package.push_str("</manifest><spine>");
+    if book.cover.is_some() {
+        package.push_str("<itemref idref=\"cover-page\" />");
+    }
+    package.push_str("<itemref idref=\"nav\" />");
     for index in 0..book.chapters.len() {
         package.push_str(&format!("<itemref idref=\"ch-{}\" />", index + 1));
     }
     package.push_str("</spine></package>");
     put("EPUB/package.opf", &package, deflated)?;
+    if let Some(cover) = &book.cover {
+        archive
+            .start_file(format!("EPUB/{}", cover.filename), stored)
+            .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?;
+        archive
+            .write_all(&cover.bytes)
+            .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?;
+    }
     archive
         .finish()
         .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?;

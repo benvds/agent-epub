@@ -1,6 +1,6 @@
 //! Provider-neutral requests and structured results for agent callers.
 use crate::{
-    BuildOptions, Error, ErrorKind, Metadata, Result, Summary, package,
+    BuildOptions, CoverOptions, Error, ErrorKind, Metadata, Result, Summary, package,
     source::{self, Source},
 };
 use serde::Deserialize;
@@ -16,6 +16,8 @@ pub struct BookRequest {
     pub schema_version: u32,
     pub metadata: Metadata,
     pub inputs: Vec<RequestInput>,
+    #[serde(default, deserialize_with = "present")]
+    pub cover: Option<CoverOptions>,
 }
 
 #[derive(Deserialize)]
@@ -85,7 +87,9 @@ pub fn build_request(text: &str, options: &RequestOptions) -> Result<Summary> {
     let base = match (&options.base_dir, &options.request_path) {
         (Some(base), _) => base.clone(),
         (None, Some(file)) => file.parent().unwrap_or(Path::new(".")).to_path_buf(),
-        (None, None) if request.inputs.iter().any(|i| i.path.is_some()) => {
+        (None, None)
+            if request.inputs.iter().any(|i| i.path.is_some()) || request.cover.is_some() =>
+        {
             return Err(invalid(
                 "Streamed requests with file references require --base-dir.",
             ));
@@ -158,8 +162,16 @@ pub fn build_request(text: &str, options: &RequestOptions) -> Result<Summary> {
         }
         sources.push(source);
     }
-    let book = source::prepare_sources(&sources, request.metadata.clone())?;
+    let mut book = source::prepare_sources(&sources, request.metadata.clone())?;
     let mut protected = sources.iter().map(|s| s.path.clone()).collect::<Vec<_>>();
+    if let Some(mut cover) = request.cover {
+        if cover.path.as_os_str().is_empty() {
+            return Err(invalid("Supply a cover image path."));
+        }
+        cover.path = base.join(cover.path);
+        book.cover = Some(crate::cover::load(&cover, &book.metadata.title)?);
+        protected.push(cover.path);
+    }
     if let Some(path) = &options.request_path {
         protected.push(path.clone());
     }
@@ -182,9 +194,9 @@ pub fn capabilities() -> Value {
         "commands": ["build", "validate", "capabilities"], "formats": ["text", "markdown"],
         "inputs": ["ordered_files", "request_file", "streamed_request", "inline_content"],
         "navigation": ["contents", "chapter_contents", "previous_next", "return_to_contents"],
-        "cover_images": false,
+        "cover_images": true, "cover_formats": ["jpeg", "png"],
         "unsupported": ["inline_images", "tables", "notes", "task_lists", "raw_html", "fixed_layout", "multimedia", "drm"],
-        "limits": {"source_bytes": 20971520, "total_source_bytes": 67108864, "request_bytes": 67108864, "chapters": 1000},
+        "limits": {"source_bytes": 20971520, "total_source_bytes": 67108864, "request_bytes": 67108864, "chapters": 1000, "cover_bytes": 10485760, "cover_max_side": 8000, "cover_max_pixels": 16000000},
         "checks": {"structural_profile": "always", "epubcheck": "optional_external", "reader_review": "not_automated", "accessibility_assessment": "not_automated"}
     })
 }
@@ -198,7 +210,7 @@ pub fn result(
     match outcome {
         Ok(summary) => json!({
             "schema_version": 1, "tool_version": env!("CARGO_PKG_VERSION"), "operation": operation, "status": "success",
-            "output": output.and_then(|p| p.canonicalize().ok()), "chapters": summary.chapters,
+            "output": output.and_then(|p| p.canonicalize().ok()), "chapters": summary.chapters, "cover": summary.cover,
             "checks": {"structural_profile": "passed", "epubcheck": if summary.independent_validation {"passed"} else {"not_run"}},
             "review_items": ["Reader appearance and accessibility require separate review."], "errors": [], "elapsed_ms": elapsed_ms
         }),

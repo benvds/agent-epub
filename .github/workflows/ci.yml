@@ -27,3 +27,7 @@ jobs:
         env:
           EPUBCHECK: ./scripts/epubcheck.sh
         run: cargo test --locked --test cli independent_epubcheck_corpus -- --ignored
+      - name: Independently validate cover publications
+        env:
+          EPUBCHECK: ./scripts/epubcheck.sh
+        run: cargo test --locked --test covers independent_cover_corpus -- --ignored

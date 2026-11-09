@@ -137,7 +137,7 @@ fn discovers_the_same_schema_and_limits_that_the_tool_uses() {
         serde_json::from_str::<Value>(include_str!("../schemas/book-request.v1.json")).unwrap()
     );
     assert_eq!(result["limits"]["chapters"], 1000);
-    assert_eq!(result["cover_images"], false);
+    assert_eq!(result["cover_images"], true);
 }
 
 #[test]
