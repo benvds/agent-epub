@@ -1,6 +1,6 @@
 [package]
 name = "agent-epub"
-version = "0.1.0"
+version = "0.2.0-dev"
 edition = "2024"
 rust-version = "1.88"
 description = "Focused EPUB generation for AI agents"
@@ -11,6 +11,8 @@ language-tags = "0.3"
 percent-encoding = "2"
 pulldown-cmark = "0.13"
 roxmltree = "0.21"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 tempfile = "3"
 time = { version = "0.3", features = ["formatting", "parsing"] }
 url = "2"

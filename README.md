@@ -26,7 +26,9 @@ Each input starts a chapter. Top-level Markdown headings start additional chapte
 
 Every build runs structural profile checks. Optional `--epubcheck <executable>` runs an independently installed EPUBCheck wrapper before publishing output. The built-in validator covers this tool's generated profile and does not certify arbitrary EPUBs, accessibility or reading appearance.
 
-Images, tables, notes, task lists and raw HTML are rejected in milestone 1. General structured agent requests and covers belong to milestone 2. Full EPUB support is outside the roadmap.
+Images, tables, notes, task lists and raw HTML are rejected in milestone 1. Full EPUB support is outside the roadmap.
+
+Milestone 2 is in progress: [general agent requests, streamed input and structured results](docs/AGENT_INTERFACE.md) are implemented. Cover support and live cross-agent evaluations remain open.
 
 See `agent-epub --help` and `agent-epub build --help` for options.
 

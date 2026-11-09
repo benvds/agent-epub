@@ -34,7 +34,58 @@ fn input_error(message: impl Into<String>) -> Error {
     Error::new(ErrorKind::Input, message)
 }
 
+pub(crate) struct Source {
+    pub path: PathBuf,
+    pub text: String,
+    pub format: String,
+}
+
+pub(crate) fn load(input: &std::path::Path) -> Result<Source> {
+    let path = input
+        .canonicalize()
+        .map_err(|e| Error::new(ErrorKind::Io, format!("{}: {e}", input.display())))?;
+    let size = fs::metadata(&path)
+        .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?
+        .len();
+    if size > 20 * 1024 * 1024 {
+        return Err(input_error("Input limit: 20 MiB per source."));
+    }
+    let text = fs::read_to_string(&path).map_err(|e| {
+        Error::new(
+            if e.kind() == std::io::ErrorKind::InvalidData {
+                ErrorKind::Input
+            } else {
+                ErrorKind::Io
+            },
+            format!("{}: expected readable UTF-8 text: {e}", input.display()),
+        )
+    })?;
+    let format = input
+        .extension()
+        .and_then(|s| s.to_str())
+        .unwrap_or("")
+        .to_ascii_lowercase();
+    Ok(Source { path, text, format })
+}
+
 pub(crate) fn prepare(inputs: &[PathBuf], metadata: Metadata) -> Result<Book> {
+    if inputs.len() > 1000 {
+        return Err(input_error("Supply at most 1,000 source files."));
+    }
+    let mut sources = Vec::new();
+    let mut total = 0;
+    for input in inputs {
+        let source = load(input)?;
+        total += source.text.len();
+        if total > 64 * 1024 * 1024 {
+            return Err(input_error("Input limit: 64 MiB total text."));
+        }
+        sources.push(source);
+    }
+    prepare_sources(&sources, metadata)
+}
+
+pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<Book> {
     if metadata.title.trim().is_empty() || !valid_xml_text(&metadata.title) {
         return Err(input_error(
             "Supply a nonempty title containing valid XML characters.",
@@ -62,31 +113,23 @@ pub(crate) fn prepare(inputs: &[PathBuf], metadata: Metadata) -> Result<Book> {
     let mut paths = Vec::new();
     let mut drafts = Vec::new();
     let mut total = 0;
-    for (source, input) in inputs.iter().enumerate() {
-        let path = input
-            .canonicalize()
-            .map_err(|e| Error::new(ErrorKind::Io, format!("{}: {e}", input.display())))?;
+    for (source, source_input) in inputs.iter().enumerate() {
+        let input = &source_input.path;
+        let path = input.clone();
         if paths.contains(&path) {
             return Err(input_error(format!(
                 "{}: source supplied more than once.",
                 input.display()
             )));
         }
-        let size = fs::metadata(&path)
-            .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?
-            .len();
+        let size = source_input.text.len();
         total += size;
         if size > 20 * 1024 * 1024 || total > 64 * 1024 * 1024 {
             return Err(input_error(
                 "Input limit: 20 MiB per source and 64 MiB total.",
             ));
         }
-        let text = fs::read_to_string(&path).map_err(|e| {
-            Error::new(
-                ErrorKind::Input,
-                format!("{}: expected readable UTF-8 text: {e}", input.display()),
-            )
-        })?;
+        let text = &source_input.text;
         let text = text
             .trim_start_matches('\u{feff}')
             .replace("\r\n", "\n")
@@ -107,13 +150,7 @@ pub(crate) fn prepare(inputs: &[PathBuf], metadata: Metadata) -> Result<Book> {
                 "Source filename contains invalid XML characters.",
             ));
         }
-        match input
-            .extension()
-            .and_then(|s| s.to_str())
-            .unwrap_or("")
-            .to_ascii_lowercase()
-            .as_str()
-        {
+        match source_input.format.as_str() {
             "txt" => drafts.push(Draft {
                 title: label,
                 events: vec![],
@@ -373,15 +410,16 @@ fn resolve_link(
     let target_source = if path.is_empty() {
         source
     } else {
-        let candidate = paths[source]
-            .parent()
-            .unwrap()
-            .join(path.as_ref())
-            .canonicalize()
-            .map_err(|_| error())?;
+        let candidate = normalized_path(&paths[source].parent().unwrap().join(path.as_ref()));
         paths
             .iter()
             .position(|p| *p == candidate)
+            .or_else(|| {
+                candidate
+                    .canonicalize()
+                    .ok()
+                    .and_then(|actual| paths.iter().position(|p| *p == actual))
+            })
             .ok_or_else(error)?
     };
     if let Some(fragment) = fragment.filter(|s| !s.is_empty()) {
@@ -395,6 +433,20 @@ fn resolve_link(
     } else {
         Ok(chapter_file(first[&target_source]))
     }
+}
+
+pub(crate) fn normalized_path(path: &std::path::Path) -> PathBuf {
+    let mut out = PathBuf::new();
+    for component in path.components() {
+        match component {
+            std::path::Component::CurDir => {}
+            std::path::Component::ParentDir => {
+                out.pop();
+            }
+            _ => out.push(component.as_os_str()),
+        }
+    }
+    out
 }
 
 #[cfg(test)]

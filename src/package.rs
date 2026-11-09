@@ -10,6 +10,11 @@ use uuid::Uuid;
 use zip::{CompressionMethod, ZipWriter, write::SimpleFileOptions};
 
 pub fn build(options: &BuildOptions) -> Result<Summary> {
+    let book = prepare(&options.inputs, options.metadata.clone())?;
+    publish(options, &book)
+}
+
+pub(crate) fn publish(options: &BuildOptions, book: &Book) -> Result<Summary> {
     let parent = options
         .output
         .parent()
@@ -69,13 +74,12 @@ pub fn build(options: &BuildOptions) -> Result<Summary> {
             ),
         ));
     }
-    let book = prepare(&options.inputs, options.metadata.clone())?;
     let mut temporary = Builder::new()
         .prefix(".agent-epub-")
         .suffix(".epub")
         .tempfile_in(&parent)
         .map_err(|e| Error::new(ErrorKind::Io, format!("Cannot create output: {e}")))?;
-    write_package(temporary.as_file_mut(), &book)?;
+    write_package(temporary.as_file_mut(), book)?;
     temporary
         .as_file_mut()
         .sync_all()

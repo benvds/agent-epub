@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "metadata": {"title": "An agent-created reading edition", "language": "en"},
+  "inputs": [
+    {"format": "text", "name": "introduction.txt", "content": "This source is plain text. Symbols such as < and & stay literal."},
+    {"format": "markdown", "name": "guide.md", "content": "# First chapter\n\nAn agent can supply **Markdown** directly.\n\n# Second chapter\n\n[Return to the first chapter](#first-chapter)."}
+  ]
+}

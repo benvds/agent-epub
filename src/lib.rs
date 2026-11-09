@@ -1,5 +1,6 @@
 use std::{fmt, path::PathBuf};
 
+pub mod agent;
 mod package;
 mod source;
 mod validation;
@@ -52,7 +53,8 @@ impl fmt::Display for Error {
 
 impl std::error::Error for Error {}
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Metadata {
     pub title: String,
     pub language: String,
