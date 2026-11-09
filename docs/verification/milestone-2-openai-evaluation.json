@@ -1,0 +1,204 @@
+{
+  "date": "2026-11-09",
+  "run": {
+    "provider": "openai",
+    "client_version": "codex-cli 0.167.0-alpha.3.2",
+    "return_code": 0,
+    "elapsed_seconds": 30.415,
+    "model": "CLI default; effective model identity was not exposed in recorded client events"
+  },
+  "tool_version": "agent-epub 0.2.0-dev",
+  "tool_binary_sha256": "b22bfd255edd6ae3e5874a41dd114ac3d78964cd7a8a19fd9942843781b09044",
+  "provider_transcript_sha256": "7d0cb5ea416050cf26c74496b775ff70b855ff561e90de3a5c56299ce2ba5fa2",
+  "corpus_version": 1,
+  "cases": 20,
+  "first_request_passed": 20,
+  "first_request_percent": 100.0,
+  "final_passed": 20,
+  "immutable_fixture_changes": [],
+  "capabilities_called": true,
+  "target_met": true,
+  "scope": "20 synthetic tasks in one native-agent session. Actual instrumented CLI calls and first-output snapshots are scored independently. This is a bounded usability evaluation, not a population-wide reliability estimate or a test of every client UI.",
+  "results": [
+    {
+      "case": "01",
+      "mode": "direct",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "02",
+      "mode": "direct",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "03",
+      "mode": "direct",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "04",
+      "mode": "direct",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "05",
+      "mode": "direct",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "06",
+      "mode": "direct",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "07",
+      "mode": "request_file",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "08",
+      "mode": "request_file",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "09",
+      "mode": "request_file",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "10",
+      "mode": "request_file",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "11",
+      "mode": "request_file",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "12",
+      "mode": "request_file",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "13",
+      "mode": "stream_request",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "14",
+      "mode": "stream_request",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "15",
+      "mode": "stream_request",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "16",
+      "mode": "stream_request",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "17",
+      "mode": "stream_request",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "18",
+      "mode": "stream_request",
+      "cover": false,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "19",
+      "mode": "stream_request",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    },
+    {
+      "case": "20",
+      "mode": "stream_request",
+      "cover": true,
+      "first_request_passed": true,
+      "final_passed": true,
+      "attempts": 1,
+      "first_result": "passed"
+    }
+  ]
+}
