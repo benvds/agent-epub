@@ -1,0 +1,4 @@
+This plain-text introduction stays literal: <book> & café.
+Markdown markers such as **these** remain text here.
+
+The next chapters come from a Markdown source.

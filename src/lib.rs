@@ -1,6 +1,23 @@
 use std::{fmt, path::PathBuf};
 
+mod package;
 mod source;
+mod validation;
+
+pub use package::build;
+pub use validation::validate;
+
+pub fn validate_with_epubcheck(
+    path: &std::path::Path,
+    executable: Option<&std::path::Path>,
+) -> Result<Summary> {
+    let mut summary = validate(path)?;
+    if let Some(executable) = executable {
+        package::run_epubcheck(executable, path)?;
+        summary.independent_validation = true;
+    }
+    Ok(summary)
+}
 
 pub type Result<T> = std::result::Result<T, Error>;
 
