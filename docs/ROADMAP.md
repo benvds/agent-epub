@@ -4,6 +4,8 @@ Updated 9 November 2026. Deliver a useful, tested subset in three milestones. Da
 
 ## Milestone 1 Text and Markdown reading editions
 
+Status: implementation and automated checks complete at `v0.1.0`; manual two-reader review remains open. See the [verification record](verification/MILESTONE_1.md).
+
 Create reflowable EPUBs from plain text or Markdown, with a table of contents and reliable chapter navigation.
 
 Deliver:

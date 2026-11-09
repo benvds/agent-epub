@@ -40,19 +40,11 @@ pub(crate) fn prepare(inputs: &[PathBuf], metadata: Metadata) -> Result<Book> {
             "Supply a nonempty title containing valid XML characters.",
         ));
     }
-    let parts: Vec<_> = metadata.language.split('-').collect();
-    if parts.is_empty()
-        || !(1..=8).contains(&parts[0].len())
-        || !parts[0].bytes().all(|c| c.is_ascii_alphabetic())
-        || parts
-            .iter()
-            .skip(1)
-            .any(|s| s.is_empty() || s.len() > 8 || !s.bytes().all(|c| c.is_ascii_alphanumeric()))
-    {
-        return Err(input_error(
-            "Supply a language tag such as en, nl or en-US.",
-        ));
-    }
+    let language = language_tags::LanguageTag::parse(&metadata.language)
+        .map_err(|e| input_error(format!("Invalid language tag: {e}. Use en, nl or en-US.")))?;
+    language
+        .validate()
+        .map_err(|e| input_error(format!("Invalid language tag: {e}.")))?;
     if metadata
         .author
         .as_ref()

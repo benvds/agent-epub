@@ -29,3 +29,5 @@ Every build runs structural profile checks. Optional `--epubcheck <executable>` 
 Images, tables, notes, task lists and raw HTML are rejected in milestone 1. General structured agent requests and covers belong to milestone 2. Full EPUB support is outside the roadmap.
 
 See `agent-epub --help` and `agent-epub build --help` for options.
+
+[Detailed usage and supported subset](docs/USAGE.md). Milestone 1 is implemented; [verification and remaining reader review](docs/verification/MILESTONE_1.md) are recorded separately.

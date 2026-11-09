@@ -138,7 +138,15 @@ pub fn validate(path: &Path) -> Result<Summary> {
     if !metadata.children().any(|n| {
         n.has_tag_name((OPF, "meta"))
             && n.attribute("property") == Some("dcterms:modified")
-            && n.text().is_some_and(|s| s.len() == 20 && s.ends_with('Z'))
+            && n.text().is_some_and(|s| {
+                s.len() == 20
+                    && s.ends_with('Z')
+                    && time::OffsetDateTime::parse(
+                        s,
+                        &time::format_description::well_known::Rfc3339,
+                    )
+                    .is_ok()
+            })
     }) {
         return Err(failure("Missing UTC modification metadata."));
     }
