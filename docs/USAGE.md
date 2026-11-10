@@ -2,8 +2,7 @@
 
 Install a [release binary](INSTALL.md), or build from source with `cargo build --release --locked`. The source-build executable is `target/release/agent-epub` (`.exe` on Windows). File generation needs no AI service, network access, Python or Java. Independent EPUBCheck validation needs a separately installed validator.
 
-This page describes main (`0.6.0-dev`). Local chapter images require a source
-build; the latest published v0.5.1 supports covers only.
+This page describes v0.6.0, including local chapter images.
 
 For a complete example, compare the [showcase Markdown](../examples/showcase.md)
 with its committed [generated EPUB](../examples/showcase.epub). The
@@ -102,7 +101,7 @@ agent-epub build --request - --base-dir examples --output guide.epub --json < ex
 
 Missing, corrupt or undescribed images return localized errors and preserve any
 previous output. Success reports `images`, the unique inline-resource count,
-excluding the optional cover. [Verification and reader coverage](verification/INLINE_IMAGES.md).
+excluding the optional cover. [Verification and reader coverage](https://github.com/benvds/agent-epub/blob/v0.6.0/docs/verification/INLINE_IMAGES.md).
 
 ## Footnotes
 
@@ -166,4 +165,4 @@ python3 scripts/benchmark.py target/release/agent-epub
 
 The three independent corpus tests are explicitly ignored in ordinary tests because they require a separately installed official validator. CI downloads a checksum-pinned EPUBCheck release and runs the text, cover and inline-image corpora. The benchmark is a development helper; its Python dependency is separate from the generator.
 
-See the [milestone 5 verification record](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5.md) for release checks, reader observations and remaining limitations.
+See the [v0.6.0 verification record](https://github.com/benvds/agent-epub/blob/v0.6.0/docs/verification/INLINE_IMAGES.md) for release checks, reader observations and remaining limitations.

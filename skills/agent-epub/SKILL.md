@@ -22,7 +22,7 @@ nonempty, unique definitions. Raw HTML, task lists and complex tables are unsupp
 silently remove unsupported content or fetch remote resources to make a build
 pass; report the issue and make only repairs within the user's request.
 
-Main 0.6.0-dev declares `inline_images: true`; published v0.5.1 supports covers
+Version 0.6.0 declares `inline_images: true`; earlier releases support covers
 only. When supported, use static local JPEG/PNG with meaningful alt text:
 `![Description](assets/image.png)`. For purely decorative images, use
 `![](assets/divider.png "decorative")`. File assets resolve from the source

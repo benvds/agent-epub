@@ -7,9 +7,9 @@ setup and complete shared workflow. Warm export results were mixed, and neither
 tool reduced clean-export retries or tool calls in this sample.** This is a
 practical local result, not a statistically powered general performance claim.
 
-The current release is v0.5.1, which adds an invalid-input guard for links to
-sources without chapters. Valid chapter/navigation resources are unchanged.
-The benchmark data below remain the original v0.5.0 measurements.
+Post-benchmark v0.5.1 added an invalid-input guard for links to sources without
+chapters. Version 0.6.0 adds chapter images. The benchmark data below remain the
+original v0.5.0 measurements and do not measure v0.6.0 image workflows.
 
 ## Time to an independently correct EPUB
 

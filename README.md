@@ -9,20 +9,20 @@ repair an input problem.
 
 Built for repeated report and guide exports from agents that can run local commands.
 
-Main (`0.6.0-dev`) now supports local PNG/JPEG illustrations in chapters.
-Build from source to use them; published v0.5.1 supports covers only.
+Version **0.6.0** supports local PNG/JPEG illustrations in chapters through
+the same Markdown and version 1 request inputs.
 [Image rules and examples](docs/USAGE.md#local-chapter-images).
 
 ## See what you get
 
-**[Download the showcase EPUB](https://github.com/benvds/agent-epub/raw/refs/heads/main/examples/showcase.epub)**
+**[Download the showcase EPUB](https://github.com/benvds/agent-epub/releases/download/v0.6.0/agent-epub-showcase-0.6.0.epub)**
 and compare it with the [Markdown source](examples/showcase.md).
 It includes a cover, automatic contents, nested headings, footnotes with return
 links, tables, PNG/JPEG images, lists, quotations, code and a literal-text appendix.
 Open it in an EPUB reader to try the navigation and change the text size.
 
-The checked EPUB is committed to this repository and generated with main's
-`0.6.0-dev` image support. Rebuild it from source with:
+The checked EPUB is committed to this repository, included in release archives
+and available as a separate release download. Rebuild it from source with:
 
 ```sh
 cargo build --release --locked
@@ -53,7 +53,7 @@ book behaviors through its native interface.
 
 ## Install and try a report
 
-Download **[v0.5.1](https://github.com/benvds/agent-epub/releases/tag/v0.5.1)** for
+Download **[v0.6.0](https://github.com/benvds/agent-epub/releases/tag/v0.6.0)** for
 your platform, verify its checksum, extract it and put the executable on PATH.
 Releases are publicly downloadable.
 [Installation commands and supported platforms](docs/INSTALL.md).
@@ -137,8 +137,9 @@ checks. Median times included agent interaction and validation:
 | Clean exports correct on the first attempt | 9/9 | 9/9 |
 
 Agent EPUB was faster in each cold pair. Warm results were mixed; tool-call
-and retry counts were similar. Improvised exporters were not measured. Current
-v0.5.1 adds an invalid-input guard with unchanged valid-book reading resources.
+and retry counts were similar. Improvised exporters were not measured. The
+v0.5.1 guard fixed an invalid-input case; these v0.5.0 measurements do not
+benchmark v0.6.0 image workflows.
 [Protocol, raw events, artifacts and limits](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md).
 
 ## Fit and limits
@@ -157,7 +158,7 @@ deferred; the interface is available to runtimes with executable/file access.
 
 - [Install and update](docs/INSTALL.md); [request/result contract](docs/AGENT_INTERFACE.md)
   and [JSON schema](schemas/book-request.v1.json).
-- [Content rules](docs/USAGE.md), [release verification](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5.md)
+- [Content rules](docs/USAGE.md), [release verification](https://github.com/benvds/agent-epub/blob/v0.6.0/docs/verification/INLINE_IMAGES.md)
   and [practical workflow comparison](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md).
 - [Product requirements](https://github.com/benvds/agent-epub/blob/main/docs/PRD.md), [roadmap](https://github.com/benvds/agent-epub/blob/main/docs/ROADMAP.md) and
   [implementation record](https://github.com/benvds/agent-epub/blob/main/docs/IMPLEMENTATION_PLAN.md).

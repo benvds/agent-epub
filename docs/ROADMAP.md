@@ -1,6 +1,6 @@
 # Agent EPUB tool roadmap
 
-Updated 10 November 2026. Milestones 1 through 5 are released, with the latest patch at `v0.5.1`. Milestone 5a's practical three-pair comparison against Pandoc is complete. Local inline images are the selected next P0 delivery; milestone 6 reviews evidence and GitHub feedback for further selections. Future dates and release versions remain unset; completion depends on recorded acceptance evidence.
+Updated 10 November 2026. Milestones 1 through 5 and D1 local images are delivered through `v0.6.0`. Milestone 5a's practical three-pair comparison against Pandoc is complete. Local inline images were the selected P0 delivery; milestone 6 reviews evidence and GitHub feedback for further selections. Future dates and release versions remain unset; completion depends on recorded acceptance evidence.
 
 The initial audience is developers adding EPUB export for prose-heavy reports and learning guides to an agent workflow. Priorities follow the [market research](research/market-research-2026-11-10.md). The [feature comparison matrix](research/epub-feature-matrix.md) separates released support, planned additions and documented competitor capabilities. Broader publishing features require evidence from benchmark documents or GitHub issues.
 
@@ -130,11 +130,10 @@ Exit gates:
 3. State whether Agent EPUB is faster, slower or inconclusive for each scenario and overall within the measured corpus. Show quality failures beside speed; do not claim an advantage from fewer checks or missing content.
 4. Record the highest-cost steps and any resulting improvement tasks before selecting further features. Converter-only benchmarks do not satisfy this gate.
 
-## Next delivery: D1 Local inline images
+## D1 Local inline images
 
-Status: prioritized P0 on 10 November 2026 and implemented on main as
-`0.6.0-dev`. Automated, EPUBCheck, three-platform native CI and browser reader checks pass; the second
-reader gate remains pending because the Mac is locked. Selected
+Status: complete for v0.6.0. Prioritized P0 on 10 November 2026 and implemented
+on main, with regression, EPUBCheck, native CI and two-reader evidence. Selected
 at the maintainer's explicit request. The milestone 5a guide/image case and the
 need to include diagrams and screenshots justify selecting this package before
 the broader milestone 6 review. Other conditional features remain deferred.
@@ -165,8 +164,8 @@ Exit gates:
    the completion record together. Preserve the version 1 request schema.
 
 Implementation status and exact evidence: [D1 verification](verification/INLINE_IMAGES.md).
-The latest published v0.5.1 still supports covers only; the new feature is built
-and verified on main before a separate release publication.
+Version 0.6.0 includes image support, bundled showcase sources and a downloadable
+showcase EPUB; release publication follows the native checks recorded there.
 
 ## Milestone 6 Evidence review and GitHub feedback
 

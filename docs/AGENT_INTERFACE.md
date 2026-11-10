@@ -1,12 +1,20 @@
 # Agent interface
 
-Main (`0.6.0-dev`) adds local chapter PNG/JPEG images without changing request
-schema version 1. Published v0.5.1 supports covers only. Build from source to use
-chapter images; discover the installed version and `inline_images` capability.
+Version 0.6.0 adds local chapter PNG/JPEG images without changing request or
+result schema version 1. Discover the installed version and `inline_images`
+capability. [Install a binary and reusable agent skill](INSTALL.md).
 
-Version 0.5.1 extends the version 1 CLI contract with optional chapter splitting and additive diagnostic fields. [Install a binary and the reusable agent skill](INSTALL.md). The release includes equivalent direct, [file-request](../examples/report-request.json) and [streamed-inline](../examples/report-inline.json) report examples.
+Version 1 requests support supplied files or inline writing, metadata, optional
+covers, local chapter images and optional heading-based chapter splitting.
+The release includes equivalent direct, [file-request](../examples/report-request.json)
+and [streamed-inline](../examples/report-inline.json) reports, plus the complete
+[showcase source](../examples/showcase.md), [request](../examples/showcase-request.json)
+and [EPUB](../examples/showcase.epub).
 
-Version 1 requests support supplied files or inline writing, metadata, optional covers and, on main, local chapter images. Live Codex evidence includes the [historical milestone 2 evaluation](https://github.com/benvds/agent-epub/blob/main/docs/verification/AGENT_EVALUATIONS.md) and the [three-pair workflow comparison](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md) using v0.5.0. Current v0.5.1 adds an invalid-input guard with unchanged valid-book reading resources. Claude and Ollama live evaluations remain deferred.
+Live Codex evidence includes the [historical milestone 2 evaluation](https://github.com/benvds/agent-epub/blob/v0.6.0/docs/verification/AGENT_EVALUATIONS.md)
+and [three-pair workflow comparison](https://github.com/benvds/agent-epub/blob/v0.6.0/docs/verification/MILESTONE_5A.md) using v0.5.0.
+Those measurements predate image support. Claude and Ollama live evaluations
+remain deferred.
 
 ## Discover and build
 
@@ -131,4 +139,4 @@ Give the agent permission to invoke the executable and access only the sources a
 
 ChatGPT-authenticated Codex CLI was tested through actual tool calls. Claude Code can use the same shell commands when configured with tool access; its live evaluation is deferred. An Ollama-backed runtime can expose a tool that forwards request JSON to the CLI and returns structured stdout; the selected model must support that runtime's tool use. No provider-specific conversation parsing is required, and no live Ollama result is claimed.
 
-The request schema is available in [book-request.v1.json](../schemas/book-request.v1.json). See the [current release verification](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5.md) and [workflow benchmark](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md) for tested scope, source preservation checks and remaining limitations.
+The request schema is available in [book-request.v1.json](../schemas/book-request.v1.json). See the [current release verification](https://github.com/benvds/agent-epub/blob/v0.6.0/docs/verification/INLINE_IMAGES.md) and [workflow benchmark](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md) for tested scope, source preservation checks and remaining limitations.

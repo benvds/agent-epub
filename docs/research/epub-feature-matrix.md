@@ -2,11 +2,10 @@
 
 Updated 10 November 2026. This matrix compares 69 publication and workflow capabilities across Agent EPUB and twelve alternatives. Agent EPUB covers a focused reflowable subset; this inventory also exposes the advanced publishing features and integration work outside that subset.
 
-The Agent EPUB baseline is released **v0.5.1**, including detailed diagnostics, explicit Markdown rules and configurable chapter splitting. Competitor columns retain their dated official-documentation evidence. A separate [three-pair benchmark](../verification/MILESTONE_5A.md) tested v0.5.0 against a prepared Pandoc 3.13 wrapper; it does not establish hands-on compatibility or speed for the other alternatives.
+The Agent EPUB baseline is released **v0.6.0**, including detailed diagnostics, explicit Markdown rules and configurable chapter splitting. Competitor columns retain their dated official-documentation evidence. A separate [three-pair benchmark](../verification/MILESTONE_5A.md) tested v0.5.0 against a prepared Pandoc 3.13 wrapper; it does not establish hands-on compatibility or speed for the other alternatives.
 
-Main `0.6.0-dev` implements local static JPEG/PNG illustrations (F23), with
-required alt text or an explicit decorative choice. This is a development
-addition, not part of the released baseline below. See the
+Version 0.6.0 implements local static JPEG/PNG illustrations (F23), with
+required alt text or an explicit decorative choice. See the
 [D1 verification](../verification/INLINE_IMAGES.md) and [image rules](../USAGE.md#local-chapter-images).
 
 ## How to read the matrix
@@ -64,7 +63,7 @@ Columns use [Agent EPUB usage](../USAGE.md) and [agent interface](../AGENT_INTER
 | F20 | Task-list rendering | N | Y | Y | Y | ? | ? | ? |
 | F21 | Raw HTML within manuscript content | N | P | P | P | Y | ? | ? |
 | F22 | Supplied cover image | P | Y | Y | Y | Y | Y | Y |
-| F23 | Inline raster illustrations | N | Y | Y | Y | Y | Y | ? |
+| F23 | Inline raster illustrations | P | Y | Y | Y | Y | Y | ? |
 | F24 | SVG resources or illustrations | N | P | P | ? | P | ? | ? |
 | F25 | MathML mathematics in EPUB | N | Y | P | Y | ? | ? | ? |
 | F26 | Mermaid diagram conversion | N | E | E | E | ? | ? | ? |
@@ -179,7 +178,7 @@ EbookLib and epub-builder are libraries, so M frequently means the application s
 | F20 | Task-list rendering | N | M | ? | ? | ? | M | M |
 | F21 | Raw HTML within manuscript content | N | Y | N | N | ? | Y | Y |
 | F22 | Supplied cover image | P | Y | Y | Y | Y | Y | Y |
-| F23 | Inline raster illustrations | N | Y | Y | Y | Y | M | M |
+| F23 | Inline raster illustrations | P | Y | Y | Y | Y | M | M |
 | F24 | SVG resources or illustrations | N | M | ? | ? | Y | Y | Y |
 | F25 | MathML mathematics in EPUB | N | M | ? | ? | Y | M | M |
 | F26 | Mermaid diagram conversion | N | E | ? | ? | ? | M | M |
@@ -258,7 +257,7 @@ EbookLib and epub-builder are libraries, so M frequently means the application s
 
 - F04 through F10: Agent EPUB generates new EPUBs from text and Markdown. It does not import arbitrary HTML, DOCX or existing EPUBs, and it has no mdBook-project adapter or PDF output.
 - F16 and F17: tables need one header row and rectangular cells. Merged cells, multiline cells, captions and complex headers are rejected. F18 includes numbered notes, multiple backlinks and reader-dependent popup behavior.
-- F22 and F55: supplied covers are JPEG/PNG with bounded decoding and alternative text. In the released v0.5.1 baseline, inline images are unsupported and alternative-text support is cover-only. Main adds D1 as described above.
+- F22 and F55: supplied covers are JPEG/PNG with bounded decoding and alternative text. F23 is partial: local static JPEG/PNG is bundled from Markdown, including table cells and notes; SVG, animation and remote fetching are unsupported. Inline images require supplied alt or an explicit decorative choice.
 - F37 through F43: visible/native nested contents and chapter links are generated. Root heading split levels 1–6 are configurable, with H1 as the default; previous/next links connect chapters. Page-list and landmark navigation are not generated.
 - F45 through F50: title, language and one optional author are supported. A random identifier and modification time are generated. There are no caller controls for rich metadata, stable identity, RTL/vertical layout or accessibility discovery metadata.
 - F56 is partial: semantic headings, column headers and note roles exist, but do not establish complete accessibility. F58 checks this tool's profile. F59 invokes a separately installed EPUBCheck executable when requested; this is separate from the built-in checker.
@@ -301,7 +300,7 @@ EbookLib exposes XHTML/resources and metadata, including media item types; P for
 | B2 Markdown dialect and front matter | F07, F21, F63 | Delivered: recognized front matter rejected; math, strike and alert markers remain literal |
 | B3 Explicit chapter splitting | F40 | Delivered: root levels 1–6 through compatible direct and structured inputs |
 | C1 Agent workflow benchmark | F62 through F69 and task-specific content | Complete: three paired workflows, retained artifacts and bounded conclusions; no new format capability |
-| Conditional local images | F23, F55 | Inline assets and a declared alternative-text policy if selected |
+| Delivered local images | F23, F55 | Bounded static JPEG/PNG assets with supplied alt or an explicit decorative choice |
 | Conditional metadata/reproducibility | F46 through F50, F61 | Only the fields and reproducibility controls actually selected and verified |
 | Conditional preflight and manifest | F60, F66 | Aggregate input diagnostics and inspectable preservation evidence if selected |
 | Conditional styles/accessibility | F51, F53, F54, F57 | Selected styling or report integrations if justified by benchmark findings or GitHub issues |

@@ -1,6 +1,6 @@
 # Rust CLI implementation plan
 
-Updated 10 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. Milestones 1 through 5 and the practical milestone 5a comparison are complete; their sequences below are the implementation record. Milestone 4 passes native release verification under MIT for macOS Apple Silicon, Linux x86_64 and Windows x86_64 at `v0.4.0`. Milestone 5 passes local checks, two-reader review and native release gates through `v0.5.1`. Milestone 5a records a completed practical three-pair comparison; D1 local images are implemented on main with a pending second-reader gate, and milestone 6 plans further evidence review. The [PRD](PRD.md) stays independent of these programming choices.
+Updated 10 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. Milestones 1 through 5 and the practical milestone 5a comparison are complete; their sequences below are the implementation record. Milestone 4 passes native release verification under MIT for macOS Apple Silicon, Linux x86_64 and Windows x86_64 at `v0.4.0`. Milestone 5 passes local checks, two-reader review and native release gates through `v0.5.1`. Milestone 5a records a completed practical three-pair comparison; D1 local images are delivered for v0.6.0 with two-reader verification, and milestone 6 plans further evidence review. The [PRD](PRD.md) stays independent of these programming choices.
 
 ## Milestone 1 Implementation sequence
 
@@ -209,8 +209,8 @@ rendering/packaging/validation, localized errors, capability discovery, 49 passi
 regression tests, three independent conformance corpora, illustrated examples and
 native archive smoke are implemented. All seven required native CI jobs pass
 on `243b406` across the three supported targets. Browser narrow-layout review found and
-fixed intrinsic table-image overflow. Apple Books review is pending a locked Mac;
-no second-reader or release completion is claimed. See the
+fixed intrinsic table-image overflow. The v0.6.0 showcase passes Apple Books
+image, contents, popup-note and enlarged-text review after the Mac was unlocked. See the
 [D1 record](verification/INLINE_IMAGES.md) for exact evidence and timing.
 
 ### Conditional work packages

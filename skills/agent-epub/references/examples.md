@@ -37,7 +37,7 @@ A successful result reports an absolute `output` path and:
 This excerpt omits other fields. Say that structural checks passed and EPUBCheck
 was not run; reader appearance and accessibility require separate review.
 
-For example, remote images on main fail with exit 2, category `invalid_input`
+For example, remote images fail with exit 2, category `invalid_input`
 and detailed `unsupported_image_source`. Inspect `source`, available `line` /
 `column` and `remedy` before retrying. Links to sources without readable chapters
 return `unresolved_link`. A missing requested EPUBCheck executable fails with exit 5 and
@@ -59,15 +59,19 @@ These equivalent examples preserve the title/preamble, repeated chapter titles,
 nested Detail entry and note return links. Direct input uses `--split-level`;
 requests use `"split_level": 2`. Omit either setting for the default H1 behavior.
 
-## Local illustrations (main 0.6.0-dev)
+## Local illustrations (v0.6.0)
 
 Check `inline_images` in capabilities before using ordinary Markdown images.
 The illustrated fixtures include PNG/JPEG, asset reuse, a table, a note and a
-decorative image. From the repository or a future matching archive:
+decorative image. From the repository or extracted v0.6.0 archive:
 
 ```sh
 agent-epub build --request examples/illustrated-request.json --output guide.epub --json
 agent-epub build --request - --base-dir examples --output guide.epub --json < examples/illustrated-inline.json
 ```
 
-The version 1 request contract is unchanged. Published v0.5.1 lacks this feature.
+The version 1 request contract is unchanged. Earlier releases lack this feature.
+
+The complete `examples/showcase.md` covers nearly all supported reading features.
+Build it with `--request examples/showcase-request.json`, or inspect the bundled
+`examples/showcase.epub`. Its request adds a cover, H2 splitting and a text appendix.

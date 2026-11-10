@@ -1,44 +1,48 @@
-# Agent EPUB v0.5.1
+# Agent EPUB v0.6.0
 
-This patch fixes a panic when a local link targets a supplied Markdown source
-that contains only footnote definitions and therefore produces no chapter. The
-build now returns exit code 2, clean JSON with `unresolved_link`, its source
-location and a remedy, while preserving existing output.
+Include local illustrations in your agent's reading editions using ordinary
+Markdown: `![Description](assets/image.png)`. Version 1 requests remain unchanged;
+images work through direct files, request files and streamed inline content.
 
-Valid-book reading resources and the version 1 request/result contract are
-unchanged from v0.5.0. The practical three-pair benchmark remains pinned to
-v0.5.0; its raw measurements are retained in the repository.
+- Bundle static PNG/JPEG bytes unchanged, detect the actual format and reuse
+  repeated canonical paths. Images work in headings, lists, table cells and notes
+  alongside chapter splitting, nested contents, tables, footnotes and covers.
+- Require supplied alt text, or an explicit `![](path "decorative")` choice for
+  decorative images. Images adapt to the reading width; image tables have scoped
+  sizing that also works with the tested reader's image overrides.
+- Resolve assets from source-file parents or the request base for inline content.
+  Streamed inline images require `--base-dir`. URLs, rooted paths, SVG, animation
+  and direct image-file hyperlinks remain unsupported. Use a heading link to
+  navigate to an illustration.
+- Enforce 10 MiB / 8,000 pixels per side / 16 million pixels per image, 128 unique
+  inline files and 64 MiB aggregate inline data. Missing, corrupt, unsupported or
+  undescribed images return localized repair diagnostics and preserve existing
+  output. Image inputs are protected against output aliasing.
+- Discover formats, path rules and limits through capabilities. Successful JSON
+  results add `images`, the unique inline-resource count excluding the cover.
 
-Milestone 5 adds predictable chapter boundaries and actionable repair diagnostics.
+Try the **[showcase EPUB](https://github.com/benvds/agent-epub/releases/download/v0.6.0/agent-epub-showcase-0.6.0.epub)**
+or compare its [Markdown source](https://github.com/benvds/agent-epub/blob/v0.6.0/examples/showcase.md).
+The complete four-chapter example includes a cover, automatic contents, headings
+1–6, lists, quotations, code, tables, shared notes, PNG/JPEG images, decorative
+markup and a literal-text appendix. The source, request and generated EPUB are
+also bundled in every native ZIP and committed in the repository.
 
-- Choose root heading levels 1–6 with `--split-level` for direct files or the
-  optional `split_level` version 1 request property. H1 remains the default.
-  Title-plus-H2 guides preserve their preamble, heading ranks, repeated titles,
-  nested contents, links and footnote returns.
-- JSON failures keep existing error categories and add stable `issue_code`,
-  source references, available one-based Unicode locations and `remedy` fields.
-  Human stderr diagnostics include repair hints. Structured stdout stays clean.
-- Recognized leading YAML/TOML front matter fails explicitly; metadata is not
-  imported. Math, strikethrough and alert markers retain documented literal
-  CommonMark behavior without blanket punctuation warnings.
-- Capability discovery, schema, help, documentation, packaged agent instructions
-  and equivalent direct/file/inline H2 examples describe the same rules.
+All 49 ordinary macOS regression tests pass, with platform-appropriate tests in
+native CI. Official EPUBCheck 5.3.0 covers the text, cover and illustrated corpora
+and the committed showcase. Apple Books 9.0 and EPUB.js 0.3.93 reader observations
+include illustrations and enlarged text; browser checks include a 360-pixel
+reading area. See the [verification record](https://github.com/benvds/agent-epub/blob/v0.6.0/docs/verification/INLINE_IMAGES.md)
+for coverage and remaining manual review. Accessibility conformance, physical
+devices and separate mobile-app review are not claimed.
 
-Formatting, Clippy, regression tests, independent EPUBCheck 5.3.0 corpora and
-reader checks cover this release. Native CI builds and clean-install smoke
-checks gate the release archives for macOS Apple Silicon, Linux x86_64 and
-Windows x86_64. MIT licensed; generation remains offline and requires no Rust,
-Java or AI service. Optional EPUBCheck is installed separately. See
-`docs/verification/MILESTONE_5.md` in the repository for exact evidence and limits.
-Accessibility and individual publication appearance need separate review.
-Claude and Ollama live evaluations remain deferred. The completed
-[practical three-pair benchmark](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md)
-compares v0.5.0 with a prepared Pandoc 3.13 wrapper. Both passed all shared tasks;
-Agent EPUB was faster in the observed cold workflows, while warm export results
-were mixed. These small local measurements do not establish a universal speed
-or reliability advantage.
+Download and extract the ZIP for macOS Apple Silicon, Linux x86_64 or Windows
+x86_64, verify its `.sha256` file or `SHA256SUMS`, and follow `docs/INSTALL.md`.
+`SHA256SUMS` also covers the standalone showcase EPUB. Native build/install gates
+must pass before publication; attached smoke reports identify exact archive
+hashes. Generation remains offline and needs no Rust, Python, Java or AI service.
+Optional independent EPUBCheck is installed separately. MIT licensed.
 
-Extract the ZIP for your platform and follow `docs/INSTALL.md`. Verify its
-`.sha256` file or `SHA256SUMS`. Native smoke reports identify the exact archive
-hash. Platform/runtime boundaries remain those documented in installation.
-The repository remains private; downloading requires repository access.
+The practical three-pair agent benchmark remains pinned to v0.5.0. Its cold
+workflow advantage and mixed warm results do not measure v0.6.0 image workflows.
+Claude and Ollama live evaluations remain deferred.

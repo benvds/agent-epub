@@ -1,10 +1,12 @@
 # D1 Local inline images verification
 
 Updated 10 November 2026. D1 was selected as the next P0 delivery at the
-maintainer's request. Implementation is on main as `0.6.0-dev`; published
-v0.5.1 remains cover-only. Automated and browser checks pass. A second-reader
-check is pending because the Mac was locked when Apple Books was requested.
-This record does not close that gate or claim a new release.
+maintainer's request and is delivered for v0.6.0. The development implementation,
+automated conformance and browser checks below were followed by an Apple Books
+review of the v0.6.0 showcase after the Mac was unlocked. This closes the
+second-reader gate. Publication is gated by the tag workflow's native build,
+clean-install and independent-validation jobs; their smoke reports accompany
+[the release](https://github.com/benvds/agent-epub/releases/tag/v0.6.0).
 
 ## Delivered behavior
 
@@ -37,7 +39,8 @@ caption generation, fixed layout or image generation is added.
 
 ## Automated verification
 
-On macOS 27.2 ARM64 with Rust 1.95:
+Development verification used macOS 27.2 ARM64 with Rust 1.95 and the
+`0.6.0-dev` package below. Release preparation repeats these checks for v0.6.0:
 
 ```sh
 cargo fmt --check
@@ -103,11 +106,20 @@ fixed column layout, and a scoped maximum-width rule counters the reader's
 pixel-based image override inside cells. Ordinary text-only tables keep their
 previous layout policy. Large or complex tables still need reader review.
 
-Apple Books testing is **not run for this feature**: native app control reported
-a locked Mac. Earlier milestone Books evidence is not reused as image evidence.
+The earlier Apple Books check was blocked by a locked Mac. During v0.6.0
+release preparation the Mac was unlocked and Apple Books 9.0 opened the
+regenerated showcase. PNG and JPEG illustrations, the reused table image and
+decorative divider render; native contents and visible section links navigate.
+Increasing font size one step reflows the text and table without image overflow;
+the original size was restored. The diagram note opens as a native popup with
+its reused image; Escape closes it and returns to the reading position. EPUB.js
+provides the separately observed explicit cross-chapter note-return coverage.
+These checks use actual v0.6.0 reading resources; earlier milestone reader
+results are not substituted for image evidence.
+
 Physical-device, separate mobile-app, screen-reader and full accessibility
-reviews also remain outstanding. The narrow browser check is not a substitute
-for those checks.
+reviews remain outstanding. The narrow browser check is not a substitute for
+those checks.
 
 ## Practical timing
 
@@ -126,27 +138,37 @@ They exclude EPUBCheck, writing, transfers and agent interaction. These small
 local observations are not general speed claims or a new comparison with Pandoc.
 The historical milestone 5a benchmark remains pinned to v0.5.0.
 
-## Remaining gate
+## Release preparation
 
-Run the illustrated guide in Apple Books after unlocking the Mac, record image,
-contents, note-return and enlarged-text observations. Native CI is complete.
-A separate release decision/version/tag is still required before published
-binary users receive chapter images. Current [usage](../USAGE.md#local-chapter-images),
-[agent contract](../AGENT_INTERFACE.md), capability discovery, synthetic examples,
-packaging and bundled agent instructions describe the development behavior.
+The maintainer requested v0.6.0 publication after implementation. Version,
+installation commands, current docs, feature matrix, bundled agent instructions
+and release notes now describe the image release. The committed showcase was
+regenerated with v0.6.0 and independently validated with zero errors or warnings.
+The release pipeline validates that exact committed EPUB and publishes it as
+`agent-epub-showcase-0.6.0.epub`, alongside three native archives, per-archive
+checksums, smoke reports and `SHA256SUMS`. The aggregate checksums cover the
+standalone EPUB too. Native package archives regenerate their own showcase
+from the same source and request.
+
+Release checks use formatting, Clippy, all ordinary regression tests, all three
+EPUBCheck corpora, the committed showcase and native clean-install smoke.
+The pre-release development timing data above and their original tool version
+are retained as measured evidence, rather than relabeled as v0.6.0 timings.
 
 ## Repository feature showcase
 
 The [showcase source](../../examples/showcase.md),
 [request](../../examples/showcase-request.json) and
 [committed EPUB](../../examples/showcase.epub) were added on 10 November 2026
-and linked from the README. The book was generated with `0.6.0-dev` and passes
+and linked from the README. The book was initially generated with `0.6.0-dev`,
+then regenerated for v0.6.0, and passes
 built-in validation and official EPUBCheck 5.3.0 with zero errors or warnings.
 It contains four chapters, 18 contents entries, heading levels 1–6, two tables,
 five note references sharing two definitions, three unique inline image assets
 and a separate cover. Inspection confirms original image bytes and literal
 appendix text are retained. This is an additional example check, separate from
-the three-fixture illustrated corpus above; no new reader review is claimed.
+the three-fixture illustrated corpus above. The Apple Books release review
+uses this regenerated showcase, as described above.
 
 Release packaging regenerates the showcase from the bundled source/request;
 clean-install smoke validates its chapter, image and cover results with Rust

@@ -4,7 +4,7 @@ Status: product scope agreed; delivery progress is tracked in the roadmap. Updat
 
 The tool helps AI agents turn supplied writing into dependable EPUBs quickly. An agent should provide content, receive a usable reading edition, and understand any problems without learning EPUB publishing internals.
 
-The released subset covers text and Markdown, ordered chapters, nested contents, tables, linked notes, optional covers, structured requests/results and repair diagnostics. Milestones 1 through 5 are delivered through v0.5.1, and milestone 5a has a completed practical comparison. Full EPUB feature coverage remains outside the product goal; the [roadmap](ROADMAP.md) records delivery evidence and remaining decisions.
+The released subset covers text and Markdown, ordered chapters, nested contents, tables, linked notes, local illustrations, optional covers, structured requests/results and repair diagnostics. Milestones 1 through 5 and D1 are delivered through v0.6.0, and milestone 5a has a completed practical comparison. Full EPUB feature coverage remains outside the product goal; the [roadmap](ROADMAP.md) records delivery evidence and remaining decisions.
 
 ## Users and needs
 
@@ -104,12 +104,11 @@ See [milestone 5 verification](verification/MILESTONE_5.md) and the
 [practical comparison](verification/MILESTONE_5A.md). Milestone 6 reviews evidence
 and GitHub feedback for further conditional selections; D1 was explicitly prioritized by the maintainer.
 
-## Selected next delivery: local illustrations
+## Delivered D1: local illustrations
 
 The maintainer prioritized D1 on 10 November 2026 before the broader evidence
-review. Main `0.6.0-dev` adds supplied local static JPEG/PNG images through the
-existing Markdown inputs. Published v0.5.1 remains cover-only. Other conditional
-candidates remain deferred.
+review. Version 0.6.0 adds supplied local static JPEG/PNG images through the
+existing Markdown inputs. Other conditional candidates remain deferred.
 
 | ID | Requirement | Acceptance |
 | --- | --- | --- |
@@ -117,7 +116,7 @@ candidates remain deferred.
 | P26 | Make image choices explicit and bounded. | Meaningful alt or an explicit decorative choice is required. Missing, corrupt, oversized and unsupported resources fail with actionable locations while preserving output and image inputs. Discovery declares formats, base-directory rules and limits. |
 | P27 | Verify illustrated reading editions. | Package types, resources and image semantics pass automated checks and EPUBCheck; two-reader and narrow-layout observations are recorded without claiming a complete accessibility assessment. |
 
-See [D1 scope and gates](ROADMAP.md#next-delivery-d1-local-inline-images) and
+See [D1 scope and gates](ROADMAP.md#d1-local-inline-images) and
 [verification](verification/INLINE_IMAGES.md).
 
 ## Quality and result handling
@@ -158,7 +157,7 @@ Before declaring a milestone complete, record independent-reader evidence and me
 
 - [Current ChatGPT capabilities and evidence](research/chatgpt-epub-capabilities.md).
 - [Official EPUB tool comparison](research/epub-tools-analysis.md).
-- [Current release verification](verification/MILESTONE_5.md).
+- [Current release verification](verification/INLINE_IMAGES.md).
 - [Practical agent workflow comparison](verification/MILESTONE_5A.md).
 - [W3C EPUB 3.3](https://www.w3.org/TR/epub-33/).
 - [EPUBCheck](https://www.w3.org/publishing/epubcheck/).

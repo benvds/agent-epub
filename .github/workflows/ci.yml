@@ -35,6 +35,8 @@ jobs:
         env:
           EPUBCHECK: ./scripts/epubcheck.sh
         run: cargo test --locked --test images independent_inline_image_corpus -- --ignored
+      - name: Independently validate the committed showcase
+        run: cargo run --locked -- validate examples/showcase.epub --epubcheck ./scripts/epubcheck.sh --json
   package:
     name: Package (${{ matrix.target }})
     strategy:
@@ -131,7 +133,7 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
           python - <<'PY'
-          import hashlib, json, os, pathlib, tomllib
+          import hashlib, json, os, pathlib, shutil, tomllib
           from scripts.release import TARGETS
           version = tomllib.loads(pathlib.Path('Cargo.toml').read_text())['package']['version']
           assert os.environ['RELEASE_TAG'] == 'v' + version
@@ -146,6 +148,9 @@ jobs:
               assert report['archive'] == archive.name
               assert report['version'] == f'agent-epub {version}'
               sums.append(line)
+          showcase = pathlib.Path(f'dist/agent-epub-showcase-{version}.epub')
+          shutil.copyfile('examples/showcase.epub', showcase)
+          sums.append(f'{hashlib.sha256(showcase.read_bytes()).hexdigest()}  {showcase.name}\n')
           pathlib.Path('dist/SHA256SUMS').write_text(''.join(sums))
           PY
       - name: Upload all assets before publishing
@@ -153,5 +158,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$RELEASE_TAG" --verify-tag --draft --title "Agent EPUB $RELEASE_TAG" --notes-file docs/RELEASE_NOTES.md dist/*.zip dist/*.zip.sha256 dist/*-smoke.json dist/SHA256SUMS
+          gh release create "$RELEASE_TAG" --verify-tag --draft --title "Agent EPUB $RELEASE_TAG" --notes-file docs/RELEASE_NOTES.md dist/*.zip dist/*.zip.sha256 dist/*.epub dist/*-smoke.json dist/SHA256SUMS
           gh release edit "$RELEASE_TAG" --draft=false --latest
