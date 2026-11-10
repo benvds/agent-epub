@@ -193,7 +193,7 @@ pub fn capabilities() -> Value {
         "request_schema": "book-request.v1", "request_schema_document": include_str!("../schemas/book-request.v1.json").parse::<Value>().expect("embedded schema is valid JSON"),
         "commands": ["build", "validate", "capabilities"], "formats": ["text", "markdown"],
         "inputs": ["ordered_files", "request_file", "streamed_request", "inline_content"],
-        "navigation": ["contents", "chapter_contents", "previous_next", "return_to_contents"],
+        "navigation": ["contents", "chapter_contents", "section_contents_h2_h6", "previous_next", "return_to_contents"],
         "cover_images": true, "cover_formats": ["jpeg", "png"],
         "markdown_extensions": ["rectangular_pipe_tables", "footnotes_with_backlinks"],
         "unsupported": ["inline_images", "nested_notes", "task_lists", "raw_html", "fixed_layout", "multimedia", "drm"],

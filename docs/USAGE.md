@@ -38,7 +38,9 @@ Use heading fragments such as `[section](#getting-started)`. Heading identifiers
 
 Link to another supplied file with `[chapter](other.md)` or `[section](other.md#heading)`. Paths are relative to the source containing the link; percent-encoded filenames and fragments are accepted. Only supplied source files can become local destinations. HTTP, HTTPS and mailto links remain external. The tool does not fetch content or check live website availability.
 
-The visible contents page, reader contents navigation, previous/next links and return-to-contents links are generated automatically. The contents page itself precedes the chapters in reading order.
+The visible contents page, reader contents navigation, previous/next links and return-to-contents links are generated automatically. The contents page itself precedes the chapters in reading order. Root-level H2–H6 headings appear as nested entries under their chapter. A skipped level attaches to the nearest preceding shallower heading; an H4 directly after H1 is a direct child of the chapter. Headings inside quotations, lists or notes stay in the reading content and do not enter the contents. Chapters without section headings keep a single contents entry.
+
+The built-in checker validates the complete section order, destinations and nesting in newly generated books. It also accepts the flat contents produced by versions 0.1 and 0.2.
 
 ## Check output and handle failures
 

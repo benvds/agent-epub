@@ -17,6 +17,14 @@ pub(crate) struct Book {
 pub(crate) struct Chapter {
     pub title: String,
     pub body: String,
+    pub sections: Vec<Section>,
+}
+
+#[derive(Debug)]
+pub(crate) struct Section {
+    pub level: u8,
+    pub title: String,
+    pub id: String,
 }
 
 struct Draft {
@@ -25,6 +33,7 @@ struct Draft {
     source: usize,
     plain: Option<String>,
     has_title: bool,
+    sections: Vec<Section>,
 }
 
 pub(crate) fn chapter_file(index: usize) -> String {
@@ -159,6 +168,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                 source,
                 plain: Some(text),
                 has_title: false,
+                sections: Vec::new(),
             }),
             "md" | "markdown" => {
                 let options =
@@ -252,6 +262,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                         source,
                         plain: None,
                         has_title,
+                        sections: Vec::new(),
                     });
                 }
             }
@@ -272,6 +283,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
     let mut used = std::collections::HashSet::new();
     for (chapter, draft) in drafts.iter_mut().enumerate() {
         let mut events = Vec::new();
+        let mut depth = 0;
         for (index, event) in draft.events.iter().enumerate() {
             match event {
                 Event::Start(Tag::Heading { level, .. }) => {
@@ -293,6 +305,13 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                         }
                     }
                     targets.insert((draft.source, id.clone()), (chapter, id.clone()));
+                    if depth == 0 && *level != HeadingLevel::H1 {
+                        draft.sections.push(Section {
+                            level: heading_number(*level),
+                            title: label.clone(),
+                            id: id.clone(),
+                        });
+                    }
                     events.push(Event::Html(
                         format!("<h{} id=\"{}\">", heading_number(*level), xml_text(&id)).into(),
                     ));
@@ -304,6 +323,11 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                     format!("</h{}>\n", heading_number(*level)).into(),
                 )),
                 _ => events.push(event.clone()),
+            }
+            match event {
+                Event::Start(_) => depth += 1,
+                Event::End(_) => depth -= 1,
+                _ => {}
             }
         }
         draft.events = events;
@@ -340,6 +364,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
         chapters.push(Chapter {
             title: draft.title,
             body,
+            sections: draft.sections,
         });
     }
     for note in notes.finish(&paths)? {

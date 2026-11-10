@@ -42,6 +42,47 @@ fn request(inputs: Value) -> Value {
 }
 
 #[test]
+fn milestone_three_content_is_equivalent_in_direct_and_streamed_inline_requests() {
+    use std::io::Read;
+    let dir = tempfile::tempdir().unwrap();
+    let content = include_str!("../examples/research-report.md");
+    let input = dir.path().join("report.md");
+    fs::write(&input, content).unwrap();
+    let direct = dir.path().join("direct.epub");
+    let inline = dir.path().join("inline.epub");
+    let output = Command::new(env!("CARGO_BIN_EXE_agent-epub"))
+        .args(["build", "--input"])
+        .arg(input)
+        .arg("--output")
+        .arg(&direct)
+        .args(["--title", "Agent book", "--language", "en", "--json"])
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stdout)
+    );
+    let book = request(json!([{"name": "report.md", "format": "markdown", "content": content}]));
+    let (code, result) = run_request(&book, None, &inline);
+    assert_eq!(code, 0, "{result}");
+    assert_eq!(result["chapters"], 2);
+    let mut a = zip::ZipArchive::new(fs::File::open(direct).unwrap()).unwrap();
+    let mut b = zip::ZipArchive::new(fs::File::open(inline).unwrap()).unwrap();
+    for name in [
+        "EPUB/nav.xhtml",
+        "EPUB/chapter-0001.xhtml",
+        "EPUB/chapter-0002.xhtml",
+    ] {
+        let mut left = String::new();
+        let mut right = String::new();
+        a.by_name(name).unwrap().read_to_string(&mut left).unwrap();
+        b.by_name(name).unwrap().read_to_string(&mut right).unwrap();
+        assert_eq!(left, right, "{name}");
+    }
+}
+
+#[test]
 fn inline_requests_work_without_creating_source_files() {
     let dir = tempfile::tempdir().unwrap();
     let book = request(json!([

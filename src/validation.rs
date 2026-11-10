@@ -337,13 +337,47 @@ pub fn validate(path: &Path) -> Result<Summary> {
             let href = n
                 .attribute("href")
                 .ok_or_else(|| failure("Contents entry missing href."))?;
-            Ok(local_target(&navs[0], href)?.0)
+            let depth = n
+                .ancestors()
+                .filter(|a| a.has_tag_name((XHTML, "ol")))
+                .count();
+            Ok((local_target(&navs[0], href)?, depth))
         })
         .collect::<Result<Vec<_>>>()?;
     let chapters = &order[nav_index + 1..];
-    if links != chapters {
+    let mut expected = Vec::new();
+    for chapter in chapters {
+        expected.push(((chapter.clone(), None), 1));
+        if toc.attribute("data-agent-epub-toc") == Some("sections") {
+            let body = documents[chapter.as_str()]
+                .root_element()
+                .children()
+                .find(|n| n.has_tag_name((XHTML, "body")))
+                .ok_or_else(|| failure("Chapter missing body."))?;
+            let mut levels = vec![1];
+            for heading in body.children().filter(|n| n.is_element()) {
+                let level = match heading.tag_name().name() {
+                    "h2" => 2,
+                    "h3" => 3,
+                    "h4" => 4,
+                    "h5" => 5,
+                    "h6" => 6,
+                    _ => continue,
+                };
+                while levels.last().is_some_and(|l| *l >= level) {
+                    levels.pop();
+                }
+                levels.push(level);
+                let id = heading
+                    .attribute("id")
+                    .ok_or_else(|| failure("Contents heading missing id."))?;
+                expected.push(((chapter.clone(), Some(id.to_string())), levels.len()));
+            }
+        }
+    }
+    if links != expected {
         return Err(failure(
-            "Contents order does not match chapter reading order.",
+            "Contents targets, hierarchy or order do not match chapter headings and reading order.",
         ));
     }
     for (index, chapter) in chapters.iter().enumerate() {

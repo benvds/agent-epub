@@ -201,13 +201,23 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
             deflated,
         )?;
     }
-    let mut contents = String::from("<nav epub:type=\"toc\" id=\"toc\"><h1>Contents</h1><ol>");
+    let mut contents = String::from(
+        "<nav epub:type=\"toc\" id=\"toc\" data-agent-epub-toc=\"sections\"><h1>Contents</h1><ol>",
+    );
     for (index, chapter) in book.chapters.iter().enumerate() {
         contents.push_str(&format!(
-            "<li><a href=\"{}\">{}</a></li>\n",
+            "<li><a href=\"{}\">{}</a>",
             chapter_file(index),
             xml_text(&chapter.title)
         ));
+        section_contents(
+            &mut contents,
+            &chapter.sections,
+            &mut 0,
+            1,
+            &chapter_file(index),
+        );
+        contents.push_str("</li>\n");
     }
     contents.push_str("</ol></nav>");
     put(
@@ -295,4 +305,31 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
         .finish()
         .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?;
     Ok(())
+}
+
+fn section_contents(
+    contents: &mut String,
+    sections: &[crate::source::Section],
+    cursor: &mut usize,
+    parent_level: u8,
+    file: &str,
+) {
+    if sections
+        .get(*cursor)
+        .is_none_or(|s| s.level <= parent_level)
+    {
+        return;
+    }
+    contents.push_str("<ol>");
+    while let Some(section) = sections.get(*cursor).filter(|s| s.level > parent_level) {
+        contents.push_str(&format!(
+            "<li><a href=\"{file}#{}\">{}</a>",
+            xml_text(&section.id),
+            xml_text(&section.title)
+        ));
+        *cursor += 1;
+        section_contents(contents, sections, cursor, section.level, file);
+        contents.push_str("</li>");
+    }
+    contents.push_str("</ol>");
 }

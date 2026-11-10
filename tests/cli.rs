@@ -182,6 +182,80 @@ fn catches_misdirected_note_references_and_missing_return_links() {
 }
 
 #[test]
+fn nested_contents_follow_section_hierarchy_and_skip_container_headings() {
+    let (_dir, options) = fixture(
+        "b.md",
+        "# One\n## Repeat\n### Detail\n##### Skipped\n## Repeat\n> ## Quoted\n\n- Item\n\n  ## Listed\n\n# Two\n###### Deep\nClaim[^n].\n\n[^n]: Note.\n\n    ## Note heading\n",
+    );
+    assert_eq!(build(&options).unwrap().chapters, 2);
+    let nav = resource(&options.output, "EPUB/nav.xhtml");
+    let doc = roxmltree::Document::parse(&nav).unwrap();
+    let links = doc
+        .descendants()
+        .filter(|n| n.has_tag_name("a"))
+        .map(|n| {
+            (
+                n.attribute("href").unwrap(),
+                n.ancestors().filter(|p| p.has_tag_name("ol")).count(),
+            )
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(
+        links,
+        [
+            ("chapter-0001.xhtml", 1),
+            ("chapter-0001.xhtml#repeat", 2),
+            ("chapter-0001.xhtml#detail", 3),
+            ("chapter-0001.xhtml#skipped", 4),
+            ("chapter-0001.xhtml#repeat-2", 2),
+            ("chapter-0002.xhtml", 1),
+            ("chapter-0002.xhtml#deep", 2),
+        ]
+    );
+    assert!(!nav.contains("Quoted") && !nav.contains("Listed") && !nav.contains("Note heading"));
+}
+
+#[test]
+fn checks_section_targets_completeness_and_hierarchy_and_accepts_legacy_flat_contents() {
+    let (_dir, options) = fixture("b.md", "# One\n## Section\n### Detail\nEnd.");
+    build(&options).unwrap();
+    let original = fs::read(&options.output).unwrap();
+    for (before, after) in [
+        ("#section", "#detail"),
+        (
+            "<ol><li><a href=\"chapter-0001.xhtml#detail\">Detail</a></li></ol>",
+            "<li><a href=\"chapter-0001.xhtml#detail\">Detail</a></li>",
+        ),
+        (
+            "<ol><li><a href=\"chapter-0001.xhtml#detail\">Detail</a></li></ol>",
+            "",
+        ),
+    ] {
+        fs::write(&options.output, &original).unwrap();
+        rewrite(&options.output, "EPUB/nav.xhtml", |text| {
+            assert!(text.contains(before));
+            text.replace(before, after)
+        });
+        assert_eq!(
+            validate(&options.output).unwrap_err().kind,
+            ErrorKind::Validation
+        );
+    }
+    fs::write(&options.output, &original).unwrap();
+    rewrite(&options.output, "EPUB/nav.xhtml", |text| {
+        let start = text.find("<ol>").unwrap();
+        let end = text.rfind("</ol>").unwrap() + 5;
+        format!(
+            "{}<ol><li><a href=\"chapter-0001.xhtml\">One</a></li></ol>{}",
+            &text[..start],
+            &text[end..]
+        )
+        .replace(" data-agent-epub-toc=\"sections\"", "")
+    });
+    assert_eq!(validate(&options.output).unwrap().chapters, 1);
+}
+
+#[test]
 fn generates_real_archive_with_consistent_contents_and_navigation() {
     let (_dir, options) = fixture(
         "b.md",
@@ -395,6 +469,11 @@ fn independent_epubcheck_corpus() {
     let executable =
         std::env::var_os("EPUBCHECK").expect("Set EPUBCHECK to the validator wrapper path");
     let cases = [
+        ("report.md", include_str!("../examples/research-report.md")),
+        (
+            "sections.md",
+            "# One\n## Repeat\n### Detail\n##### Skipped\n## Repeat\n> ## Quoted\n> Text.\n\n# Two\n###### Deep\nEnd.",
+        ),
         (
             "notes.md",
             "[^n]: A **note** with a [chapter link](#two) and [web source](https://example.org).\n\n# One\nFirst[^n], again[^n].\n\n# Two\nThird[^n].\n",
