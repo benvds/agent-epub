@@ -1,0 +1,499 @@
+{
+  "date": "2026-11-10",
+  "baseline": "existing release executable reporting v0.2.0; not rebuilt from the changing working tree",
+  "binary_sha256": "823abe78285a71161602baf04276386dbf72796b1655c2cc828b3ca832a4d815",
+  "binary_bytes": 2887840,
+  "capabilities": {
+    "checks": {
+      "accessibility_assessment": "not_automated",
+      "epubcheck": "optional_external",
+      "reader_review": "not_automated",
+      "structural_profile": "always"
+    },
+    "commands": [
+      "build",
+      "validate",
+      "capabilities"
+    ],
+    "cover_formats": [
+      "jpeg",
+      "png"
+    ],
+    "cover_images": true,
+    "formats": [
+      "text",
+      "markdown"
+    ],
+    "inputs": [
+      "ordered_files",
+      "request_file",
+      "streamed_request",
+      "inline_content"
+    ],
+    "limits": {
+      "chapters": 1000,
+      "cover_bytes": 10485760,
+      "cover_max_pixels": 16000000,
+      "cover_max_side": 8000,
+      "request_bytes": 67108864,
+      "source_bytes": 20971520,
+      "total_source_bytes": 67108864
+    },
+    "navigation": [
+      "contents",
+      "chapter_contents",
+      "previous_next",
+      "return_to_contents"
+    ],
+    "request_schema": "book-request.v1",
+    "request_schema_document": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "cover": {
+          "additionalProperties": false,
+          "properties": {
+            "alt": {
+              "minLength": 1,
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "path": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "type": "object"
+        },
+        "inputs": {
+          "items": {
+            "additionalProperties": false,
+            "oneOf": [
+              {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "content"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "name"
+                      ]
+                    }
+                  ]
+                },
+                "required": [
+                  "path"
+                ]
+              },
+              {
+                "not": {
+                  "required": [
+                    "path"
+                  ]
+                },
+                "required": [
+                  "content",
+                  "format"
+                ]
+              }
+            ],
+            "properties": {
+              "content": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "format": {
+                "enum": [
+                  "text",
+                  "markdown"
+                ]
+              },
+              "name": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "path": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "type": "array"
+        },
+        "metadata": {
+          "additionalProperties": false,
+          "properties": {
+            "author": {
+              "minLength": 1,
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "language": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "title": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "language"
+          ],
+          "type": "object"
+        },
+        "schema_version": {
+          "const": 1
+        }
+      },
+      "required": [
+        "schema_version",
+        "metadata",
+        "inputs"
+      ],
+      "title": "Agent EPUB book request version 1",
+      "type": "object"
+    },
+    "schema_version": 1,
+    "tool": "agent-epub",
+    "tool_version": "0.2.0",
+    "unsupported": [
+      "inline_images",
+      "tables",
+      "notes",
+      "task_lists",
+      "raw_html",
+      "fixed_layout",
+      "multimedia",
+      "drm"
+    ]
+  },
+  "probes": [
+    {
+      "case": "basic",
+      "input": "# Introduction\n\nHello **reader**.\n\n## Details\n\nUseful text.\n",
+      "exit_code": 0,
+      "result": {
+        "chapters": 1,
+        "checks": {
+          "epubcheck": "not_run",
+          "structural_profile": "passed"
+        },
+        "cover": false,
+        "elapsed_ms": 10,
+        "errors": [],
+        "operation": "build",
+        "output": "/private/var/folders/31/zm3jwkw93j784tdrt1hpnk7r0000gn/T/agent-epub-market-q8khhb07/basic.epub",
+        "review_items": [
+          "Reader appearance and accessibility require separate review."
+        ],
+        "schema_version": 1,
+        "status": "success",
+        "tool_version": "0.2.0"
+      },
+      "stderr": "",
+      "chapter_xhtml": {
+        "EPUB/chapter-0001.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>Introduction</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1 id=\"introduction\">Introduction</h1>\n<p>Hello <strong>reader</strong>.</p>\n<h2 id=\"details\">Details</h2>\n<p>Useful text.</p>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a></p></nav></body></html>\n"
+      }
+    },
+    {
+      "case": "table",
+      "input": "# Findings\n\n| Tool | Score |\n| --- | --- |\n| A | 4 |\n",
+      "exit_code": 2,
+      "result": {
+        "checks": {
+          "epubcheck": "not_claimed",
+          "structural_profile": "not_claimed"
+        },
+        "elapsed_ms": 0,
+        "errors": [
+          {
+            "code": "invalid_input",
+            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported tables; supply plain text or supported Markdown instead."
+          }
+        ],
+        "operation": "build",
+        "output": null,
+        "schema_version": 1,
+        "status": "failed",
+        "tool_version": "0.2.0"
+      },
+      "stderr": ""
+    },
+    {
+      "case": "footnote",
+      "input": "# Notes\n\nA claim.[^1]\n\n[^1]: The source.\n",
+      "exit_code": 2,
+      "result": {
+        "checks": {
+          "epubcheck": "not_claimed",
+          "structural_profile": "not_claimed"
+        },
+        "elapsed_ms": 0,
+        "errors": [
+          {
+            "code": "invalid_input",
+            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported notes; supply plain text or supported Markdown instead."
+          }
+        ],
+        "operation": "build",
+        "output": null,
+        "schema_version": 1,
+        "status": "failed",
+        "tool_version": "0.2.0"
+      },
+      "stderr": ""
+    },
+    {
+      "case": "inline_image",
+      "input": "# Guide\n\n![A diagram](diagram.png)\n",
+      "exit_code": 2,
+      "result": {
+        "checks": {
+          "epubcheck": "not_claimed",
+          "structural_profile": "not_claimed"
+        },
+        "elapsed_ms": 0,
+        "errors": [
+          {
+            "code": "invalid_input",
+            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported inline images (use the separate cover option for a cover); supply plain text or supported Markdown instead."
+          }
+        ],
+        "operation": "build",
+        "output": null,
+        "schema_version": 1,
+        "status": "failed",
+        "tool_version": "0.2.0"
+      },
+      "stderr": ""
+    },
+    {
+      "case": "task_list",
+      "input": "# Tasks\n\n- [x] Finished\n- [ ] Pending\n",
+      "exit_code": 2,
+      "result": {
+        "checks": {
+          "epubcheck": "not_claimed",
+          "structural_profile": "not_claimed"
+        },
+        "elapsed_ms": 0,
+        "errors": [
+          {
+            "code": "invalid_input",
+            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported task lists; supply plain text or supported Markdown instead."
+          }
+        ],
+        "operation": "build",
+        "output": null,
+        "schema_version": 1,
+        "status": "failed",
+        "tool_version": "0.2.0"
+      },
+      "stderr": ""
+    },
+    {
+      "case": "raw_html",
+      "input": "# Guide\n\n<aside>Remember this</aside>\n",
+      "exit_code": 2,
+      "result": {
+        "checks": {
+          "epubcheck": "not_claimed",
+          "structural_profile": "not_claimed"
+        },
+        "elapsed_ms": 0,
+        "errors": [
+          {
+            "code": "invalid_input",
+            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported raw HTML; supply plain text or supported Markdown instead."
+          }
+        ],
+        "operation": "build",
+        "output": null,
+        "schema_version": 1,
+        "status": "failed",
+        "tool_version": "0.2.0"
+      },
+      "stderr": ""
+    },
+    {
+      "case": "yaml_frontmatter",
+      "input": "---\ntitle: My report\nauthor: Someone\n---\n\n# Introduction\n\nBody.\n",
+      "exit_code": 0,
+      "result": {
+        "chapters": 2,
+        "checks": {
+          "epubcheck": "not_run",
+          "structural_profile": "passed"
+        },
+        "cover": false,
+        "elapsed_ms": 6,
+        "errors": [],
+        "operation": "build",
+        "output": "/private/var/folders/31/zm3jwkw93j784tdrt1hpnk7r0000gn/T/agent-epub-market-q8khhb07/yaml_frontmatter.epub",
+        "review_items": [
+          "Reader appearance and accessibility require separate review."
+        ],
+        "schema_version": 1,
+        "status": "success",
+        "tool_version": "0.2.0"
+      },
+      "stderr": "",
+      "chapter_xhtml": {
+        "EPUB/chapter-0001.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>source</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1>source</h1>\n<hr />\n<h2 id=\"title-my-report-author-someone\">title: My report\nauthor: Someone</h2>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a> \u00b7 <a rel=\"next\" href=\"chapter-0002.xhtml\">Next chapter</a></p></nav></body></html>\n",
+        "EPUB/chapter-0002.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>Introduction</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1 id=\"introduction\">Introduction</h1>\n<p>Body.</p>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a> \u00b7 <a rel=\"prev\" href=\"chapter-0001.xhtml\">Previous chapter</a></p></nav></body></html>\n"
+      }
+    },
+    {
+      "case": "strikethrough",
+      "input": "# Changes\n\nThis is ~~obsolete~~.\n",
+      "exit_code": 0,
+      "result": {
+        "chapters": 1,
+        "checks": {
+          "epubcheck": "not_run",
+          "structural_profile": "passed"
+        },
+        "cover": false,
+        "elapsed_ms": 6,
+        "errors": [],
+        "operation": "build",
+        "output": "/private/var/folders/31/zm3jwkw93j784tdrt1hpnk7r0000gn/T/agent-epub-market-q8khhb07/strikethrough.epub",
+        "review_items": [
+          "Reader appearance and accessibility require separate review."
+        ],
+        "schema_version": 1,
+        "status": "success",
+        "tool_version": "0.2.0"
+      },
+      "stderr": "",
+      "chapter_xhtml": {
+        "EPUB/chapter-0001.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>Changes</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1 id=\"changes\">Changes</h1>\n<p>This is ~~obsolete~~.</p>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a></p></nav></body></html>\n"
+      }
+    },
+    {
+      "case": "math",
+      "input": "# Formula\n\nThe value is $x^2$; see $$y=2$$.\n",
+      "exit_code": 0,
+      "result": {
+        "chapters": 1,
+        "checks": {
+          "epubcheck": "not_run",
+          "structural_profile": "passed"
+        },
+        "cover": false,
+        "elapsed_ms": 7,
+        "errors": [],
+        "operation": "build",
+        "output": "/private/var/folders/31/zm3jwkw93j784tdrt1hpnk7r0000gn/T/agent-epub-market-q8khhb07/math.epub",
+        "review_items": [
+          "Reader appearance and accessibility require separate review."
+        ],
+        "schema_version": 1,
+        "status": "success",
+        "tool_version": "0.2.0"
+      },
+      "stderr": "",
+      "chapter_xhtml": {
+        "EPUB/chapter-0001.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>Formula</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1 id=\"formula\">Formula</h1>\n<p>The value is $x^2$; see $$y=2$$.</p>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a></p></nav></body></html>\n"
+      }
+    },
+    {
+      "case": "heading_split",
+      "input": "# Book title\n\n## First chapter\n\nOne.\n\n## Second chapter\n\nTwo.\n",
+      "exit_code": 0,
+      "result": {
+        "chapters": 1,
+        "checks": {
+          "epubcheck": "not_run",
+          "structural_profile": "passed"
+        },
+        "cover": false,
+        "elapsed_ms": 6,
+        "errors": [],
+        "operation": "build",
+        "output": "/private/var/folders/31/zm3jwkw93j784tdrt1hpnk7r0000gn/T/agent-epub-market-q8khhb07/heading_split.epub",
+        "review_items": [
+          "Reader appearance and accessibility require separate review."
+        ],
+        "schema_version": 1,
+        "status": "success",
+        "tool_version": "0.2.0"
+      },
+      "stderr": "",
+      "chapter_xhtml": {
+        "EPUB/chapter-0001.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>Book title</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1 id=\"book-title\">Book title</h1>\n<h2 id=\"first-chapter\">First chapter</h2>\n<p>One.</p>\n<h2 id=\"second-chapter\">Second chapter</h2>\n<p>Two.</p>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a></p></nav></body></html>\n"
+      }
+    },
+    {
+      "case": "admonition",
+      "input": "# Guide\n\n> [!WARNING]\n> Keep a copy.\n",
+      "exit_code": 0,
+      "result": {
+        "chapters": 1,
+        "checks": {
+          "epubcheck": "not_run",
+          "structural_profile": "passed"
+        },
+        "cover": false,
+        "elapsed_ms": 5,
+        "errors": [],
+        "operation": "build",
+        "output": "/private/var/folders/31/zm3jwkw93j784tdrt1hpnk7r0000gn/T/agent-epub-market-q8khhb07/admonition.epub",
+        "review_items": [
+          "Reader appearance and accessibility require separate review."
+        ],
+        "schema_version": 1,
+        "status": "success",
+        "tool_version": "0.2.0"
+      },
+      "stderr": "",
+      "chapter_xhtml": {
+        "EPUB/chapter-0001.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>Guide</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1 id=\"guide\">Guide</h1>\n<blockquote>\n<p>[!WARNING]\nKeep a copy.</p>\n</blockquote>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a></p></nav></body></html>\n"
+      }
+    },
+    {
+      "case": "broken_link",
+      "input": "# Guide\n\n[Missing](#missing)\n",
+      "exit_code": 2,
+      "result": {
+        "checks": {
+          "epubcheck": "not_claimed",
+          "structural_profile": "not_claimed"
+        },
+        "elapsed_ms": 0,
+        "errors": [
+          {
+            "code": "invalid_input",
+            "message": "/Users/benvds/code/epub-rust/source.md: unresolved or unsupported link \"#missing\"; use http(s), mailto, or a supplied source and heading fragment."
+          }
+        ],
+        "operation": "build",
+        "output": null,
+        "schema_version": 1,
+        "status": "failed",
+        "tool_version": "0.2.0"
+      },
+      "stderr": ""
+    }
+  ],
+  "repeated_build_sha256": [
+    "fcf24b0ff9f7317fa1ee64a8fd0c9f65d815b5a46b9883541743d313e1856167",
+    "2f99dbec349f33df7baed0782f4d9f17bb537ac4a4f1b522c1a1990f5b175ff0"
+  ],
+  "byte_identical": false
+}

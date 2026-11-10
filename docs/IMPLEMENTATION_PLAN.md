@@ -1,6 +1,6 @@
 # Rust CLI implementation plan
 
-Updated 9 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. The [PRD](PRD.md) stays independent of these programming choices.
+Updated 10 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. Milestones 1 through 3 are released; their sequences below are the implementation record. Milestones 4 through 6 plan adoption, input handling and comparative evidence. The [PRD](PRD.md) stays independent of these programming choices.
 
 ## Milestone 1 Implementation sequence
 
@@ -124,6 +124,42 @@ Simple tables should preserve header relationships and all cell content. Notes s
 
 Consider batch processing and deterministic output only after real repeated-generation needs are demonstrated. Do not introduce fixed layout, multimedia, DRM or full EPUB support through incidental parser options.
 
+## Milestones 4 through 6 Implementation checkpoints
+
+Use the work-package IDs, estimates, dependencies and acceptance gates in the [roadmap](ROADMAP.md). Keep the next implementation scope small enough to verify independently. Future release versions are not assigned yet.
+
+### Checkpoint A Adoption and release packaging
+
+1. A1: update the README around current capabilities and a complete streamed-request example. Include source and generated sample instructions, artifact handling and exact validation coverage.
+2. A2: record the maintainer's license choice and complete the corresponding project/package metadata. Do not choose reuse terms implicitly while implementing an installer.
+3. A3: add a release archive/checksum workflow for selected targets. Verify build compatibility and installation in each claimed environment. Keep runtime-independent generation separate from optional external EPUBCheck setup.
+4. A4: package a short agent skill using the same examples. Verify discover, build, inspect and report behavior against the released binary. Preserve the explicit deferral of Claude and Ollama live evaluations.
+
+Suggested commits: documentation/examples; license and metadata after the maintainer's choice; release packaging; integration instructions and clean-install verification. Release archives must not include private manuscripts or local evaluation outputs.
+
+### Checkpoint B Input rules and structured repair
+
+1. B1: retain broad error categories while adding stable detailed codes, source references, locations where available and remedies. Define result compatibility before changing serialized output. Test unsupported structures and unresolved links as distinct failures.
+2. B2: use the [historical research probes](research/market-research-probes-2026-11-10.json) as input cases, then establish current expected behavior. Tables and notes are supported since milestone 3, so their old rejection results are not new acceptance expectations. Cover recognized front matter, math, strikethrough, alerts and ordinary literal punctuation. Update discovery and usage together.
+3. B3: design a compatible split-level option for direct and request inputs. Preserve the current default. Test title-plus-H2 manuscripts, source boundaries, preambles, nested contents and link targets through equivalent input modes.
+
+Suggested commits: diagnostic contract and representative errors; Markdown declarations/front-matter policy; split-level behavior; verification and current examples. Do not introduce aggregate preflight or front-matter metadata import incidentally; those require their own declared behavior.
+
+### Checkpoint C Comparative evidence and pilots
+
+1. C1: assemble synthetic or approved real-world report/guide fixtures covering current supported features, predictable failures and proposed additions. Pin tool versions and store exact comparison commands and configuration.
+2. Compare the same tasks against current Agent EPUB and a reasonable Pandoc wrapper, adding mdbindery for repository-based cases. Run equivalent promised validation. Score artifact content, links and order independently, and count setup work, retries and manual repairs separately from conversion time.
+3. C2: observe five to eight prospective users and their existing workflows, then measure first export and repeat use over two weeks. Record permissions before retaining source documents; commit only synthetic or approved material.
+4. Publish results against the roadmap's proposed decision targets. Record a decision for each conditional candidate and whether the evidence favors the engine, an integration improvement or a narrower audience.
+
+Suggested commits: comparison corpus and scoring method; reproducible competitor configurations/results; anonymized pilot findings and revised priorities. Actual provider evaluations remain subject to the existing user-approved scope; a competitor comparison is not authorization to resume deferred provider evaluations.
+
+### Conditional work packages
+
+Do not start every conditional candidate as one release. Select the smallest package justified by C1/C2 or a documented earlier workflow. Local images need bounded resource loading and reader checks. Aggregate preflight depends on the detailed diagnostics and input rules. Reproducible archives require explicit identity/time settings and archive metadata checks. A preservation manifest should reuse the independent comparison scoring rather than imply that counts prove meaning.
+
+Styles and preview fixtures need reader checks with font overrides and narrow layouts. Accessibility reporting should integrate an existing checker with explicit coverage. Richer metadata, batch operation, a GitHub Action and an MCP adapter each need a specific consuming workflow before implementation. Keep adapters thin and preserve the CLI as the common contract.
+
 ## Verification and completion record
 
 | Gate | Required evidence |
@@ -135,6 +171,6 @@ Consider batch processing and deterministic output only after real repeated-gene
 | Speed | Reproducible synthetic workload and measured wall-clock result. |
 | Reading behavior | Two independently tested readers with recorded versions, or an explicit outstanding gate. |
 
-Push the documentation checkpoint first. During implementation, commit after each working checkpoint and push progress so pausing does not strand work locally. Keep the roadmap status consistent with evidence, including any manual gates that remain open.
+Commit the documentation checkpoint first. During implementation, commit after each working checkpoint and push progress when authorized. Keep the roadmap status consistent with evidence, including any manual gates that remain open.
 
 References: [EPUB 3.3](https://www.w3.org/TR/epub-33/), [EPUBCheck](https://www.w3.org/publishing/epubcheck/), and the primary dependency documentation linked above.
