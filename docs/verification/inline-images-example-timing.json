@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-10",
+  "tool_version": "0.6.0-dev",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "request": "examples/illustrated-request.json",
+  "chapters": 3,
+  "inline_images": 3,
+  "cover": true,
+  "runs": 3,
+  "samples_ms": [
+    18.603,
+    15.587,
+    16.31
+  ],
+  "median_ms": 16.31,
+  "scope": "Warm local process startup, request/source/asset reading, complete image decoding, EPUB generation, built-in validation and publication. No EPUBCheck, transfers or agent interaction. Small synthetic fixture; not a general performance guarantee."
+}

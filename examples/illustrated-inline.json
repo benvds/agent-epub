@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "title": "Illustrated guide",
+    "language": "en"
+  },
+  "split_level": 2,
+  "inputs": [
+    {
+      "name": "illustrated-guide.md",
+      "format": "markdown",
+      "content": "# Illustrated guide\n\nA source-relative image example with chapters, a table and a shared note.\n\n## How export works\n\n![Three colored stages connected from left to right](assets/export-flow.png \"Export flow\")\n\nWriting, packaging and reading form one export workflow.\n\n| Resource | Illustration |\n| --- | --- |\n| Reused diagram | ![The same three-stage diagram](assets/export-flow.png) |\n\nA supporting note[^figure].\n\n## A second image\n\n![A synthetic blue sky above a green landscape](assets/landscape.jpg)\n\nThe JPEG is supplied separately from the PNG. Both retain their original bytes.\nThe divider below is explicitly decorative.\n\n![](assets/divider.png \"decorative\")\n\n[Return to the diagram](#how-export-works). Read the same note again[^figure].\n\n[^figure]: An image can also appear in a note: ![The three-stage export diagram](assets/export-flow.png).\n"
+    }
+  ],
+  "cover": {
+    "path": "assets/landscape.jpg"
+  }
+}

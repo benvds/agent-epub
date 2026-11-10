@@ -62,7 +62,11 @@ pub(crate) fn publish(options: &BuildOptions, book: &Book) -> Result<Summary> {
             ));
         }
     };
-    for input in &options.inputs {
+    for input in options
+        .inputs
+        .iter()
+        .chain(book.images.iter().map(|image| &image.source))
+    {
         if let (Ok(a), Ok(b)) = (input.canonicalize(), output.canonicalize())
             && (a == b || same_file(input, &output))
         {
@@ -190,7 +194,7 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
     )?;
     put(
         "EPUB/style.css",
-        "body { margin: 5%; line-height: 1.5; }\nh1, h2, h3 { line-height: 1.2; }\np { margin: 0.7em 0; }\npre { white-space: pre-wrap; word-wrap: break-word; }\na, code { word-wrap: break-word; }\nnav { margin: 1em 0; }\ntable { border-collapse: collapse; max-width: 100%; }\nth, td { border: 1px solid; padding: 0.3em; overflow-wrap: anywhere; }\n.footnote { margin: 1em 0; }\n.cover { text-align: center; }\n.cover img { max-width: 100%; max-height: 90vh; width: auto; height: auto; }\n",
+        "body { margin: 5%; line-height: 1.5; }\nh1, h2, h3 { line-height: 1.2; }\np { margin: 0.7em 0; }\npre { white-space: pre-wrap; word-wrap: break-word; }\na, code { word-wrap: break-word; }\nnav { margin: 1em 0; }\ntable { border-collapse: collapse; max-width: 100%; }\ntable.with-images { width: 100%; table-layout: fixed; }\ntable.with-images img { max-width: 100% !important; }\nth, td { border: 1px solid; padding: 0.3em; overflow-wrap: anywhere; }\n.footnote { margin: 1em 0; }\nimg { max-width: 100%; height: auto; }\n.cover { text-align: center; }\n.cover img { max-width: 100%; max-height: 90vh; width: auto; height: auto; }\n",
         deflated,
     )?;
     if let Some(cover) = &book.cover {
@@ -284,6 +288,14 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
     if let Some(cover) = &book.cover {
         package.push_str(&format!("<item id=\"cover-image\" href=\"{}\" media-type=\"{}\" properties=\"cover-image\" /><item id=\"cover-page\" href=\"cover.xhtml\" media-type=\"application/xhtml+xml\" />", cover.filename, cover.media_type));
     }
+    for (index, image) in book.images.iter().enumerate() {
+        package.push_str(&format!(
+            "<item id=\"image-{}\" href=\"{}\" media-type=\"{}\" />",
+            index + 1,
+            image.filename,
+            image.media_type
+        ));
+    }
     for index in 0..book.chapters.len() {
         package.push_str(&format!(
             "<item id=\"ch-{}\" href=\"{}\" media-type=\"application/xhtml+xml\" />",
@@ -307,6 +319,14 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
             .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?;
         archive
             .write_all(&cover.bytes)
+            .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?;
+    }
+    for image in &book.images {
+        archive
+            .start_file(format!("EPUB/{}", image.filename), stored)
+            .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?;
+        archive
+            .write_all(&image.bytes)
             .map_err(|e| Error::new(ErrorKind::Io, e.to_string()))?;
     }
     archive

@@ -82,6 +82,9 @@ fn report(summary: &Summary) {
         "{} chapters; structural profile checks passed.",
         summary.chapters
     );
+    if summary.images > 0 {
+        println!("{} bundled inline images.", summary.images);
+    }
     if summary.independent_validation {
         println!("EPUBCheck passed; review its warnings separately.");
     } else {

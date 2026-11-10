@@ -1,6 +1,7 @@
 use std::{fmt, path::PathBuf};
 
 pub mod agent;
+mod assets;
 mod cover;
 mod notes;
 mod package;
@@ -132,6 +133,7 @@ pub struct CoverOptions {
 pub struct Summary {
     pub chapters: usize,
     pub cover: bool,
+    pub images: usize,
     pub independent_validation: bool,
 }
 

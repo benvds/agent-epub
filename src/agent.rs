@@ -163,6 +163,11 @@ pub fn build_request(text: &str, options: &RequestOptions) -> Result<Summary> {
                     path: base.join(path),
                     text,
                     format: format.extension().into(),
+                    asset_base: if options.base_dir.is_some() || options.request_path.is_some() {
+                        Some(base.clone())
+                    } else {
+                        None
+                    },
                 }
             }
             _ => {
@@ -218,6 +223,8 @@ pub fn capabilities() -> Value {
         "navigation": ["contents", "chapter_contents", "section_contents_h2_h6", "previous_next", "return_to_contents"],
         "chapter_splitting": {"option": "split_level", "cli": "--split-level", "default": 1, "minimum": 1, "maximum": 6, "match": "exact_root_heading_level", "preamble": "preserved", "source_boundaries": "always", "heading_ranks": "preserved"},
         "diagnostics": {"category_field": "code", "detail_field": "issue_code", "source_field": "source", "location": "one_based_unicode_normalized_source_or_request_json", "unavailable": null, "remedy_field": "remedy"},
+        "inline_images": true, "inline_image_formats": ["jpeg", "png"],
+        "inline_image_profile": {"paths": "source_relative_local_files", "streamed_inline_base": "explicit_base_dir_required", "alternative_text": "required", "decorative": "empty_alt_with_title_decorative", "reuse": "canonical_path", "remote_fetching": false, "animation": false, "direct_image_hyperlinks": false},
         "cover_images": true, "cover_formats": ["jpeg", "png"],
         "markdown_extensions": ["rectangular_pipe_tables", "footnotes_with_backlinks"],
         "markdown_profile": {
@@ -229,8 +236,8 @@ pub fn capabilities() -> Value {
             "alerts": "ordinary_blockquote_with_literal_marker",
             "section_contents": {"levels": "root_h2_through_h6", "chapter_title_heading": "excluded", "skipped_levels": "nearest_preceding_shallower_heading", "container_headings": "excluded"}
         },
-        "unsupported": ["inline_images", "complex_tables", "nested_notes", "task_lists", "raw_html", "recognized_front_matter", "fixed_layout", "multimedia", "drm"],
-        "limits": {"source_bytes": 20971520, "total_source_bytes": 67108864, "request_bytes": 67108864, "chapters": 1000, "cover_bytes": 10485760, "cover_max_side": 8000, "cover_max_pixels": 16000000},
+        "unsupported": ["remote_images", "svg_images", "animated_images", "complex_tables", "nested_notes", "task_lists", "raw_html", "recognized_front_matter", "fixed_layout", "multimedia", "drm"],
+        "limits": {"source_bytes": 20971520, "total_source_bytes": 67108864, "request_bytes": 67108864, "chapters": 1000, "cover_bytes": 10485760, "cover_max_side": 8000, "cover_max_pixels": 16000000, "inline_image_bytes": 10485760, "inline_image_max_side": 8000, "inline_image_max_pixels": 16000000, "inline_image_files": 128, "total_inline_image_bytes": 67108864},
         "checks": {"structural_profile": "always", "epubcheck": "optional_external", "reader_review": "not_automated", "accessibility_assessment": "not_automated"}
     })
 }
@@ -244,7 +251,7 @@ pub fn result(
     match outcome {
         Ok(summary) => json!({
             "schema_version": 1, "tool_version": env!("CARGO_PKG_VERSION"), "operation": operation, "status": "success",
-            "output": output.and_then(|p| p.canonicalize().ok()), "chapters": summary.chapters, "cover": summary.cover,
+            "output": output.and_then(|p| p.canonicalize().ok()), "chapters": summary.chapters, "cover": summary.cover, "images": summary.images,
             "checks": {"structural_profile": "passed", "epubcheck": if summary.independent_validation {"passed"} else {"not_run"}},
             "review_items": ["Reader appearance and accessibility require separate review."], "errors": [], "elapsed_ms": elapsed_ms
         }),

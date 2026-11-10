@@ -9,6 +9,10 @@ repair an input problem.
 
 Built for repeated report and guide exports from agents that can run local commands.
 
+Main (`0.6.0-dev`) now supports local PNG/JPEG illustrations in chapters.
+Build from source to use them; published v0.5.1 supports covers only.
+[Image rules and examples](docs/USAGE.md#local-chapter-images).
+
 ## A smaller integration to maintain
 
 - **Keep your writing where it is.** Pass existing files in reading order, or
@@ -18,7 +22,7 @@ Built for repeated report and guide exports from agents that can run local comma
   request and inspect JSON stdout. Success gives you an absolute artifact path;
   failures give you issue codes and remedies.
 - **Include the reading features.** Chapter splitting, nested contents,
-  source links, footnotes with return links, simple tables and optional covers
+  source links, footnotes with return links, simple tables, local illustrations and optional covers
   are part of the exporter. [Supported content](docs/USAGE.md).
 - **Run locally.** Generation works offline on macOS Apple Silicon, Linux x86_64
   and Windows x86_64. The executable needs no Rust, Python, Java or AI service.
@@ -79,7 +83,7 @@ or `"split_level": 2` in JSON. Preambles and heading ranks stay intact.
 [H2 request example](examples/title-h2-request.json).
 
 Request-file paths are relative to that file. Streamed file references require
-`--base-dir`; inline-only requests do not. [Contract and path rules](docs/AGENT_INTERFACE.md);
+`--base-dir`; inline-only requests need it when their Markdown contains local images. [Contract and path rules](docs/AGENT_INTERFACE.md);
 [PowerShell examples](docs/INSTALL.md).
 
 ## Handle the result
@@ -123,7 +127,7 @@ v0.5.1 adds an invalid-input guard with unchanged valid-book reading resources.
 ## Fit and limits
 
 Agent EPUB supports UTF-8 text and a declared Markdown subset for reflowable
-reports and guides. Inline illustrations,
+reports and guides. Remote images, SVG, animation,
 raw HTML, task lists, complex tables and nested notes are outside that subset.
 Recognized YAML/TOML front matter is rejected with a repair hint. Math, strike
 and alert markers retain literal CommonMark behavior.

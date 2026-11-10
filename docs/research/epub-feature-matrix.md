@@ -4,6 +4,11 @@ Updated 10 November 2026. This matrix compares 69 publication and workflow capab
 
 The Agent EPUB baseline is released **v0.5.1**, including detailed diagnostics, explicit Markdown rules and configurable chapter splitting. Competitor columns retain their dated official-documentation evidence. A separate [three-pair benchmark](../verification/MILESTONE_5A.md) tested v0.5.0 against a prepared Pandoc 3.13 wrapper; it does not establish hands-on compatibility or speed for the other alternatives.
 
+Main `0.6.0-dev` implements local static JPEG/PNG illustrations (F23), with
+required alt text or an explicit decorative choice. This is a development
+addition, not part of the released baseline below. See the
+[D1 verification](../verification/INLINE_IMAGES.md) and [image rules](../USAGE.md#local-chapter-images).
+
 ## How to read the matrix
 
 | Mark | Meaning |
@@ -253,7 +258,7 @@ EbookLib and epub-builder are libraries, so M frequently means the application s
 
 - F04 through F10: Agent EPUB generates new EPUBs from text and Markdown. It does not import arbitrary HTML, DOCX or existing EPUBs, and it has no mdBook-project adapter or PDF output.
 - F16 and F17: tables need one header row and rectangular cells. Merged cells, multiline cells, captions and complex headers are rejected. F18 includes numbered notes, multiple backlinks and reader-dependent popup behavior.
-- F22 and F55: supplied covers are JPEG/PNG with bounded decoding and alternative text. Inline images remain unsupported, so alternative-text support is currently cover-only.
+- F22 and F55: supplied covers are JPEG/PNG with bounded decoding and alternative text. In the released v0.5.1 baseline, inline images are unsupported and alternative-text support is cover-only. Main adds D1 as described above.
 - F37 through F43: visible/native nested contents and chapter links are generated. Root heading split levels 1–6 are configurable, with H1 as the default; previous/next links connect chapters. Page-list and landmark navigation are not generated.
 - F45 through F50: title, language and one optional author are supported. A random identifier and modification time are generated. There are no caller controls for rich metadata, stable identity, RTL/vertical layout or accessibility discovery metadata.
 - F56 is partial: semantic headings, column headers and note roles exist, but do not establish complete accessibility. F58 checks this tool's profile. F59 invokes a separately installed EPUBCheck executable when requested; this is separate from the built-in checker.

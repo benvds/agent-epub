@@ -1,8 +1,12 @@
 # Agent interface
 
+Main (`0.6.0-dev`) adds local chapter PNG/JPEG images without changing request
+schema version 1. Published v0.5.1 supports covers only. Build from source to use
+chapter images; discover the installed version and `inline_images` capability.
+
 Version 0.5.1 extends the version 1 CLI contract with optional chapter splitting and additive diagnostic fields. [Install a binary and the reusable agent skill](INSTALL.md). The release includes equivalent direct, [file-request](../examples/report-request.json) and [streamed-inline](../examples/report-inline.json) report examples.
 
-Version 1 requests support supplied files or inline writing, metadata and optional covers. Live Codex evidence includes the [historical milestone 2 evaluation](https://github.com/benvds/agent-epub/blob/main/docs/verification/AGENT_EVALUATIONS.md) and the [three-pair workflow comparison](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md) using v0.5.0. Current v0.5.1 adds an invalid-input guard with unchanged valid-book reading resources. Claude and Ollama live evaluations remain deferred.
+Version 1 requests support supplied files or inline writing, metadata, optional covers and, on main, local chapter images. Live Codex evidence includes the [historical milestone 2 evaluation](https://github.com/benvds/agent-epub/blob/main/docs/verification/AGENT_EVALUATIONS.md) and the [three-pair workflow comparison](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md) using v0.5.0. Current v0.5.1 adds an invalid-input guard with unchanged valid-book reading resources. Claude and Ollama live evaluations remain deferred.
 
 ## Discover and build
 
@@ -31,15 +35,15 @@ Unknown fields, unsupported schema versions, conflicting source fields and ambig
 
 ## Resolve file references
 
-File-request paths are relative to the request file's directory. `--base-dir` can explicitly override that base. Streamed requests containing file references require `--base-dir`. Pure inline streamed requests need no base; supplying one makes relative inline-to-file links explicit.
+File-request paths are relative to the request file's directory. `--base-dir` can explicitly override that base. Streamed requests containing file references require `--base-dir`. Pure inline streamed requests need no base unless their Markdown contains images; those require `--base-dir`. Inline assets in request files use the request directory or explicit base override. Supplying a base also makes relative inline-to-file links explicit. Actual file inputs resolve image paths from their own parent directories.
 
 Inline input names act as logical source filenames for links. Two inline inputs named `one.md` and `two.md` can link to each other as ordinary Markdown sources. Names cannot contain directories or parent traversal. Input source files retain their actual source-relative link behavior. The tool does not create inline sources on disk or fetch remote resources.
 
-Title, language, author and split-level flags are mutually exclusive with request mode. Output location, overwrite and optional external-validation choices remain explicit command options. Request files and supplied sources are protected against output aliasing.
+Title, language, author and split-level flags are mutually exclusive with request mode. Output location, overwrite and optional external-validation choices remain explicit command options. Request files, supplied sources, covers and inline image files are protected against output aliasing.
 
 ## Inspect the result
 
-`--json` returns one JSON object on stdout. It includes the operation, status, absolute artifact location on success, chapter count, check coverage, remaining review items and elapsed milliseconds. It also produces structured argument errors when the CLI cannot parse a command.
+`--json` returns one JSON object on stdout. It includes the operation, status, absolute artifact location on success, chapter count, unique inline image count (`images`, excluding covers), check coverage, remaining review items and elapsed milliseconds. It also produces structured argument errors when the CLI cannot parse a command.
 
 Failure results contain an error code and message, and do not identify a newly created artifact. Exit codes retain their [milestone 1 meanings](USAGE.md). Available error categories are `invalid_input`, `io_error`, `invalid_epub` and `validator_failed`.
 
@@ -63,7 +67,9 @@ including a link's opening bracket rather than its destination text.
 ```
 
 Detailed codes include `unresolved_link`, `unsupported_link`,
-`unsupported_inline_image`, `unsupported_raw_html`, `unsupported_task_list`,
+`unsupported_image_source`, `image_base_required`, `image_not_found`,
+`invalid_image`, `image_limit_exceeded`, `image_alt_required`,
+`invalid_image_alt`, `unsupported_raw_html`, `unsupported_task_list`,
 `unsupported_table`, `invalid_table_shape`, `unsupported_footnote`,
 `invalid_footnote`, `unsupported_front_matter`, `invalid_split_level` and
 `invalid_request`. Other errors retain the category name as their detailed code.
@@ -92,11 +98,26 @@ The [H2 source](../examples/title-h2.md),
 [inline request](../examples/title-h2-inline.json) show a title/preamble, skipped
 levels, repeated chapter titles and cross-chapter links and note returns.
 
+## Supply chapter images
+
+Use `![Description](relative/image.png)` in Markdown content. Empty alt requires
+`![](relative/image.png "decorative")`. No new request fields are needed.
+Local static JPEG/PNG, path rules, resource reuse and limits are declared by
+`inline_image_profile`, `inline_image_formats` and `limits` in capabilities.
+Missing files use `io_error`/exit 3; unsupported sources, corrupt data, limits
+and missing descriptions use `invalid_input`/exit 2. The detailed issue includes
+the image's Markdown source location and a repair hint.
+
+See [the image rules](USAGE.md#local-chapter-images) and equivalent
+[illustrated file](../examples/illustrated-request.json) and
+[streamed-inline](../examples/illustrated-inline.json) examples. Stream the
+latter with `--base-dir examples`. No remote resources are fetched.
+
 ## Supply a cover
 
 Add `"cover": {"path": "cover.png", "alt": "Cover of A guide"}` to a book request. Relative paths follow the same base-directory rules as input files. A streamed request containing a cover needs `--base-dir`. Direct-file builds use `--cover cover.png` and optionally `--cover-alt "Cover of A guide"`; these flags cannot be mixed with request mode.
 
-JPEG and PNG are supported. The tool checks the actual image data, completely decodes it under bounded limits, and preserves the original encoded bytes. Limits are 10 MiB, 8,000 pixels per side and 16 million pixels total. The package uses the detected format even when the supplied filename has a different extension. Empty, corrupt, oversized or unsupported images fail without replacing a previous output.
+Static JPEG and PNG are supported; animated PNG is rejected on main. The tool checks the actual image data, completely decodes it under bounded limits, and preserves the original encoded bytes. Limits are 10 MiB, 8,000 pixels per side and 16 million pixels total. The package uses the detected format even when the supplied filename has a different extension. Empty, corrupt, oversized or unsupported images fail without replacing a previous output.
 
 The cover is identified in publication metadata and appears before the contents page. It is excluded from chapter counts and the chapter table of contents. Chapter previous/next links continue to connect chapters. Supplied alternative text must be nonempty; when omitted, the tool uses `Cover of <book title>`. A successful JSON result reports `cover: true` when a cover is present.
 

@@ -31,6 +31,10 @@ jobs:
         env:
           EPUBCHECK: ./scripts/epubcheck.sh
         run: cargo test --locked --test covers independent_cover_corpus -- --ignored
+      - name: Independently validate illustrated publications
+        env:
+          EPUBCHECK: ./scripts/epubcheck.sh
+        run: cargo test --locked --test images independent_inline_image_corpus -- --ignored
   package:
     name: Package (${{ matrix.target }})
     strategy:

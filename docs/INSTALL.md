@@ -5,6 +5,10 @@ needs no Rust, Python, Java or AI account. Downloading from this private
 repository requires a GitHub account with repository access, plus a browser
 or the GitHub CLI (`gh auth login`). Repository visibility is unchanged.
 
+Main is developing `0.6.0-dev` with local chapter images. This feature requires
+a [source build](#source-build); the download
+commands below install v0.5.1, which supports covers only.
+
 | Archive target | Native installation check | Runtime boundary |
 | --- | --- | --- |
 | `aarch64-apple-darwin` | macOS 15, Apple Silicon | macOS system libraries; Intel Macs are not included. |

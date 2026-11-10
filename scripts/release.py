@@ -23,7 +23,10 @@ FILES = (
     "docs/AGENT_INTERFACE.md", "schemas/book-request.v1.json",
     "examples/introduction.txt", "examples/guide.md", "examples/book-request.json",
     "examples/research-report.md", "examples/report-request.json",
-    "examples/report-inline.json", "examples/title-h2.md",
+    "examples/report-inline.json", "examples/illustrated-guide.md",
+    "examples/illustrated-request.json", "examples/illustrated-inline.json",
+    "examples/assets/export-flow.png", "examples/assets/landscape.jpg", "examples/assets/divider.png",
+    "examples/title-h2.md",
     "examples/title-h2-request.json", "examples/title-h2-inline.json", "scripts/epubcheck.sh",
     "skills/agent-epub/SKILL.md", "skills/agent-epub/references/examples.md",
 )
@@ -112,6 +115,9 @@ def pack(args):
                                            "--output", "examples/sample-report.epub", "--json"], stage))
         if result["checks"]["structural_profile"] != "passed":
             raise RuntimeError("Sample build did not pass structural checks")
+        illustrated = json.loads(run(executable, ["build", "--request", "examples/illustrated-request.json",
+                                                 "--output", "examples/sample-illustrated.epub", "--json"], stage))
+        assert illustrated["images"] == 3 and illustrated["cover"] and illustrated["chapters"] == 3
         with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as package:
             for file in sorted(stage.rglob("*")):
                 if file.is_file():
@@ -210,16 +216,33 @@ def smoke(args):
             if h2_resources is None:
                 h2_resources = resources
             assert resources == h2_resources
+        assert capabilities["inline_images"] is True
+        illustrated_inline = (stage / "examples/illustrated-inline.json").read_text(encoding="utf-8")
+        image_modes = {
+            "direct": (["--input", "examples/illustrated-guide.md", "--split-level", "2", "--title", "Illustrated guide", "--language", "en", "--cover", "examples/assets/landscape.jpg"], None),
+            "request": (["--request", "examples/illustrated-request.json"], None),
+            "streamed": (["--request", "-", "--base-dir", "examples"], illustrated_inline),
+        }
+        def reading_resources(path):
+            with zipfile.ZipFile(path) as archive:
+                return {name: archive.read(name) for name in archive.namelist()
+                        if name != "EPUB/package.opf" and name not in ["mimetype", "META-INF/container.xml"]}
+        illustrated_reference = reading_resources(stage / "examples/sample-illustrated.epub")
+        for mode, (options, content) in image_modes.items():
+            output = stage / f"images-{mode}.epub"
+            result = json.loads(run(binary, ["build", *options, "--output", output, "--json"], stage, env, content))
+            assert result["images"] == 3 and result["cover"] and result["chapters"] == 3
+            assert reading_resources(output) == illustrated_reference
         protected = stage / "direct.epub"
         before = protected.read_bytes()
         failed = json.loads(run(binary, ["build", "--request", "-", "--output", protected,
                                          "--overwrite", "--json"], stage, env,
                                 json.dumps({"schema_version": 1, "metadata": {"title": "Bad", "language": "en"},
-                                            "inputs": [{"format": "markdown", "content": "![image](missing.png)"}]}), 2))
+                                            "inputs": [{"format": "markdown", "content": "![image](https://example.org/image.png)"}]}), 2))
         assert failed["status"] == "failed" and failed["output"] is None
         assert failed["errors"][0]["code"] == "invalid_input"
         issue = failed["errors"][0]
-        assert issue["issue_code"] == "unsupported_inline_image"
+        assert issue["issue_code"] == "unsupported_image_source"
         assert issue["line"] == 1 and issue["column"] == 1 and issue["remedy"]
         assert issue["source"]
         for operation, options in [
@@ -236,7 +259,7 @@ def smoke(args):
         assert conflict["status"] == "failed" and protected.read_bytes() == before
         report.update(status="passed", input_modes=list(modes), sample_content="passed",
                       failed_and_unrun_checks="passed", output_protection="passed",
-                      h2_input_modes="passed", detailed_diagnostics="passed")
+                      h2_input_modes="passed", detailed_diagnostics="passed", inline_image_modes="passed")
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))

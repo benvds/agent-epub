@@ -11,6 +11,7 @@ pub(crate) struct Book {
     pub metadata: Metadata,
     pub chapters: Vec<Chapter>,
     pub cover: Option<crate::cover::Cover>,
+    pub images: Vec<crate::assets::Image>,
 }
 
 #[derive(Debug)]
@@ -48,6 +49,7 @@ pub(crate) struct Source {
     pub path: PathBuf,
     pub text: String,
     pub format: String,
+    pub asset_base: Option<PathBuf>,
 }
 
 pub(crate) fn load(input: &std::path::Path) -> Result<Source> {
@@ -75,7 +77,13 @@ pub(crate) fn load(input: &std::path::Path) -> Result<Source> {
         .and_then(|s| s.to_str())
         .unwrap_or("")
         .to_ascii_lowercase();
-    Ok(Source { path, text, format })
+    let asset_base = path.parent().map(PathBuf::from);
+    Ok(Source {
+        path,
+        text,
+        format,
+        asset_base,
+    })
 }
 
 pub(crate) fn prepare(inputs: &[PathBuf], metadata: Metadata, split_level: u8) -> Result<Book> {
@@ -136,6 +144,7 @@ pub(crate) fn prepare_sources(
     let mut drafts = Vec::new();
     let mut notes = crate::notes::Notes::default();
     let mut links = Vec::new();
+    let mut assets = crate::assets::Assets::default();
     let mut normalized_sources = Vec::new();
     let mut total = 0;
     for (source, source_input) in inputs.iter().enumerate() {
@@ -197,7 +206,50 @@ pub(crate) fn prepare_sources(
                 let mut depth = 0usize;
                 let mut columns = 0;
                 let mut in_note = false;
-                for (event, range) in Parser::new_ext(&text, options).into_offset_iter() {
+                let mut parsed = Parser::new_ext(&text, options).into_offset_iter();
+                while let Some((event, range)) = parsed.next() {
+                    if let Event::Start(Tag::Image {
+                        link_type,
+                        dest_url,
+                        title,
+                        id,
+                    }) = event
+                    {
+                        let mut alt = String::new();
+                        for (child, _) in parsed.by_ref() {
+                            match child {
+                                Event::End(TagEnd::Image) => break,
+                                Event::Text(value) | Event::Code(value) => alt.push_str(&value),
+                                Event::SoftBreak | Event::HardBreak => alt.push(' '),
+                                Event::Start(Tag::Emphasis | Tag::Strong | Tag::Link { .. })
+                                | Event::End(TagEnd::Emphasis | TagEnd::Strong | TagEnd::Link) => {},
+                                _ => return Err(input_error("Image alternative text must contain only ordinary inline text.")
+                                    .issue("invalid_image_alt", "Use a plain description without nested images, HTML or footnote references.").at(input, &text, range.start)),
+                            }
+                        }
+                        let decorative = alt.trim().is_empty() && title.as_ref() == "decorative";
+                        if (!decorative && alt.trim().is_empty()) || !valid_xml_text(&alt) {
+                            return Err(input_error("Supply image alternative text or an explicit decorative choice.")
+                                .issue("image_alt_required", "Write ![A useful description](path), or ![](path \"decorative\") for a purely decorative image.").at(input, &text, range.start));
+                        }
+                        if decorative {
+                            alt.clear();
+                        }
+                        let destination = assets
+                            .load(&dest_url, source_input.asset_base.as_deref())
+                            .map_err(|e| e.at(input, &text, range.start))?;
+                        groups.last_mut().unwrap().extend([
+                            Event::Start(Tag::Image {
+                                link_type,
+                                dest_url: destination.into(),
+                                title: title.into_static(),
+                                id: id.into_static(),
+                            }),
+                            Event::Text(alt.into()),
+                            Event::End(TagEnd::Image),
+                        ]);
+                        continue;
+                    }
                     if let Event::Start(Tag::Link { dest_url, .. }) = &event {
                         links.push((source, range.start, dest_url.to_string()));
                     }
@@ -245,15 +297,11 @@ pub(crate) fn prepare_sources(
                     }
                     let unsupported = match &event {
                         Event::Html(_) | Event::InlineHtml(_) => Some("raw HTML"),
-                        Event::Start(Tag::Image { .. }) => {
-                            Some("inline images (use the separate cover option for a cover)")
-                        }
                         Event::TaskListMarker(_) => Some("task lists"),
                         _ => None,
                     };
                     if let Some(feature) = unsupported {
                         let code = match &event {
-                            Event::Start(Tag::Image { .. }) => "unsupported_inline_image",
                             Event::TaskListMarker(_) => "unsupported_task_list",
                             _ => "unsupported_raw_html",
                         };
@@ -404,8 +452,15 @@ pub(crate) fn prepare_sources(
     // Check original parser spans before rendering so note and reference-style
     // links retain their exact source location after chapter splitting.
     for (source, offset, destination) in links {
-        resolve_link(&destination, source, &paths, &first, &targets)
-            .map_err(|e| e.at(&paths[source], &normalized_sources[source], offset))?;
+        resolve_link(
+            &destination,
+            source,
+            &paths,
+            &first,
+            &targets,
+            &assets.images,
+        )
+        .map_err(|e| e.at(&paths[source], &normalized_sources[source], offset))?;
     }
     let mut chapters = Vec::new();
     for draft in drafts {
@@ -417,7 +472,14 @@ pub(crate) fn prepare_sources(
                 .collect::<String>();
             format!("<h1>{}</h1>\n{paragraphs}", xml_text(&draft.title))
         } else {
-            let events = rewrite_links(draft.events, draft.source, &paths, &first, &targets)?;
+            let events = rewrite_links(
+                draft.events,
+                draft.source,
+                &paths,
+                &first,
+                &targets,
+                &assets.images,
+            )?;
             let mut body = if draft.has_title {
                 String::new()
             } else {
@@ -433,7 +495,14 @@ pub(crate) fn prepare_sources(
         });
     }
     for note in notes.finish(&paths)? {
-        let events = rewrite_links(note.events.clone(), note.source, &paths, &first, &targets)?;
+        let events = rewrite_links(
+            note.events.clone(),
+            note.source,
+            &paths,
+            &first,
+            &targets,
+            &assets.images,
+        )?;
         chapters[note.chapter]
             .body
             .push_str(&note.wrap(&render(events)));
@@ -442,6 +511,7 @@ pub(crate) fn prepare_sources(
         metadata,
         chapters,
         cover: None,
+        images: assets.images,
     })
 }
 
@@ -472,6 +542,7 @@ fn rewrite_links(
     paths: &[PathBuf],
     first: &HashMap<usize, usize>,
     targets: &HashMap<(usize, String), (usize, String)>,
+    images: &[crate::assets::Image],
 ) -> Result<Vec<Event<'static>>> {
     events
         .into_iter()
@@ -484,7 +555,8 @@ fn rewrite_links(
                     id,
                 }) => Event::Start(Tag::Link {
                     link_type,
-                    dest_url: resolve_link(&dest_url, source, paths, first, targets)?.into(),
+                    dest_url: resolve_link(&dest_url, source, paths, first, targets, images)?
+                        .into(),
                     title,
                     id,
                 }),
@@ -515,7 +587,41 @@ fn render(events: Vec<Event<'static>>) -> String {
     let mut alignments = Vec::new();
     let mut header = false;
     let mut column = 0;
-    let events = events.into_iter().map(|event| match event {
+    let mut input = events.into_iter();
+    let mut prepared = Vec::new();
+    while let Some(event) = input.next() {
+        if let Event::Start(Tag::Image {
+            dest_url, title, ..
+        }) = event
+        {
+            let mut alt = String::new();
+            for child in input.by_ref() {
+                match child {
+                    Event::End(TagEnd::Image) => break,
+                    Event::Text(value) => alt.push_str(&value),
+                    _ => {}
+                }
+            }
+            let extra = if alt.is_empty() && title.as_ref() == "decorative" {
+                " role=\"presentation\"".to_string()
+            } else if !title.is_empty() {
+                format!(" title=\"{}\"", xml_text(&title))
+            } else {
+                String::new()
+            };
+            prepared.push(Event::Html(
+                format!(
+                    "<img src=\"{}\" alt=\"{}\"{extra} />",
+                    xml_text(&dest_url),
+                    xml_text(&alt)
+                )
+                .into(),
+            ));
+        } else {
+            prepared.push(event);
+        }
+    }
+    let events = prepared.into_iter().map(|event| match event {
         Event::Start(Tag::Table(ref values)) => {
             alignments = values.clone();
             event
@@ -543,7 +649,24 @@ fn render(events: Vec<Event<'static>>) -> String {
     });
     let mut body = String::new();
     html::push_html(&mut body, events);
-    body
+    // The profile forbids nested tables and raw HTML. Mark only generated
+    // tables containing images so intrinsic raster widths cannot widen them.
+    let mut tables = body.split("<table>");
+    let mut rendered = tables.next().unwrap_or("").to_string();
+    for table in tables {
+        if table
+            .split("</table>")
+            .next()
+            .unwrap_or("")
+            .contains("<img ")
+        {
+            rendered.push_str("<table class=\"with-images\">");
+        } else {
+            rendered.push_str("<table>");
+        }
+        rendered.push_str(table);
+    }
+    rendered
 }
 
 fn heading_number(level: HeadingLevel) -> u8 {
@@ -593,6 +716,7 @@ fn resolve_link(
     paths: &[PathBuf],
     first: &HashMap<usize, usize>,
     targets: &HashMap<(usize, String), (usize, String)>,
+    images: &[crate::assets::Image],
 ) -> Result<String> {
     let error = || {
         input_error(format!(
@@ -630,6 +754,16 @@ fn resolve_link(
         source
     } else {
         let candidate = normalized_path(&paths[source].parent().unwrap().join(path.as_ref()));
+        let canonical = candidate.canonicalize().ok();
+        if images
+            .iter()
+            .any(|image| image.source == candidate || canonical.as_ref() == Some(&image.source))
+        {
+            return Err(error().issue(
+                "unsupported_link",
+                "Display the image with ![Description](path), or link to the heading containing it; direct image-file hyperlinks need EPUB fallback support.",
+            ));
+        }
         paths
             .iter()
             .position(|p| *p == candidate)
@@ -740,7 +874,11 @@ mod tests {
 
     #[test]
     fn rejects_features_that_would_otherwise_be_lost() {
-        for text in ["![alt](image.png)", "<script>x</script>", "- [x] task"] {
+        for text in [
+            "![alt](https://example.org/image.png)",
+            "<script>x</script>",
+            "- [x] task",
+        ] {
             assert!(
                 book(&[("b.md", text)])
                     .unwrap_err()

@@ -1,6 +1,6 @@
 ---
 name: agent-epub
-description: Create reflowable EPUB reading editions from text or Markdown using the agent-epub CLI, including tables, linked notes, nested contents and optional supplied covers. Use for EPUB export, not PDF conversion or arbitrary EPUB editing.
+description: Create reflowable EPUB reading editions from text or Markdown using the agent-epub CLI, including tables, linked notes, nested contents and optional supplied covers and capability-gated local illustrations. Use for EPUB export, not PDF conversion or arbitrary EPUB editing.
 ---
 
 Use the installed `agent-epub` executable. Run `agent-epub capabilities` to
@@ -18,10 +18,18 @@ simple logical filenames for links, without directories.
 Preserve the requested content. Each file starts a chapter; root H1 headings
 split Markdown chapters and root H2–H6 headings enter nested contents. Tables
 need equal cell counts and a header row. Notes are source-local and need used,
-nonempty, unique definitions. Raw HTML, inline images, task lists and complex
-tables are unsupported. Use supplied PNG/JPEG covers when requested. Do not
+nonempty, unique definitions. Raw HTML, task lists and complex tables are unsupported. Use supplied PNG/JPEG covers when requested. Do not
 silently remove unsupported content or fetch remote resources to make a build
 pass; report the issue and make only repairs within the user's request.
+
+Main 0.6.0-dev declares `inline_images: true`; published v0.5.1 supports covers
+only. When supported, use static local JPEG/PNG with meaningful alt text:
+`![Description](assets/image.png)`. For purely decorative images, use
+`![](assets/divider.png "decorative")`. File assets resolve from the source
+parent; inline assets use the request file's directory or explicit base.
+Streamed inline images require `--base-dir`. URLs, SVG and animation are
+unsupported. Do not invent images or descriptions for a supplied manuscript.
+Respect discovery limits and use the illustrated examples when available.
 
 Build with `--json` and inspect both the exit status and result. A usable new
 artifact requires exit 0, `status: success`, a nonnull `output`, and

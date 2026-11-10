@@ -210,8 +210,8 @@ fn detailed_issues_preserve_categories_and_exact_source_locations() {
             1,
         ),
         (
-            "# Guide\n\n![alt](image.png)\n",
-            "unsupported_inline_image",
+            "# Guide\n\n![alt](https://example.org/image.png)\n",
+            "unsupported_image_source",
             3,
             1,
         ),
@@ -467,7 +467,7 @@ fn historical_markdown_probes_have_current_declared_outcomes() {
         );
         let (code, result) = run_request(&book, None, &dir.path().join(format!("{name}.epub")));
         let expected = match name {
-            "inline_image" => Some("unsupported_inline_image"),
+            "inline_image" => Some("image_base_required"),
             "task_list" => Some("unsupported_task_list"),
             "raw_html" => Some("unsupported_raw_html"),
             "yaml_frontmatter" => Some("unsupported_front_matter"),

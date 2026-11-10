@@ -277,6 +277,39 @@ pub fn validate(path: &Path) -> Result<Summary> {
             {
                 return Err(failure(format!("{name}: duplicate id {id}")));
             }
+            if element.has_tag_name((XHTML, "img")) {
+                let alt = element
+                    .attribute("alt")
+                    .ok_or_else(|| failure(format!("{name}: image missing alternative text.")))?;
+                if alt.trim().is_empty() && element.attribute("role") != Some("presentation") {
+                    return Err(failure(format!(
+                        "{name}: empty image alternative requires role=presentation."
+                    )));
+                }
+                if !alt.is_empty() && element.attribute("role") == Some("presentation") {
+                    return Err(failure(format!(
+                        "{name}: decorative image must have empty alternative text."
+                    )));
+                }
+                let src = element
+                    .attribute("src")
+                    .ok_or_else(|| failure(format!("{name}: image missing source.")))?;
+                if Url::parse(src).is_ok() || src.starts_with("//") {
+                    return Err(failure(format!(
+                        "{name}: image source must be a bundled local file."
+                    )));
+                }
+                let (target, fragment) = local_target(name, src)?;
+                if fragment.is_some()
+                    || !items.values().any(|(resource, media)| {
+                        resource == &target && matches!(*media, "image/png" | "image/jpeg")
+                    })
+                {
+                    return Err(failure(format!(
+                        "{name}: image must reference a bundled JPEG/PNG manifest resource."
+                    )));
+                }
+            }
             for attr in ["href", "src"] {
                 let Some(href) = element.attribute(attr) else {
                     continue;
@@ -305,6 +338,22 @@ pub fn validate(path: &Path) -> Result<Summary> {
                     }
                 }
             }
+        }
+    }
+    let mut image_count = 0;
+    let mut image_bytes = 0usize;
+    for (target, media) in items.values() {
+        if matches!(*media, "image/png" | "image/jpeg")
+            && !covers.iter().any(|(cover, _)| cover == target)
+        {
+            image_count += 1;
+            image_bytes += files[target].len();
+            if image_count > crate::assets::MAX_IMAGES
+                || image_bytes > crate::assets::MAX_TOTAL_BYTES
+            {
+                return Err(failure("Inline image count/size exceeds profile limits."));
+            }
+            crate::assets::validate_packaged(&files[target], media, Path::new(target))?;
         }
     }
     validate_notes(&documents)?;
@@ -422,6 +471,7 @@ pub fn validate(path: &Path) -> Result<Summary> {
     Ok(Summary {
         chapters: chapters.len(),
         cover: !covers.is_empty(),
+        images: image_count,
         independent_validation: false,
     })
 }

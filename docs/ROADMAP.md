@@ -1,6 +1,6 @@
 # Agent EPUB tool roadmap
 
-Updated 10 November 2026. Milestones 1 through 5 are released, with the latest patch at `v0.5.1`. Milestone 5a's practical three-pair comparison against Pandoc is complete. Milestone 6 reviews that evidence and GitHub feedback before selecting further features. Future dates and release versions remain unset; completion depends on recorded acceptance evidence.
+Updated 10 November 2026. Milestones 1 through 5 are released, with the latest patch at `v0.5.1`. Milestone 5a's practical three-pair comparison against Pandoc is complete. Local inline images are the selected next P0 delivery; milestone 6 reviews evidence and GitHub feedback for further selections. Future dates and release versions remain unset; completion depends on recorded acceptance evidence.
 
 The initial audience is developers adding EPUB export for prose-heavy reports and learning guides to an agent workflow. Priorities follow the [market research](research/market-research-2026-11-10.md). The [feature comparison matrix](research/epub-feature-matrix.md) separates released support, planned additions and documented competitor capabilities. Broader publishing features require evidence from benchmark documents or GitHub issues.
 
@@ -59,7 +59,7 @@ Exit gates:
 
 Status: complete for the selected scope at `v0.3.0`. Simple semantic Markdown tables, linked footnotes with return links, and nested section contents work through the existing file and agent request inputs. Full EPUB support remains outside scope. See the [verification record](verification/MILESTONE_3.md).
 
-Delivered from the original candidates: simple semantic tables, linked notes and deeper contents. Inline images, richer metadata, styles, accessibility reports, batch generation and reproducible archives remain candidates in the conditional backlog below.
+Delivered from the original candidates: simple semantic tables, linked notes and deeper contents. Local inline images are selected as D1 below. Richer metadata, styles, accessibility reports, batch generation and reproducible archives remain conditional candidates.
 
 Exit gates for each chosen addition:
 
@@ -132,7 +132,9 @@ Exit gates:
 
 ## Next delivery: D1 Local inline images
 
-Status: selected as the next P0 implementation priority on 10 November 2026,
+Status: prioritized P0 on 10 November 2026 and implemented on main as
+`0.6.0-dev`. Automated, EPUBCheck and browser reader checks pass; the second
+reader gate remains pending because the Mac is locked. Selected
 at the maintainer's explicit request. The milestone 5a guide/image case and the
 need to include diagrams and screenshots justify selecting this package before
 the broader milestone 6 review. Other conditional features remain deferred.

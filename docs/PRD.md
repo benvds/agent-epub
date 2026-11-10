@@ -45,7 +45,7 @@ Preserve the supplied writing and its order. Use sensible presentation defaults.
 | Inline images and style choices | Deferred | Deferred | Deferred |
 | Full EPUB, multimedia and fixed layout | Outside scope | Outside scope | Outside scope |
 
-The [roadmap](ROADMAP.md) defines the delivery gates. Milestone 3 selects tables, notes and section contents from the original shortlist; the remaining candidates stay deferred.
+The [roadmap](ROADMAP.md) defines the delivery gates. Milestone 3 selects tables, notes and section contents from the original shortlist; D1 local illustrations are now selected below, and other candidates remain deferred.
 
 ## Milestone 1 requirements
 
@@ -84,7 +84,7 @@ An agent supplies final writing. The product does not need to generate prose, ca
 | P17 | Make notes easy to follow. | Source-local footnotes are numbered by first reference, shared across repeated references and linked back to every referring location. Empty, duplicate, unused and nested notes fail explicitly. Unmatched markers remain literal text under the documented Markdown rules. |
 | P18 | Navigate longer chapters. | Root-level H2–H6 headings appear as nested contents entries. Skipped levels and duplicate labels remain usable. Quoted, list and note headings stay out of the contents. |
 
-These conveniences work through the existing file and general agent inputs. Inline images, style customization, expanded metadata, batch generation and reproducible archives remain deferred.
+These conveniences work through the existing file and general agent inputs. Local inline images are selected below; style customization, expanded metadata, batch generation and reproducible archives remain deferred.
 
 ## Milestones 4, 5 and 5a requirements
 
@@ -102,7 +102,23 @@ They describe the delivered product boundary without prescribing its implementat
 
 See [milestone 5 verification](verification/MILESTONE_5.md) and the
 [practical comparison](verification/MILESTONE_5A.md). Milestone 6 reviews evidence
-and GitHub feedback before conditional features are selected.
+and GitHub feedback for further conditional selections; D1 was explicitly prioritized by the maintainer.
+
+## Selected next delivery: local illustrations
+
+The maintainer prioritized D1 on 10 November 2026 before the broader evidence
+review. Main `0.6.0-dev` adds supplied local static JPEG/PNG images through the
+existing Markdown inputs. Published v0.5.1 remains cover-only. Other conditional
+candidates remain deferred.
+
+| ID | Requirement | Acceptance |
+| --- | --- | --- |
+| P25 | Preserve supplied illustrations. | Source-relative static JPEG/PNG is bundled unchanged, reused consistently and works through all three input modes with existing chapter, table and note behavior. |
+| P26 | Make image choices explicit and bounded. | Meaningful alt or an explicit decorative choice is required. Missing, corrupt, oversized and unsupported resources fail with actionable locations while preserving output and image inputs. Discovery declares formats, base-directory rules and limits. |
+| P27 | Verify illustrated reading editions. | Package types, resources and image semantics pass automated checks and EPUBCheck; two-reader and narrow-layout observations are recorded without claiming a complete accessibility assessment. |
+
+See [D1 scope and gates](ROADMAP.md#next-delivery-d1-local-inline-images) and
+[verification](verification/INLINE_IMAGES.md).
 
 ## Quality and result handling
 

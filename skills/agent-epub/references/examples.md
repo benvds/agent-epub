@@ -37,8 +37,8 @@ A successful result reports an absolute `output` path and:
 This excerpt omits other fields. Say that structural checks passed and EPUBCheck
 was not run; reader appearance and accessibility require separate review.
 
-For example, unsupported inline images fail with exit 2, category `invalid_input`
-and detailed `unsupported_inline_image`. Inspect `source`, available `line` /
+For example, remote images on main fail with exit 2, category `invalid_input`
+and detailed `unsupported_image_source`. Inspect `source`, available `line` /
 `column` and `remedy` before retrying. Links to sources without readable chapters
 return `unresolved_link`. A missing requested EPUBCheck executable fails with exit 5 and
 `validator_failed`. In both cases `status` is `failed`, `output` is null and
@@ -58,3 +58,16 @@ agent-epub build --request - --output inline-h2.epub --json < examples/title-h2-
 These equivalent examples preserve the title/preamble, repeated chapter titles,
 nested Detail entry and note return links. Direct input uses `--split-level`;
 requests use `"split_level": 2`. Omit either setting for the default H1 behavior.
+
+## Local illustrations (main 0.6.0-dev)
+
+Check `inline_images` in capabilities before using ordinary Markdown images.
+The illustrated fixtures include PNG/JPEG, asset reuse, a table, a note and a
+decorative image. From the repository or a future matching archive:
+
+```sh
+agent-epub build --request examples/illustrated-request.json --output guide.epub --json
+agent-epub build --request - --base-dir examples --output guide.epub --json < examples/illustrated-inline.json
+```
+
+The version 1 request contract is unchanged. Published v0.5.1 lacks this feature.

@@ -306,7 +306,11 @@ fn failures_and_default_conflicts_preserve_existing_output() {
     let original = fs::read(&options.output).unwrap();
     assert_eq!(build(&options).unwrap_err().kind, ErrorKind::Input);
     options.overwrite = true;
-    fs::write(&options.inputs[0], "![unsupported](cover.png)").unwrap();
+    fs::write(
+        &options.inputs[0],
+        "![unsupported](https://example.org/cover.png)",
+    )
+    .unwrap();
     assert_eq!(build(&options).unwrap_err().kind, ErrorKind::Input);
     assert_eq!(fs::read(&options.output).unwrap(), original);
     fs::write(&options.inputs[0], "# Good\nA new edition.").unwrap();
