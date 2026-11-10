@@ -2,7 +2,7 @@
 
 Updated 10 November 2026. The first three milestones delivered a useful, tested EPUB subset. Milestone 4 adds installation and agent adoption at `v0.4.0`. The remaining milestones improve input handling and diagnostics and test its value against alternatives. Dates and future release versions are intentionally unset; each milestone ends when its acceptance gates pass.
 
-The initial audience is developers adding EPUB export for prose-heavy reports and learning guides to an agent workflow. Priorities follow the [market research](research/market-research-2026-11-10.md). Broader publishing features require evidence from actual source documents and repeated use.
+The initial audience is developers adding EPUB export for prose-heavy reports and learning guides to an agent workflow. Priorities follow the [market research](research/market-research-2026-11-10.md). The [feature comparison matrix](research/epub-feature-matrix.md) separates released support, planned additions and documented competitor capabilities. Broader publishing features require evidence from benchmark documents or GitHub issues.
 
 ## Milestone 1 Text and Markdown reading editions
 
@@ -105,29 +105,50 @@ Exit gates:
 4. Split-level fixtures cover preambles, skipped levels, duplicate headings, internal links and equivalent direct/structured requests. Existing default output behavior remains covered.
 5. Relevant regression and independent EPUBCheck checks pass; changed reading structure has recorded reader checks.
 
-## Milestone 6 Comparative evidence and user pilots
+## Milestone 5a Agent workflow benchmark against Pandoc
 
-Status: planned. Priority: P1. Establish whether the focused contract saves enough work to justify adopting another EPUB tool.
+Status: planned immediately after milestone 5. Priority: P1. Measure whether Agent EPUB produces a correct EPUB faster through an actual agent workflow, including setup, tool calls and retries.
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |
-| C1 Shared comparison corpus | Compare current Agent EPUB with a reasonable Pandoc wrapper using the same promised checks. Add mdbindery for repository-based cases. Publish versions, configuration, outcomes and reproducible instructions. | 2 to 4 days | Current baseline can start now; A3 and milestone 5 for final adoption measurements |
-| C2 Observed user pilot | Recruit five to eight prospective report/guide users, observe their current export work and follow repeated use for two weeks. Record actual documents, blockers and manual repairs with permission; commit only synthetic or approved material. | Two-week observation window; recruitment effort unknown | A1, A3 and A4 for unassisted adoption; C1 scoring method |
+| C1 Agent workflow benchmark | Shared tasks, instrumented agent runs against Agent EPUB and a reasonable Pandoc wrapper, independent artifact scoring, and a reproducible comparison report. | 2 to 4 days, re-estimate after the run budget is selected | Milestone 5 complete; A3 release binaries and A4 instructions |
 
-Evaluate installation and first export, agent attempts, manual interventions, content fidelity, reading behavior and repeat use. Time generation and independent validation separately. Include failures and compare equivalent validation conditions; successful conversion time alone is insufficient.
+Benchmark protocol:
+
+- Use the same agent client, model, settings, host resources, permissions and task instructions for both tools. Pin and record versions. Give both tools usable documentation and a prepared integration recipe; record the time needed to prepare those recipes separately.
+- Measure cold setup in clean disposable environments, including download, installation, discovery, configuration and the first correct EPUB. Measure repeated exports separately with the tools installed and documented capability caching allowed equally.
+- Supply identical completed manuscripts and requested metadata, chapter structure and validation. Include prose, multiple files, tables, notes, covers, title-plus-H2 chapters and recoverable input/link problems. Score unsupported-content cases separately from tasks both tools promise to support. Exclude manuscript writing from export time.
+- Reuse existing source files instead of making an agent repeat their content in JSON. Include inline requests as a separate scenario when the application already holds content in memory.
+- Instrument actual agent/tool events and artifact snapshots. Record total wall time, setup time, model turns, tool calls by purpose, build attempts, retries after the first build attempt, manual interventions and token usage when exposed. Separate converter runtime and validation runtime from the complete workflow.
+- Run independent content, order, navigation, metadata and EPUBCheck checks on both outputs with equivalent validation requirements. Stop the success clock only when a correct artifact meets those requirements; report failures, timeouts and repairs within the same predefined limits for both tools.
+- Predeclare the task corpus, equal time/attempt caps, repeat count and permitted resource spend. Use fresh isolated sessions, repeat paired tasks and alternate tool order. Respect the user's resource limits. Report sample size, median, range and paired differences; identify small-sample results as inconclusive where appropriate.
+
+Exit gates:
+
+1. Commit the corpus, exact prompts/recipes, harness, tool versions, scoring rules and sanitized per-run measurements so the comparison can be reproduced.
+2. Report cold setup and warm export results separately, including time to a correct EPUB, first-attempt success, total tool calls and retries. Keep failed runs in the outcome totals rather than dropping them from the comparison.
+3. State whether Agent EPUB is faster, slower or inconclusive for each scenario and overall within the measured corpus. Show quality failures beside speed; do not claim an advantage from fewer checks or missing content.
+4. Record the highest-cost steps and any resulting improvement tasks before selecting further features. Converter-only benchmarks do not satisfy this gate.
+
+## Milestone 6 Evidence review and GitHub feedback
+
+Status: planned. Priority: P1. Establish whether the focused contract saves enough work to justify adopting another EPUB tool.
+
+Use the milestone 5a comparison corpus and [GitHub issues](https://github.com/benvds/epub-rust/issues) to prioritize further work. Feedback is issue-driven, with no recruitment, scheduled observation or user-study completion gate. Ask issue reporters for the tool version, command or request, expected versus actual behavior and a minimal non-private reproduction when needed. Add mdbindery if repository-based workflows justify extending the comparison; keep that extension separate from the required Agent EPUB versus Pandoc benchmark.
+
+Evaluate installation and first export, agent attempts, manual interventions, content fidelity and reading behavior from the benchmark and reproducible issues. Time generation and independent validation separately. Include failures and compare equivalent validation conditions; successful conversion time alone is insufficient.
 
 Proposed decision targets:
 
-- At least three pilot users generate a second EPUB within two weeks without maintainer assistance.
 - A typical supported document reaches a first useful EPUB within ten minutes on a clean machine using a release binary.
 - At least 90% of the published task corpus completes without manual source rewriting, with no known loss of supported content.
 - The contract reduces failed attempts, manual intervention or integration code relative to the Pandoc baseline.
 
 Exit gates:
 
-1. Publish observed results against each target, including misses, unsupported cases and remaining uncertainty. These targets are hypotheses, not current performance claims.
+1. Publish benchmark results against each target, including misses, unsupported cases and remaining uncertainty. These targets are hypotheses, not current performance claims. No minimum number of GitHub issues is required.
 2. Compare text, links, order and requested structures independently of each generator's success report. Counts alone do not prove fidelity.
-3. Select, defer or reject each conditional candidate using recorded blockers and repeated-use evidence.
+3. Select, defer or reject each conditional candidate using benchmark results and relevant GitHub issue evidence; link decisions to their reproductions where available.
 4. Record the resulting product decision: continue the focused engine, improve its integration, narrow its audience or reconsider scope. Missing a target prompts a decision rather than an automatic feature expansion.
 
 ## Conditional backlog after the initial adoption work
@@ -136,7 +157,7 @@ These candidates are not committed release scope. Select a small package after r
 
 | ID and priority | Candidate | Estimated effort | Evidence and acceptance boundary |
 | --- | --- | --- | --- |
-| D1 P1 | Local inline images | 3 to 5 days | Pilot guides repeatedly need diagrams. Define source-relative assets, supplied alternative text or an explicit decorative choice, bounded decoding, missing-resource failures and reader checks. Keep remote fetching outside scope. |
+| D1 P1 | Local inline images | 3 to 5 days | Benchmark documents or GitHub issues establish a guide workflow needing diagrams. Define source-relative assets, supplied alternative text or an explicit decorative choice, bounded decoding, missing-resource failures and reader checks. Keep remote fetching outside scope. |
 | D2 P2 | Aggregate preflight | 2 to 4 days | Agents repeatedly repair one issue per build. Depends on B1 and B2; return multiple independent issues and a proposed chapter map without publishing output. |
 | D3 P2 | Stable identity and reproducible archives | 1 to 3 days | A repeated publishing or CI workflow needs stable comparisons. Define identifiers, modification time, ZIP metadata and relevant tool versions; verify byte-identical archives under declared settings. |
 | D4 P2 | Content-preservation manifest | 2 to 4 days | Callers need inspectable source-to-chapter mapping, counts and transformations. Reuse C1 fidelity checks and B1 issue conventions; distinguish evidence from a guarantee of preserved meaning. |
@@ -146,11 +167,11 @@ These candidates are not committed release scope. Select a small package after r
 | D8 P2 | GitHub Action or MCP adapter | Estimate for the selected integration | A target workflow needs CI installation or an MCP transport. Prefer a thin adapter over the existing CLI contract and verify end-to-end outcomes. |
 | D9 Deferred | Batch generation | Estimate after workflow measurement | A repeated-generation task benefits beyond a caller loop. Define per-book results, failures and output protection before adding batch semantics. |
 
-PDF output, DOCX import, fixed layout, multimedia, DRM, a full editor, universal EPUB validation and a hosted service remain outside the immediate plan. Supported integration or managed/team workflows are commercial hypotheses to revisit after repeat use and buyer interviews establish demand; author-app prices do not establish a CLI price.
+PDF output, DOCX import, fixed layout, multimedia, DRM, a full editor, universal EPUB validation and a hosted service remain outside the immediate plan. Supported integration or managed/team workflows are commercial hypotheses to revisit if concrete requests establish demand; author-app prices do not establish a CLI price.
 
 ## Planning and release rules
 
-Effort ranges are initial estimates for one maintainer familiar with the code, including relevant verification. They exclude recruitment and do not imply calendar commitments. Re-estimate before selecting a work package. A1 and A2 can start independently; A2 precedes release distribution, B1 supports later preflight work, and comparative corpus design can begin before the installation work finishes.
+Effort ranges are initial estimates for one maintainer familiar with the code, including relevant verification, and do not imply calendar commitments. Re-estimate before selecting a work package. A1 and A2 can start independently; A2 precedes release distribution, B1 supports later preflight work, and comparative corpus design can begin before the installation work finishes.
 
 Keep the existing streamed request/result contract, offline generation, explicit overwrite behavior and protected output publishing throughout. Schema additions must preserve existing callers or use an explicitly versioned migration. Keep structural checks, EPUBCheck, accessibility automation and reader review distinct in every result.
 

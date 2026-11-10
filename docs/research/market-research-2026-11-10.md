@@ -4,6 +4,8 @@ Research date: 10 November 2026. Audience: the maintainer deciding where to inve
 
 Planning update later on 10 November: milestone 3 is now complete at `v0.3.0`, including tables, footnotes and nested contents. The observations and priorities below retain their `v0.2.0` research baseline; those delivered features are no longer outstanding work. The [updated roadmap](../ROADMAP.md) records the current release status and remaining work packages.
 
+The [feature comparison matrix](epub-feature-matrix.md) provides a later `v0.4.0` capability baseline across thirteen tools. The roadmap schedules the agent workflow benchmark after milestone 5 and uses GitHub issues for feedback.
+
 Agent EPUB has a credible niche as a small local EPUB generation component for agent applications. Its strongest assets are its explicit input contract, protected output publishing and clear reporting of completed checks. Its largest immediate problems are installation friction and a content subset that excludes common report material.
 
 The recommended position is: **Turn supplied Markdown or text into a checked reading edition through one predictable local command.** Compete on deployment, content fidelity and successful agent completion. “Written in Rust” and “for AI agents” are supporting details that competitors can also offer.
@@ -136,7 +138,7 @@ More information: [probe evidence](market-research-probes-2026-11-10.json) recor
 ## Opportunities worth pursuing
 
 1. **Become the EPUB export component in agent applications.** Make a streamed request the shortest supported route. Ship one small invocation recipe that reports the artifact and unrun checks correctly. Measure integration time and repeat use.
-2. **Handle ordinary reports without manual simplification.** Finish tables, linked notes and nested contents. Add local inline images with supplied alternative text next if pilot material repeatedly needs them. The win is useful output from existing writing.
+2. **Handle ordinary reports without manual simplification.** Finish tables, linked notes and nested contents. Add local inline images with supplied alternative text next if benchmark documents or GitHub issues establish that need. The win is useful output from existing writing.
 3. **Make content fidelity inspectable.** Produce a build manifest listing source-to-chapter mapping, content counts, transformations and warnings. Counts can detect problems but cannot prove that meaning or order is preserved. Add explicit corpus checks for those properties.
 4. **Help agents repair failures accurately.** Introduce stable issue codes, source references, locations and suggested remedies. Add a preflight command that returns multiple independent input problems without producing an EPUB.
 5. **Offer dependable reading defaults.** A small selection such as report and prose styles could help. Test large text, narrow screens and reader overrides. A phone-readable table policy could matter more than decorative themes.
@@ -148,7 +150,7 @@ More information: [Pandoc EPUB examples](https://pandoc.org/epub.html) show supp
 
 ## Ranked improvements and low hanging fruit
 
-Effort estimates are planning judgments for one maintainer familiar with the code. They include relevant verification, exclude user recruitment, and are not commitments. Independent tasks can overlap, so the estimates should not be added into a promised schedule.
+Effort estimates are planning judgments for one maintainer familiar with the code. They include relevant verification and are not commitments. Independent tasks can overlap, so the estimates should not be added into a promised schedule.
 
 | Priority | Improvement | Likely effort | Payoff and completion condition |
 | --- | --- | --- | --- |
@@ -177,20 +179,19 @@ More information: [agent request schema](../../schemas/book-request.v1.json) def
 
 The current evidence supports technical feasibility and a plausible niche. It does not yet support a revenue forecast. Prices for author applications show that people pay for publishing convenience, but those buyers purchase a different workflow from a CLI component. [Vellum pricing](https://vellum.pub/), [Atticus pricing](https://www.atticus.io/)
 
-Start with five to eight prospective users who already generate reports, learning guides or agent artifacts. Ask for recent source documents and their current export steps. Observe an export task before explaining the proposed benefits. Record setup time, missing features, manual repairs and whether they use the result again.
+Use the agent workflow benchmark after milestone 5 to measure setup time, tool calls, retries, manual repairs and time to a correct EPUB against Pandoc. Collect feedback through [GitHub issues](https://github.com/benvds/epub-rust/issues). Useful reports include a version, command or request, expected versus actual behavior and a minimal non-private reproduction. The plan does not require a recruited user study.
 
-Use a modest pilot with explicit decision criteria. Suggested thresholds below are product targets, not measured market facts:
+Use explicit decision criteria for the benchmark and issue-driven priorities. Suggested thresholds below are product targets, not measured market facts:
 
-- At least three pilot users generate a second EPUB within two weeks without maintainer assistance.
 - Typical supported material reaches a first useful EPUB within ten minutes on a clean machine using a release binary.
 - At least 90% of a published corpus completes without manual source rewriting, with no known supported-content loss.
 - The proposed agent contract reduces failed attempts, manual intervention or integration code relative to a reasonable Pandoc wrapper.
 
 Benchmark the complete workflow, including discovery, installation where relevant, source preparation, generation, promised validation and repairs. Use equivalent EPUBCheck conditions. Measure runtime separately from agent calls, human interventions, output fidelity and visual review. Include failures rather than comparing successful conversion times alone.
 
-If repeated use is weak, improve the entry point or reconsider the EPUB job before expanding scope. If repeated use is strong but users stay with an existing converter, determine whether the remaining value belongs in a wrapper or integration rather than a separate engine.
+If benchmark results or reproducible issues expose adoption problems, improve the entry point before expanding scope. If a reasonable existing-converter workflow performs as well, determine whether the remaining value belongs in a wrapper or integration rather than a separate engine. GitHub issue activity alone does not measure market size or repeat use.
 
-The most plausible commercial extensions are supported integration, managed conversion or team workflows with retained reports and policies. These require operational benefits beyond a free local converter. Keep hosted billing and infrastructure behind evidence of demand. Pricing experiments should follow buyer interviews rather than copying Vellum or Atticus prices.
+The most plausible commercial extensions are supported integration, managed conversion or team workflows with retained reports and policies. These require operational benefits beyond a free local converter. Keep hosted billing and infrastructure behind concrete demand; requests through GitHub issues can inform later decisions without creating a separate research milestone. Author-app prices do not establish an appropriate CLI price.
 
 More information: [evaluation harness](../../scripts/evaluate_agents.py) offers a starting point for task scoring; [existing evaluation](../verification/AGENT_EVALUATIONS.md) explains first-artifact scoring.
 

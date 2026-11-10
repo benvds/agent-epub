@@ -114,8 +114,11 @@ cargo build --release --locked
 cargo test --locked
 ```
 
+See the [EPUB feature comparison matrix](docs/research/epub-feature-matrix.md)
+for current support across Agent EPUB and twelve alternatives.
+
 See [usage](docs/USAGE.md), [requirements](https://github.com/benvds/epub-rust/blob/v0.4.0/docs/PRD.md),
-[roadmap](https://github.com/benvds/epub-rust/blob/v0.4.0/docs/ROADMAP.md),
-[implementation plan](https://github.com/benvds/epub-rust/blob/v0.4.0/docs/IMPLEMENTATION_PLAN.md),
+[roadmap](docs/ROADMAP.md),
+[implementation plan](docs/IMPLEMENTATION_PLAN.md),
 [milestone 4 verification](https://github.com/benvds/epub-rust/blob/v0.4.0/docs/verification/MILESTONE_4.md) and
 [milestone 3 reader observations](https://github.com/benvds/epub-rust/blob/v0.4.0/docs/verification/MILESTONE_3.md).

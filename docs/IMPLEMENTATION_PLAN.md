@@ -145,18 +145,27 @@ Suggested commits: documentation/examples; license and metadata after the mainta
 
 Suggested commits: diagnostic contract and representative errors; Markdown declarations/front-matter policy; split-level behavior; verification and current examples. Do not introduce aggregate preflight or front-matter metadata import incidentally; those require their own declared behavior.
 
-### Checkpoint C Comparative evidence and pilots
+### Checkpoint C1 Agent workflow benchmark after milestone 5
 
-1. C1: assemble synthetic or approved real-world report/guide fixtures covering current supported features, predictable failures and proposed additions. Pin tool versions and store exact comparison commands and configuration.
-2. Compare the same tasks against current Agent EPUB and a reasonable Pandoc wrapper, adding mdbindery for repository-based cases. Run equivalent promised validation. Score artifact content, links and order independently, and count setup work, retries and manual repairs separately from conversion time.
-3. C2: observe five to eight prospective users and their existing workflows, then measure first export and repeat use over two weeks. Record permissions before retaining source documents; commit only synthetic or approved material.
-4. Publish results against the roadmap's proposed decision targets. Record a decision for each conditional candidate and whether the evidence favors the engine, an integration improvement or a narrower audience.
+1. Immediately after milestone 5, implement the milestone 5a benchmark. Assemble identical completed manuscripts and export requirements for Agent EPUB and a reasonable Pandoc wrapper. Cover supported reports and separate recovery/unsupported cases. Record the integration-recipe preparation effort for both tools.
+2. Instrument the real agent client with the same model/settings, permissions and host resources. Pin versions and exact prompts. Capture setup/discovery/configuration calls, model turns, build attempts, retries, manual interventions, timing and available usage data. Retain artifact snapshots for independent scoring rather than relying on agent self-reports.
+3. Run clean-environment setup-to-first-success and already-installed export scenarios separately. Both tools receive equivalent documentation, caching opportunities and validation requirements. Reuse source files; treat inline content as its own scenario rather than requiring manuscript duplication.
+4. Predeclare an equal attempt/time cap, paired repeats, alternating execution order and a resource budget within the user's limits. Use isolated sessions. Independently check content, metadata, order, navigation and EPUBCheck before counting a successful result. Include failed and timed-out tasks in the report.
+5. Publish sanitized raw measurements and a reproducible report comparing time to a correct EPUB, tool calls, retries and first-attempt success. Break down setup, model interaction, conversion and validation time. Report faster, slower or inconclusive outcomes without presuming a winner.
 
-Suggested commits: comparison corpus and scoring method; reproducible competitor configurations/results; anonymized pilot findings and revised priorities. Actual provider evaluations remain subject to the existing user-approved scope; a competitor comparison is not authorization to resume deferred provider evaluations.
+Suggested commits: shared task corpus and scoring rules; agent instrumentation and cold/warm environments; paired runs, measurements and conclusions. This plans the benchmark; it does not authorize an unbounded evaluation run or resume deferred Claude/Ollama evaluations.
+
+### Evidence review and GitHub issues
+
+1. After C1, review benchmark findings and feedback reported through [GitHub issues](https://github.com/benvds/epub-rust/issues). Request version, command/request, expected and actual behavior, and a minimal non-private reproduction when needed. No user recruitment or observation study is required.
+2. Reuse C1 scoring and extend competitor comparisons to mdbindery only when repository-based workflows justify it.
+3. Publish results against the roadmap's proposed decision targets. Record a decision for each conditional candidate and whether the evidence favors the engine, an integration improvement or a narrower audience.
+
+Suggested commits: reproducible issue fixtures; any selected comparison extension; revised priorities. Actual provider evaluations remain subject to the existing user-approved scope.
 
 ### Conditional work packages
 
-Do not start every conditional candidate as one release. Select the smallest package justified by C1/C2 or a documented earlier workflow. Local images need bounded resource loading and reader checks. Aggregate preflight depends on the detailed diagnostics and input rules. Reproducible archives require explicit identity/time settings and archive metadata checks. A preservation manifest should reuse the independent comparison scoring rather than imply that counts prove meaning.
+Do not start every conditional candidate as one release. Select the smallest package justified by C1, GitHub issues or a documented earlier workflow. Local images need bounded resource loading and reader checks. Aggregate preflight depends on the detailed diagnostics and input rules. Reproducible archives require explicit identity/time settings and archive metadata checks. A preservation manifest should reuse the independent comparison scoring rather than imply that counts prove meaning.
 
 Styles and preview fixtures need reader checks with font overrides and narrow layouts. Accessibility reporting should integrate an existing checker with explicit coverage. Richer metadata, batch operation, a GitHub Action and an MCP adapter each need a specific consuming workflow before implementation. Keep adapters thin and preserve the CLI as the common contract.
 
