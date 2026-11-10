@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "metadata": {"title": "Agent EPUB sample report", "language": "en"},
+  "inputs": [{"path": "research-report.md"}]
+}

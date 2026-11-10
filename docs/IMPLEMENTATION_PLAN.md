@@ -1,6 +1,6 @@
 # Rust CLI implementation plan
 
-Updated 10 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. Milestones 1 through 3 are released; their sequences below are the implementation record. Milestones 4 through 6 plan adoption, input handling and comparative evidence. The [PRD](PRD.md) stays independent of these programming choices.
+Updated 10 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. Milestones 1 through 3 are released; their sequences below are the implementation record. Milestone 4 implementation is ready for native release verification under MIT for macOS Apple Silicon, Linux x86_64 and Windows x86_64. Milestones 5 and 6 plan input handling and comparative evidence. The [PRD](PRD.md) stays independent of these programming choices.
 
 ## Milestone 1 Implementation sequence
 

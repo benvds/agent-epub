@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "title": "Agent EPUB sample report",
+    "language": "en"
+  },
+  "inputs": [
+    {
+      "name": "research-report.md",
+      "format": "markdown",
+      "content": "# Findings\n\nThis synthetic report demonstrates tables, linked notes and nested contents.\n\n## Observations\n\n| Item | Result |\n| :--- | ---: |\n| Café guide | 12 |\n| Reading notes | 8 |\n\nThe values are illustrative[^source]. A repeated reference shares the same note[^source].\n\n### Method\n\nThe sample preserves **emphasis**, Unicode and a literal pipe: `a | b`.\n\n##### Detail\n\nA skipped heading level remains reachable from the contents.\n\n## Summary\n\nUse [the next chapter](#discussion) to check cross-chapter navigation.\n\n# Discussion\n\n## Follow-up\n\nThe same source note is reachable from this chapter[^source].\n\nReturn to the [observations](#observations).\n\n[^source]: This is a synthetic source explanation, not a research finding.\n\n    It contains a [link to the discussion](#discussion) and a second paragraph.\n"
+    }
+  ]
+}

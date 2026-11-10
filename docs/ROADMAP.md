@@ -70,7 +70,7 @@ Exit gates for each chosen addition:
 
 ## Milestone 4 Installation and agent adoption
 
-Status: planned. Priority: P0. Make the released workflow usable without a Rust toolchain or custom integration instructions.
+Status: implementation complete; native release verification pending for `v0.4.0`. Priority: P0. Make the released workflow usable without a Rust toolchain or custom integration instructions. See the [milestone 4 record](verification/MILESTONE_4.md).
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |

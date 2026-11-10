@@ -24,7 +24,24 @@ reading resources remain in the milestone 3 record.
 
 ## Acceptance evidence
 
-Implementation and release verification are pending. Local baseline: all 33
-ordinary Rust tests pass; the two ignored independent EPUBCheck tests are run
-separately. Record native installation reports and CI links here before
-declaring this milestone complete.
+Local checks pass: 34 ordinary Rust tests, formatting, Clippy with warnings
+denied, and both independent EPUBCheck 5.3.0 corpora (eleven text/Markdown/mixed
+fixtures and four cover fixtures). The skill validator passes. A packaged
+macOS archive passes discovery, all three input modes, exact reading-resource
+equivalence, table/note/contents inspection, output protection and failed/unrun
+check reporting with Rust and Java absent from PATH.
+
+Windows uses `same-file` to protect source hard-link aliases, replacing the
+previous Windows fallback that never recognized them. A cross-platform regression
+checks the source and output alias remain intact. The absolute-output assertion
+now uses the platform's path rules. Generation and request/result schemas are
+otherwise unchanged.
+
+Native CI installation reports and publication are pending. Do not mark this
+milestone complete until all three downloaded archives pass on fresh runners.
+CI packages only the explicit allowlist, generates the report sample with the
+release executable and includes locked dependency and standard-library notices.
+Each attached smoke report identifies the exact ZIP hash. No benchmark was
+rerun because parsing, rendering, compression and validation behavior did not
+change. No new reader appearance claims are made; milestone 3 observations
+remain historical evidence for the identical reading resources.

@@ -1,6 +1,6 @@
 # Usage and supported content
 
-Build with `cargo build --release --locked`. The executable is `target/release/agent-epub` (`.exe` on Windows). File generation needs no AI service, network access, Python or Java. Independent EPUBCheck validation needs a separately installed validator.
+Install a [release binary](INSTALL.md), or build from source with `cargo build --release --locked`. The source-build executable is `target/release/agent-epub` (`.exe` on Windows). File generation needs no AI service, network access, Python or Java. Independent EPUBCheck validation needs a separately installed validator.
 
 ## Generate a book
 

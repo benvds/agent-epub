@@ -1,5 +1,7 @@
 # Agent interface
 
+Version 0.4.0 packages the unchanged version 1 CLI contract. [Install a binary and the reusable agent skill](INSTALL.md). The release includes equivalent direct, [file-request](../examples/report-request.json) and [streamed-inline](../examples/report-inline.json) report examples.
+
 Milestone 2 supports generic book requests, streamed input, capability discovery, structured results and supplied cover images. The live OpenAI-agent evaluation passed all 20 corpus tasks. Claude and Ollama evaluations are deferred at the user's request. [Evaluation details](verification/AGENT_EVALUATIONS.md).
 
 ## Discover and build
