@@ -139,6 +139,20 @@ Suggested commits: documentation/examples; license and metadata after the mainta
 
 ### Checkpoint B Input rules and structured repair
 
+Milestone 5 selected implementation (10 November 2026): preserve result `code`
+and exit categories, adding `issue_code`, `source`, one-based Unicode `line` /
+`column` where available, and `remedy` without changing schema version 1.
+Reject leading YAML (`---`) and TOML (`+++`) front-matter blocks; import no
+metadata. Math, strikethrough and alert markers retain literal CommonMark
+behavior without blanket punctuation warnings. Add book-wide `split_level`
+(integer 1–6, default 1), exposed as `--split-level` for direct inputs and a
+request property for structured inputs. Split only at root headings of exactly
+that level, preserve source boundaries and preambles, and retain heading ranks.
+The first heading of a split chapter supplies its title and is excluded from
+nested section entries. Keep local verification and commits separate from
+release publication; milestone 5a remains outside this implementation.
+
+
 1. B1: retain broad error categories while adding stable detailed codes, source references, locations where available and remedies. Define result compatibility before changing serialized output. Test unsupported structures and unresolved links as distinct failures.
 2. B2: use the [historical research probes](research/market-research-probes-2026-11-10.json) as input cases, then establish current expected behavior. Tables and notes are supported since milestone 3, so their old rejection results are not new acceptance expectations. Cover recognized front matter, math, strikethrough, alerts and ordinary literal punctuation. Update discovery and usage together.
 3. B3: design a compatible split-level option for direct and request inputs. Preserve the current default. Test title-plus-H2 manuscripts, source boundaries, preambles, nested contents and link targets through equivalent input modes.
