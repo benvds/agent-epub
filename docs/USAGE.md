@@ -24,7 +24,7 @@ Use a header row and a Markdown separator row, with optional `:---`, `:---:` or 
 
 Tables must be outside lists and quotations. Cells support ordinary inline Markdown, including links. Output uses column header cells with `scope="col"`. Merged cells, multiline cells, captions and complex row-header relationships are outside the supported subset. Wide tables still need reader review.
 
-Limits: 20 MiB per source, 64 MiB total source text and 1,000 chapters. This is a focused reflowable EPUB 3 profile. Covers, inline illustrations, arbitrary HTML import and full EPUB feature coverage are not part of milestone 1.
+Limits: 20 MiB per source, 64 MiB total source text and 1,000 chapters. This is a focused reflowable EPUB 3 profile. Supplied JPEG/PNG covers use the [agent interface and cover options](AGENT_INTERFACE.md). Inline illustrations, arbitrary HTML import and full EPUB feature coverage remain outside scope.
 
 ## Footnotes
 
@@ -60,7 +60,7 @@ An existing output is preserved unless `--overwrite` is supplied. Even with over
 | 4 | Structural publication checks failed. |
 | 5 | Requested external validator failed or could not run. |
 
-Diagnostics go to stderr. Success identifies whether EPUBCheck ran. Milestone 2 adds a structured request/result contract.
+Diagnostics go to stderr. Success identifies whether EPUBCheck ran. Use `--json` for the [structured request/result contract](AGENT_INTERFACE.md).
 
 ## Run independent EPUBCheck
 
@@ -88,4 +88,4 @@ python3 scripts/benchmark.py target/release/agent-epub
 
 The independent corpus test is explicitly ignored in ordinary tests because it requires a separately installed official validator. The CI workflow downloads a checksum-pinned EPUBCheck release and runs that test. The benchmark is a development helper; its Python dependency is separate from the generator.
 
-See the [verification record](verification/MILESTONE_1.md) for completed checks and remaining reader review.
+See the [milestone 3 verification record](verification/MILESTONE_3.md) for release checks, reader observations and remaining limitations.

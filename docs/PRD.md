@@ -1,6 +1,6 @@
 # Agent EPUB tool product requirements
 
-Status: product scope agreed; delivery progress is tracked in the roadmap. Updated 9 November 2026.
+Status: product scope agreed; delivery progress is tracked in the roadmap. Updated 10 November 2026.
 
 The tool helps AI agents turn supplied writing into dependable EPUBs quickly. An agent should provide content, receive a usable reading edition, and understand any problems without learning EPUB publishing internals.
 
@@ -29,23 +29,23 @@ Preserve the supplied writing and its order. Use sensible presentation defaults.
 
 ## Functionality by milestone
 
-| Requirement | Milestone 1 | Milestone 2 | Milestone 3 candidates |
+| Requirement | Milestone 1 | Milestone 2 | Milestone 3 selected scope |
 | --- | --- | --- | --- |
 | Plain text and Markdown generation | Required | Retained | Retained |
 | Multiple chapters in supplied order | Required | Retained | Retained |
-| Table of contents | Required, one entry per chapter | Retained | Optional deeper heading navigation |
-| Chapter navigation | Required, contents links and previous/next links | Retained | Additional navigation conveniences |
-| Basic Markdown formatting | Required, documented subset | Retained | Extend only with clear demand |
-| Publication title and language | Required | Retained | Richer optional metadata |
-| General agent inputs | Direct source files initially | Required, reusable structured book requests and streamed input | Optional batch convenience |
-| Agent-readable results and capability discovery | Basic help and clear outcomes | Required, consistent structured results and discovery | Improve from real agent feedback |
-| Cover image | Deferred | Required, supplied image | Optional image conveniences |
-| Content checks and honest validation status | Required | Retained | Broader automated accessibility review |
-| Simple tables and notes | Deferred | Deferred | Evaluate for inclusion |
-| Inline images and style choices | Deferred | Deferred | Evaluate for inclusion |
+| Table of contents | Required, one entry per chapter | Retained | Nested H2–H6 section contents |
+| Chapter navigation | Required, contents links and previous/next links | Retained | Footnote references and return links |
+| Basic Markdown formatting | Required, documented subset | Retained | Simple tables and linked footnotes |
+| Publication title and language | Required | Retained | Existing metadata retained |
+| General agent inputs | Direct source files initially | Required, reusable structured book requests and streamed input | Existing inputs retained; batch deferred |
+| Agent-readable results and capability discovery | Basic help and clear outcomes | Required, consistent structured results and discovery | Discoverable table, note and section rules |
+| Cover image | Deferred | Required, supplied image | Existing covers retained; inline images deferred |
+| Content checks and honest validation status | Required | Retained | Section hierarchy and note-return checks; accessibility reports deferred |
+| Simple tables and notes | Deferred | Deferred | Required within the documented subset |
+| Inline images and style choices | Deferred | Deferred | Deferred |
 | Full EPUB, multimedia and fixed layout | Outside scope | Outside scope | Outside scope |
 
-The [roadmap](ROADMAP.md) defines the delivery gates. Milestone 3 is a prioritized shortlist, not a commitment to every candidate.
+The [roadmap](ROADMAP.md) defines the delivery gates. Milestone 3 selects tables, notes and section contents from the original shortlist; the remaining candidates stay deferred.
 
 ## Milestone 1 requirements
 
@@ -75,6 +75,16 @@ The initial conformance target is an EPUB 3.3 reflowable publication using this 
 | P15 | Demonstrate agent usability. | Release evaluation uses the ChatGPT-authenticated OpenAI Codex CLI. Claude and Ollama evaluations are deferred at the user's request; their live compatibility is not claimed. The generic request contract remains the intended interface for all capable agent runtimes. |
 
 An agent supplies final writing. The product does not need to generate prose, call an AI model, or understand a provider's private conversation history.
+
+## Milestone 3 selected requirements
+
+| ID | Requirement | Acceptance condition |
+| --- | --- | --- |
+| P16 | Preserve simple report tables. | Rectangular Markdown tables retain all cells, inline formatting and alignment, with semantic column headers. Ragged rows fail with a source location. Complex tables stay outside scope. |
+| P17 | Make notes easy to follow. | Source-local footnotes are numbered by first reference, shared across repeated references and linked back to every referring location. Empty, duplicate, unused and nested notes fail explicitly. Unmatched markers remain literal text under the documented Markdown rules. |
+| P18 | Navigate longer chapters. | Root-level H2–H6 headings appear as nested contents entries. Skipped levels and duplicate labels remain usable. Quoted, list and note headings stay out of the contents. |
+
+These conveniences work through the existing file and general agent inputs. Inline images, style customization, expanded metadata, batch generation and reproducible archives remain deferred.
 
 ## Quality and result handling
 

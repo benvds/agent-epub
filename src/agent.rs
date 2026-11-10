@@ -196,7 +196,12 @@ pub fn capabilities() -> Value {
         "navigation": ["contents", "chapter_contents", "section_contents_h2_h6", "previous_next", "return_to_contents"],
         "cover_images": true, "cover_formats": ["jpeg", "png"],
         "markdown_extensions": ["rectangular_pipe_tables", "footnotes_with_backlinks"],
-        "unsupported": ["inline_images", "nested_notes", "task_lists", "raw_html", "fixed_layout", "multimedia", "drm"],
+        "markdown_profile": {
+            "tables": {"header_row": "required", "rows": "equal_cell_counts", "literal_pipe": "escape as \\|, including code spans", "inside_containers": false},
+            "footnotes": {"labels": "source_local_case_insensitive", "numbering": "first_reference_order", "placement": "end_of_first_referring_chapter", "backlinks": "every_reference", "unmatched_markers": "literal_text", "duplicate_empty_unused_definitions": "error", "nested_references": false},
+            "section_contents": {"levels": "root_h2_through_h6", "skipped_levels": "nearest_preceding_shallower_heading", "container_headings": "excluded"}
+        },
+        "unsupported": ["inline_images", "complex_tables", "nested_notes", "task_lists", "raw_html", "fixed_layout", "multimedia", "drm"],
         "limits": {"source_bytes": 20971520, "total_source_bytes": 67108864, "request_bytes": 67108864, "chapters": 1000, "cover_bytes": 10485760, "cover_max_side": 8000, "cover_max_pixels": 16000000},
         "checks": {"structural_profile": "always", "epubcheck": "optional_external", "reader_review": "not_automated", "accessibility_assessment": "not_automated"}
     })

@@ -325,6 +325,23 @@ fn independent_cover_corpus() {
         let path = dir.path().join("cover.data");
         fs::write(&path, image_bytes(format, 512, 768)).unwrap();
         assert!(
+            build_with_cover(
+                &options,
+                Some(&CoverOptions {
+                    path: path.clone(),
+                    alt: None
+                })
+            )
+            .unwrap()
+            .independent_validation
+        );
+        fs::write(
+            &options.inputs[0],
+            include_str!("../examples/research-report.md"),
+        )
+        .unwrap();
+        options.output = dir.path().join("report-with-cover.epub");
+        assert!(
             build_with_cover(&options, Some(&CoverOptions { path, alt: None }))
                 .unwrap()
                 .independent_validation

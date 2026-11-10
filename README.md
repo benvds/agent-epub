@@ -1,6 +1,6 @@
 # Agent EPUB
 
-A focused EPUB tool for AI agents. Milestone 1 creates reading editions from plain text and Markdown, with contents and chapter navigation.
+A focused EPUB tool for AI agents. Creates reading editions from plain text and Markdown, with chapter and section contents, linked notes, simple tables and an optional JPEG/PNG cover. Accepts files or versioned JSON requests without calling an AI service.
 
 ## Project documents
 
@@ -26,12 +26,14 @@ Each input starts a chapter. Top-level Markdown headings start additional chapte
 
 Every build runs structural profile checks. Optional `--epubcheck <executable>` runs an independently installed EPUBCheck wrapper before publishing output. The built-in validator covers this tool's generated profile and does not certify arbitrary EPUBs, accessibility or reading appearance.
 
-Images, tables, notes, task lists and raw HTML are rejected in milestone 1. Full EPUB support is outside the roadmap.
+Inline images, complex tables, nested notes, task lists and raw HTML remain unsupported. Full EPUB support is outside the roadmap.
 
 Milestone 2 is complete for the agreed scope: [general agent requests, streamed input, structured results and JPEG/PNG covers](docs/AGENT_INTERFACE.md). The live OpenAI agent passed all 20 evaluation tasks. Claude and Ollama evaluations are deferred at the user's request.
 
 See `agent-epub --help` and `agent-epub build --help` for options.
 
-[Detailed usage and supported subset](docs/USAGE.md). Milestone 1 is implemented; [verification and remaining reader review](docs/verification/MILESTONE_1.md) are recorded separately.
+[Detailed usage and supported subset](docs/USAGE.md). Try [the report example](examples/research-report.md) for tables, repeated notes and nested contents.
 
 [Milestone 2 verification, reader checks and benchmark](docs/verification/MILESTONE_2.md).
+
+Milestone 3 adds semantic tables, footnotes with return links and nested H2–H6 contents. [Verification and release boundary](docs/verification/MILESTONE_3.md).

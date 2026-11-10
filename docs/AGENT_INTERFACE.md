@@ -53,6 +53,10 @@ The cover is identified in publication metadata and appears before the contents 
 
 ## Use from an agent runtime
 
+Version 0.3 keeps request schema version 1. Markdown file references and inline `format: "markdown"` content both support rectangular pipe tables, source-local footnotes and nested section contents. No new request fields are needed. `capabilities` lists `markdown_extensions`, detailed `markdown_profile` rules and `section_contents_h2_h6` navigation. Read those rules before constructing tables or notes; malformed rectangular tables and duplicate, empty or unused note definitions fail with exit code 2 and JSON `invalid_input`.
+
+The [report example](../examples/research-report.md) demonstrates all three additions. See the [content subset](USAGE.md) for escaping, unmatched-note fallback and nested-heading rules. The direct and streamed-inline request workflows are tested to produce identical report reading resources. This is CLI contract verification; the milestone 2 live OpenAI score is historical and has not been relabeled as a new model evaluation.
+
 Give the agent permission to invoke the executable and access only the sources and output directory it needs. A useful instruction is: discover capabilities, construct a versioned request, build with `--json`, inspect the result and report any failed or unrun checks. Streamed requests avoid creating intermediate manuscript files.
 
 ChatGPT-authenticated Codex CLI was tested through actual tool calls. Claude Code can use the same shell commands when configured with tool access; its live evaluation is deferred. An Ollama-backed runtime can expose a tool that forwards request JSON to the CLI and returns structured stdout; the selected model must support that runtime's tool use. No provider-specific conversation parsing is required, and no live Ollama result is claimed.

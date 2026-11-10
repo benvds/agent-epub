@@ -181,7 +181,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                         Event::Start(Tag::Table(alignments)) => {
                             if depth != 0 {
                                 return Err(input_error(format!(
-                                    "{}: tables must be outside lists and quotations.",
+                                    "{}: tables must be outside lists, quotations and footnotes.",
                                     input.display()
                                 )));
                             }

@@ -55,7 +55,7 @@ Exit gates:
 
 ## Milestone 3 Selected conveniences
 
-Status: in development for `v0.3.0`. Selected scope: simple semantic Markdown tables, linked footnotes with return links, and nested contents for section headings. These support reports and learning material through the existing file and agent request inputs. Full EPUB support remains outside scope.
+Status: complete for the selected scope at `v0.3.0`. Simple semantic Markdown tables, linked footnotes with return links, and nested section contents work through the existing file and agent request inputs. Full EPUB support remains outside scope. See the [verification record](verification/MILESTONE_3.md).
 
 Inline images, richer metadata, style presets, accessibility reports, batch generation and reproducible archives remain deferred. The table below records the original candidates, not a commitment to deliver every feature.
 
