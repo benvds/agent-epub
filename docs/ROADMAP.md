@@ -1,6 +1,6 @@
 # Agent EPUB tool roadmap
 
-Updated 10 November 2026. The first three milestones delivered a useful, tested EPUB subset. The next milestones make it easier to adopt, improve input handling and diagnostics, and test its value against alternatives. Dates and future release versions are intentionally unset; each milestone ends when its acceptance gates pass.
+Updated 10 November 2026. The first three milestones delivered a useful, tested EPUB subset. Milestone 4 adds installation and agent adoption at `v0.4.0`. The remaining milestones improve input handling and diagnostics and test its value against alternatives. Dates and future release versions are intentionally unset; each milestone ends when its acceptance gates pass.
 
 The initial audience is developers adding EPUB export for prose-heavy reports and learning guides to an agent workflow. Priorities follow the [market research](research/market-research-2026-11-10.md). Broader publishing features require evidence from actual source documents and repeated use.
 
@@ -70,7 +70,7 @@ Exit gates for each chosen addition:
 
 ## Milestone 4 Installation and agent adoption
 
-Status: implementation complete; native release verification pending for `v0.4.0`. Priority: P0. Make the released workflow usable without a Rust toolchain or custom integration instructions. See the [milestone 4 record](verification/MILESTONE_4.md).
+Status: implementation and native installation gates complete at `v0.4.0`. Priority: P0. Make the released workflow usable without a Rust toolchain or custom integration instructions. See the [milestone 4 record](verification/MILESTONE_4.md).
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |
