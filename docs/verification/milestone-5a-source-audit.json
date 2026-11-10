@@ -1,0 +1,222 @@
+{
+  "coverage": "Post-measurement visible-line audit of every final successful synthetic publication. Does not change timing, prompts, checks or retry outcomes.",
+  "status": "passed",
+  "publications": [
+    {
+      "pair": 1,
+      "tool": "agent",
+      "case": "report",
+      "source_fragments": 16,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "tool": "agent",
+      "case": "guide",
+      "source_fragments": 10,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "tool": "agent",
+      "case": "inline",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "tool": "agent",
+      "case": "recovery",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "tool": "pandoc",
+      "case": "report",
+      "source_fragments": 16,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "tool": "pandoc",
+      "case": "guide",
+      "source_fragments": 10,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "tool": "pandoc",
+      "case": "inline",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "tool": "pandoc",
+      "case": "recovery",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "tool": "pandoc",
+      "case": "image",
+      "source_fragments": 3,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "agent",
+      "case": "report",
+      "source_fragments": 16,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "agent",
+      "case": "guide",
+      "source_fragments": 10,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "agent",
+      "case": "inline",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "agent",
+      "case": "recovery",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "pandoc",
+      "case": "report",
+      "source_fragments": 16,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "pandoc",
+      "case": "guide",
+      "source_fragments": 10,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "pandoc",
+      "case": "inline",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "pandoc",
+      "case": "recovery",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "tool": "pandoc",
+      "case": "image",
+      "source_fragments": 3,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "agent",
+      "case": "report",
+      "source_fragments": 16,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "agent",
+      "case": "guide",
+      "source_fragments": 10,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "agent",
+      "case": "inline",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "agent",
+      "case": "recovery",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "pandoc",
+      "case": "report",
+      "source_fragments": 16,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "pandoc",
+      "case": "guide",
+      "source_fragments": 10,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "pandoc",
+      "case": "inline",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "pandoc",
+      "case": "recovery",
+      "source_fragments": 4,
+      "missing": [],
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "tool": "pandoc",
+      "case": "image",
+      "source_fragments": 3,
+      "missing": [],
+      "status": "passed"
+    }
+  ]
+}

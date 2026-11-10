@@ -130,7 +130,9 @@ cargo test --locked
 ```
 
 See the [EPUB feature comparison matrix](docs/research/epub-feature-matrix.md)
-for current support across Agent EPUB and twelve alternatives.
+for current support across Agent EPUB and twelve alternatives. A [practical
+three-pair agent workflow comparison against Pandoc](docs/verification/MILESTONE_5A.md)
+records cold setup, warm exports, recovery, quality checks and limitations.
 
 See [usage](docs/USAGE.md), [requirements](https://github.com/benvds/epub-rust/blob/v0.5.0/docs/PRD.md),
 [roadmap](docs/ROADMAP.md),

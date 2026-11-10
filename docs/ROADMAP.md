@@ -107,7 +107,7 @@ Exit gates:
 
 ## Milestone 5a Agent workflow benchmark against Pandoc
 
-Status: practical three-pair benchmark selected after milestone 5, per maintainer instruction. The [bounded protocol](../benchmarks/workflow/PROTOCOL.md) is committed before measured sessions. Priority: P1. Measure whether Agent EPUB produces a correct EPUB faster through an actual agent workflow, including setup, tool calls and retries.
+Status: practical three-pair benchmark complete. See the [results and reproducible evidence](verification/MILESTONE_5A.md). The [bounded protocol](../benchmarks/workflow/PROTOCOL.md) was committed before measured sessions. Priority: P1. Measure whether Agent EPUB produces a correct EPUB faster through an actual agent workflow, including setup, tool calls and retries.
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |

@@ -1,0 +1,10 @@
+{
+  "inputs/report.md": "9cd490d8657e3f69e6eb6211a58dbd45cdb6c3c4919ecefc7e0083f3db56037b",
+  "inputs/image.md": "1cbf056b9075b6b91072adb644b8caafcacae51adf44e34d48adfad8a0ef2360",
+  "inputs/intro.md": "d50fbe4c70afafe9a72e1dcfd781d424dd60fe0a073241163cb3c3ef3c125e4a",
+  "inputs/guide.md": "7470d75db13eec6a093ceea9c67f6f876da8c66051a8d27e3f91781cb7c7354b",
+  "assets/cover.png": "3b650dd038776948a835355e6dbb3fe9c284d1dc3819922d00b221d74068c0ee",
+  "cases.json": "c50514d83c14cb765da4b6ff49b4ec68cfc597bd917fa67297485b4807752a36",
+  "RECIPE.md": "463e71c465aa44333d40fbff83a46e77fc5c2f4b03da3c9202725604b2ac1487",
+  "tool": "dbff7acec6e20867ab80ae966ac27dfdc566541bcb270003b15d99efdff03515"
+}

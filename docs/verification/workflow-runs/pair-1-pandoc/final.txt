@@ -1,0 +1,7 @@
+Installed Pandoc 3.13 and completed discovery and all cases in order.
+
+- Report, guide, inline: passed first attempt.
+- Recovery: passed second attempt after the permitted `#missing` → `#results` correction.
+- Image: passed first attempt, retaining the supplied image and alt text.
+
+All five EPUBs are in `out/` and passed independent checks.

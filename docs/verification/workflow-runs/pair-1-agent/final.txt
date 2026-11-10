@@ -1,0 +1,7 @@
+Completed installation, discovery and all cases in the required order.
+
+- Report, guide and inline: independent checks passed on attempt 1.
+- Recovery: passed on attempt 2 after changing only `(#missing)` to `(#results)`.
+- Image: explicitly confirmed unsupported (`unsupported_inline_image`). Source image and alt text were left unchanged.
+
+Four validated EPUBs are in `out/`.

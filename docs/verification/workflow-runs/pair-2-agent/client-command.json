@@ -1,0 +1,23 @@
+[
+  "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+  "exec",
+  "--ephemeral",
+  "--ignore-user-config",
+  "--skip-git-repo-check",
+  "--sandbox",
+  "workspace-write",
+  "--json",
+  "--model",
+  "gpt-6.1-sol",
+  "-c",
+  "model_reasoning_effort=\"high\"",
+  "-c",
+  "service_tier=\"default\"",
+  "-c",
+  "shell=\"/bin/bash\"",
+  "-C",
+  "<WORKSPACE>",
+  "-o",
+  "<WORKSPACE>/.measurement/final.txt",
+  "-"
+]

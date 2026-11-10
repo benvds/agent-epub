@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-10",
+  "release_tag": "v0.5.0",
+  "release_commit": "d25689f29ad16bf7b82f8c8c4d5db8929cfe7442",
+  "harness_commit": "e4c3b707085c9c9b8722edc7aefdea977c7f0ab4",
+  "resource_amendment_commit": "37db4bc1845e967c119e490fe0f88a1453bfd0cf",
+  "epubcheck_version": "5.3.0",
+  "epubcheck_jar_sha256": "f7f96617c929371821609b88c8484d6dc9f24fe916499863c46094c5fb778a65",
+  "java_version": "OpenJDK 27.0.1.0.3 Homebrew",
+  "account_usage_percent_before": 3,
+  "account_usage_percent_after": 4,
+  "user_weekly_daily_ceiling_percent": 14.285714285714286,
+  "user_period_ceiling_percent": 80,
+  "effective_self_imposed_raw_token_ceiling": 1800000,
+  "artifact_path_mapping": ".measurement/artifacts/FILE.epub in original logs -> artifacts/FILE.epub under each exported session",
+  "files": {
+    "pair-1-agent/artifacts/guide-1.epub": {
+      "sha256": "6e8136a0b07923e547811e54e07158d65ac33eaa111b8691076c4063adcac8ec",
+      "bytes": 3625
+    },
+    "pair-1-agent/artifacts/inline-1.epub": {
+      "sha256": "9eec5408356a2a30ffffc627b4a330e2ef01f3214ef9c07ace38ca6178eeec3b",
+      "bytes": 2555
+    },
+    "pair-1-agent/artifacts/recovery-2.epub": {
+      "sha256": "2d9c7552e5e560bd8e6f4c73fa451921f5a16f419b4bba5d91cae7905c1ebc44",
+      "bytes": 2559
+    },
+    "pair-1-agent/artifacts/report-1.epub": {
+      "sha256": "885bef13c8511fc9fe0cb5580adedaab5c9c26e4455a55cdafeef7925858e27b",
+      "bytes": 4358
+    },
+    "pair-1-agent/calls.jsonl": {
+      "sha256": "91982cb409eb2158a616d9b319873aa83ecc6e9c10a1d98ca8ab1fd06fcc7e2e",
+      "bytes": 18034
+    },
+    "pair-1-agent/client-command.json": {
+      "sha256": "f36cf762cce927bce83822e8d5da0a5595574f6c49aaeddac5e0f07b533186fd",
+      "bytes": 450
+    },
+    "pair-1-agent/client.events.jsonl": {
+      "sha256": "d5ea28b25f96887adc3315b37e3591c4de6226f4968cf3135e9b470723f4e893",
+      "bytes": 24065
+    },
+    "pair-1-agent/client.stderr.txt": {
+      "sha256": "72d8da8dda9473809b754bc0a13760398e2783661faef554fd7f2cad2b37de3a",
+      "bytes": 804
+    },
+    "pair-1-agent/final.txt": {
+      "sha256": "cdc6fd2abb2bc0e24947647d2caf5440b0b9fd4b70e6ddd4be5dd7256af4a62a",
+      "bytes": 377
+    },
+    "pair-1-agent/fixed_hashes.json": {
+      "sha256": "0dbbe63b9fa052ca776dab46b876625fcfdb5870e7e1280e09cc86caadde8478",
+      "bytes": 694
+    },
+    "pair-1-agent/prompt.txt": {
+      "sha256": "faf2453df886eb9bf4a8950ec908718e4d2b153d8c4a218e8a7987afb5663a50",
+      "bytes": 1445
+    },
+    "pair-1-agent/result.json": {
+      "sha256": "61fbf46e72cba6417d39e79ee56a2b751d09302d31c08c313b256c3b3d734587",
+      "bytes": 2964
+    },
+    "pair-1-pandoc/artifacts/guide-1.epub": {
+      "sha256": "eb3f0b3b21209c386931c88d6a0c8b8cd440fc658edc1c2597bde1d08258d548",
+      "bytes": 7175
+    },
+    "pair-1-pandoc/artifacts/image-1.epub": {
+      "sha256": "fe2300e29c39ab8d98552f02be3652a397a8da18036fa703bbec88410c6fd493",
+      "bytes": 5872
+    },
+    "pair-1-pandoc/artifacts/inline-1.epub": {
+      "sha256": "07f07476eea6deffb7c83fd1293ffc064c2be1e125b7b5b0e51844814a10081d",
+      "bytes": 6042
+    },
+    "pair-1-pandoc/artifacts/recovery-1.epub": {
+      "sha256": "3e6ee49cd4ea74d731618491c0ade66a5e92b98434398611ffd21d100a6f77a8",
+      "bytes": 6039
+    },
+    "pair-1-pandoc/artifacts/recovery-2.epub": {
+      "sha256": "3e63f43a997fb30b651949707a980a4a75ef6a71dbc1b99a057b725c1b44fada",
+      "bytes": 6044
+    },
+    "pair-1-pandoc/artifacts/report-1.epub": {
+      "sha256": "977eb07f0dedd7ab99e5453941007a86e06b8c0c19156d4854b83ec1c81095aa",
+      "bytes": 7928
+    },
+    "pair-1-pandoc/calls.jsonl": {
+      "sha256": "7b7478f0f9dab8a091231fe0ebb3ef3abc1c46e5ec96bc7e8d0064858e817c3f",
+      "bytes": 7690
+    },
+    "pair-1-pandoc/client-command.json": {
+      "sha256": "f36cf762cce927bce83822e8d5da0a5595574f6c49aaeddac5e0f07b533186fd",
+      "bytes": 450
+    },
+    "pair-1-pandoc/client.events.jsonl": {
+      "sha256": "dff2219089608e0c8b5dc778a8fad8f6870f582017233c52b20d3e21891c7078",
+      "bytes": 16275
+    },
+    "pair-1-pandoc/client.stderr.txt": {
+      "sha256": "0c2a60150f1543c65def5220f29b46b2dd2743328202543c726c361681000fb7",
+      "bytes": 804
+    },
+    "pair-1-pandoc/final.txt": {
+      "sha256": "43da7d4316f618889719bc79e21272988a6dc9ea0ac2128ee9a8325e2c2121b6",
+      "bytes": 344
+    },
+    "pair-1-pandoc/fixed_hashes.json": {
+      "sha256": "9d5674f465322dd0e96fbd5d7d09c1dc4907596f18063cd2631fcbbad587c0a4",
+      "bytes": 694
+    },
+    "pair-1-pandoc/prompt.txt": {
+      "sha256": "faf2453df886eb9bf4a8950ec908718e4d2b153d8c4a218e8a7987afb5663a50",
+      "bytes": 1445
+    },
+    "pair-1-pandoc/result.json": {
+      "sha256": "39b1c1413f9343e5678015d13b0ae1bdb3b75fbe22dd5c58fb46d429becc14c8",
+      "bytes": 3045
+    },
+    "pair-2-agent/artifacts/guide-1.epub": {
+      "sha256": "5ba828a3b57b430448740a2ff865db6c9e297e23dc3c3ac14dd600f3c9af402e",
+      "bytes": 3626
+    },
+    "pair-2-agent/artifacts/inline-1.epub": {
+      "sha256": "0994d3afca46060d9dbd919b9b5256b34ea904bb19fe7f8f75ba411067ea0379",
+      "bytes": 2554
+    },
+    "pair-2-agent/artifacts/recovery-2.epub": {
+      "sha256": "0434ed071cd25278432d0db9fc64c1b66a4bc7c97c1ca8b583e7e32905f9f264",
+      "bytes": 2558
+    },
+    "pair-2-agent/artifacts/report-1.epub": {
+      "sha256": "c13b6f993ac602d1521c926f49090667079c2b81831c23fa0b0a81785a61c1d3",
+      "bytes": 4357
+    },
+    "pair-2-agent/calls.jsonl": {
+      "sha256": "c49ab85a122bde669234129276a3fc01416752226328a20d9431fbcc709352fe",
+      "bytes": 18031
+    },
+    "pair-2-agent/client-command.json": {
+      "sha256": "f36cf762cce927bce83822e8d5da0a5595574f6c49aaeddac5e0f07b533186fd",
+      "bytes": 450
+    },
+    "pair-2-agent/client.events.jsonl": {
+      "sha256": "ce19e0f875644a4de88526d83472567632740abb2c3411c4d65caf295fab8c1c",
+      "bytes": 23505
+    },
+    "pair-2-agent/client.stderr.txt": {
+      "sha256": "f48818aeb3ac603e6e865ab91b1db99cd9bc998ac9c1ca7a92f1c528e297b2c0",
+      "bytes": 804
+    },
+    "pair-2-agent/final.txt": {
+      "sha256": "3012f29daafe3b6849ab054470d6d3bbeff58c73cf45830db5e21e15646d7f7b",
+      "bytes": 370
+    },
+    "pair-2-agent/fixed_hashes.json": {
+      "sha256": "0dbbe63b9fa052ca776dab46b876625fcfdb5870e7e1280e09cc86caadde8478",
+      "bytes": 694
+    },
+    "pair-2-agent/prompt.txt": {
+      "sha256": "faf2453df886eb9bf4a8950ec908718e4d2b153d8c4a218e8a7987afb5663a50",
+      "bytes": 1445
+    },
+    "pair-2-agent/result.json": {
+      "sha256": "96b03edc4f1bc2b3d16f292de1f21e95ef92c6381aff12982999331622e0e562",
+      "bytes": 2964
+    },
+    "pair-2-pandoc/artifacts/guide-1.epub": {
+      "sha256": "7f3b64cde8f5c26a617b250118474420ce538015ad66950376bd4e82a64be49f",
+      "bytes": 7171
+    },
+    "pair-2-pandoc/artifacts/image-1.epub": {
+      "sha256": "9f259b3dca8d80c3a688fa88978bbc6980354ee6d0a4b1e3e4d15187dc0c832e",
+      "bytes": 5871
+    },
+    "pair-2-pandoc/artifacts/inline-1.epub": {
+      "sha256": "8c881ffffdafc9f9441c743052482e9752524cfbaa68a83f9609419b024efbf9",
+      "bytes": 6040
+    },
+    "pair-2-pandoc/artifacts/recovery-1.epub": {
+      "sha256": "ab210f10a884b682d68acd82933cc4f5d23f546901c8d59405b0cb3c1f18b787",
+      "bytes": 6042
+    },
+    "pair-2-pandoc/artifacts/recovery-2.epub": {
+      "sha256": "5e24ce63bb06e5904bb26f1e9c26f35463b9d343984322a7a84c9620ad036d1d",
+      "bytes": 6045
+    },
+    "pair-2-pandoc/artifacts/report-1.epub": {
+      "sha256": "a8adf84d0cc79b3c790b510b6dfb459d5cd97d74251d01e88becc0171cdeec76",
+      "bytes": 7924
+    },
+    "pair-2-pandoc/calls.jsonl": {
+      "sha256": "08b9190857586d34cccb58b8cc94fbb67d133237082f1bc984664a006b18483a",
+      "bytes": 7690
+    },
+    "pair-2-pandoc/client-command.json": {
+      "sha256": "f36cf762cce927bce83822e8d5da0a5595574f6c49aaeddac5e0f07b533186fd",
+      "bytes": 450
+    },
+    "pair-2-pandoc/client.events.jsonl": {
+      "sha256": "3dc5b486ec53b46dc44723d14da23bec55a643a448cf4a0528a572a85118c34a",
+      "bytes": 16288
+    },
+    "pair-2-pandoc/client.stderr.txt": {
+      "sha256": "9b84c3cbae9c6140ae4148291745e033e369faa3be5d37b5da80534588da6518",
+      "bytes": 804
+    },
+    "pair-2-pandoc/final.txt": {
+      "sha256": "92ff9e27c2902ea0f4dfd0bd2b598f8c0c21a6a056d1fcbc881b9f076f4a9eef",
+      "bytes": 342
+    },
+    "pair-2-pandoc/fixed_hashes.json": {
+      "sha256": "9d5674f465322dd0e96fbd5d7d09c1dc4907596f18063cd2631fcbbad587c0a4",
+      "bytes": 694
+    },
+    "pair-2-pandoc/prompt.txt": {
+      "sha256": "faf2453df886eb9bf4a8950ec908718e4d2b153d8c4a218e8a7987afb5663a50",
+      "bytes": 1445
+    },
+    "pair-2-pandoc/result.json": {
+      "sha256": "232911b41c3ee9d7beae928114556d5ae52d2c8a6db8cf8705940fc30748027a",
+      "bytes": 3047
+    },
+    "pair-3-agent/artifacts/guide-1.epub": {
+      "sha256": "450016b51732360641bc1944577e8911de331de0369efc1b699b0c0f7671dc0d",
+      "bytes": 3624
+    },
+    "pair-3-agent/artifacts/inline-1.epub": {
+      "sha256": "60c889ea83c46f37be3793c3509effe131e98562b6b3f076f0a8b735db206ea3",
+      "bytes": 2556
+    },
+    "pair-3-agent/artifacts/recovery-2.epub": {
+      "sha256": "5c78812f1fad94e8b00dd4b196649f722c2bd3cf0c1033f2291d931c6ee4c0ec",
+      "bytes": 2557
+    },
+    "pair-3-agent/artifacts/report-1.epub": {
+      "sha256": "47e63e1ed9f4f3844c421dc0669185b2b2360adec4c8f429b7a55da331981c7e",
+      "bytes": 4356
+    },
+    "pair-3-agent/calls.jsonl": {
+      "sha256": "367cdb0184fc7cceba1dfbb673a87ed58e702c35d5ddfa13d158dd66c42eb503",
+      "bytes": 18033
+    },
+    "pair-3-agent/client-command.json": {
+      "sha256": "f36cf762cce927bce83822e8d5da0a5595574f6c49aaeddac5e0f07b533186fd",
+      "bytes": 450
+    },
+    "pair-3-agent/client.events.jsonl": {
+      "sha256": "65d8fe5883c0fc426a7470be03f025a6c395e860b40e2752b0abe6363141c273",
+      "bytes": 23563
+    },
+    "pair-3-agent/client.stderr.txt": {
+      "sha256": "23d272cceea741126f309e8df60b42972dd35d4a0bd098ea92f0a5253fd86fa4",
+      "bytes": 804
+    },
+    "pair-3-agent/final.txt": {
+      "sha256": "52e031112a360fe4e428f6528041e5f71158385cfa0bdf740dbc92c66afee4e3",
+      "bytes": 395
+    },
+    "pair-3-agent/fixed_hashes.json": {
+      "sha256": "0dbbe63b9fa052ca776dab46b876625fcfdb5870e7e1280e09cc86caadde8478",
+      "bytes": 694
+    },
+    "pair-3-agent/prompt.txt": {
+      "sha256": "faf2453df886eb9bf4a8950ec908718e4d2b153d8c4a218e8a7987afb5663a50",
+      "bytes": 1445
+    },
+    "pair-3-agent/result.json": {
+      "sha256": "c6915ac160b338e1156000651da01c8ad119504a651f4f98d2f2480271563e76",
+      "bytes": 2964
+    },
+    "pair-3-pandoc/artifacts/guide-1.epub": {
+      "sha256": "fcce56c81ce0b28ee8f2575b716f932f377614f8dbf73c97c43ec73440a1f70f",
+      "bytes": 7176
+    },
+    "pair-3-pandoc/artifacts/image-1.epub": {
+      "sha256": "3092694b91efcb189ea44222e616ad3d09b1166a200f4ac012bd4cd338d1caf5",
+      "bytes": 5871
+    },
+    "pair-3-pandoc/artifacts/inline-1.epub": {
+      "sha256": "3cbac458de91a9fa0b2cb42ed760765782981d7a6eb3770106d7dbc0e50c591b",
+      "bytes": 6041
+    },
+    "pair-3-pandoc/artifacts/recovery-1.epub": {
+      "sha256": "a867a4b59850fea98dabe943a0267d2226b4f93d8206098ecf933bbbad3f46e0",
+      "bytes": 6044
+    },
+    "pair-3-pandoc/artifacts/recovery-2.epub": {
+      "sha256": "6e7f383aeae848e17974c8d9687a688cbe0717c0aa5d03c607429c5ab20d97d8",
+      "bytes": 6046
+    },
+    "pair-3-pandoc/artifacts/report-1.epub": {
+      "sha256": "165d1255ca0437d7ab82f51fd95cbaca55c027a996b74def027fcbdc1ae3825a",
+      "bytes": 7925
+    },
+    "pair-3-pandoc/calls.jsonl": {
+      "sha256": "8743bff68c5caf5c7afd9e6f6deac5af20680b43a112ab5bbc3fcd2e2a8042b5",
+      "bytes": 7688
+    },
+    "pair-3-pandoc/client-command.json": {
+      "sha256": "f36cf762cce927bce83822e8d5da0a5595574f6c49aaeddac5e0f07b533186fd",
+      "bytes": 450
+    },
+    "pair-3-pandoc/client.events.jsonl": {
+      "sha256": "eb5bd540951f9a747a47d22783d644150e2bc7b3e0e2ee9b24a0e6c10c499630",
+      "bytes": 16214
+    },
+    "pair-3-pandoc/client.stderr.txt": {
+      "sha256": "73536eabc1ef3ed45563ba56a506e3ce7f2f83795c531ef659a49a29dc815125",
+      "bytes": 804
+    },
+    "pair-3-pandoc/final.txt": {
+      "sha256": "524921eba0e9edf1c3e5fcb3f868b947c03072ce10683d102c5b24247955bbce",
+      "bytes": 329
+    },
+    "pair-3-pandoc/fixed_hashes.json": {
+      "sha256": "9d5674f465322dd0e96fbd5d7d09c1dc4907596f18063cd2631fcbbad587c0a4",
+      "bytes": 694
+    },
+    "pair-3-pandoc/prompt.txt": {
+      "sha256": "faf2453df886eb9bf4a8950ec908718e4d2b153d8c4a218e8a7987afb5663a50",
+      "bytes": 1445
+    },
+    "pair-3-pandoc/result.json": {
+      "sha256": "fef65eec393ebf35c70172a39f496fe60b20864b33de4c2a331b4d90e20563c9",
+      "bytes": 3049
+    }
+  },
+  "protected_measurement_code_hashes": {
+    "runtime.py": "d0a6fc2ea4c0d8b1c6dfba134a93cd8e10bd19de5014eaca8183cfcc6e12a6fa",
+    "score.py": "7f7179723220644aabd9b5c37a377a7e48f1a4b31f6c6e70b71ad2b529c2286e",
+    "pandoc_epub.py": "10c16923e241f35db15f3a8c50eeac9da84fd62191630dc663cbb079b7133ab8",
+    "source_links.lua": "83a2e5698dd831f9b53fc3bf8b0553688d04734d01f185710ddcc4192de0af37"
+  },
+  "installed_binary_sha256": {
+    "agent": "a8a7ede4def5c7da5915764f2e00eecc8c7bdd56a0dae76a4b58c000ec26e3ca",
+    "pandoc": "8f17378a70e46eed7b63b5433fff6f5a0802f92659aa5782418548e0ca4a8e44"
+  }
+}

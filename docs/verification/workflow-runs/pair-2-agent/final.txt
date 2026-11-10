@@ -1,0 +1,7 @@
+Installed and discovered Agent EPUB 0.5.0, then completed all probes in order.
+
+- Report, guide, inline: independent checks passed on attempt 1.
+- Recovery: passed on attempt 2 after the permitted `(#missing)` → `(#results)` edit.
+- Image: explicitly unsupported (`unsupported_inline_image`); supplied image and alt left unchanged.
+
+Four validated EPUBs are in `out/`.

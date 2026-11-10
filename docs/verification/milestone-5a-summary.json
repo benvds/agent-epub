@@ -1,0 +1,517 @@
+{
+  "runs": 6,
+  "tools": {
+    "agent": {
+      "runs": 3,
+      "cases": {
+        "report": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 16.952552,
+            "minimum": 16.674764,
+            "maximum": 22.245818
+          },
+          "attempts": 3,
+          "retries": 0,
+          "first_attempt_correct": 3,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.017604,
+            "minimum": 0.014116,
+            "maximum": 0.019061
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 2.387346,
+            "minimum": 2.290834,
+            "maximum": 2.426682
+          }
+        },
+        "guide": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 5.008664,
+            "minimum": 4.973502,
+            "maximum": 5.917187
+          },
+          "attempts": 3,
+          "retries": 0,
+          "first_attempt_correct": 3,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.014038,
+            "minimum": 0.013876,
+            "maximum": 0.016812
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 2.246875,
+            "minimum": 2.216642,
+            "maximum": 2.299628
+          }
+        },
+        "inline": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 6.680219,
+            "minimum": 6.508875,
+            "maximum": 6.714272
+          },
+          "attempts": 3,
+          "retries": 0,
+          "first_attempt_correct": 3,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.01571,
+            "minimum": 0.012749,
+            "maximum": 0.017901
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 2.198972,
+            "minimum": 2.196937,
+            "maximum": 2.255726
+          }
+        },
+        "recovery": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 14.556852,
+            "minimum": 14.477537,
+            "maximum": 14.599753
+          },
+          "attempts": 6,
+          "retries": 3,
+          "first_attempt_correct": 0,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.019759,
+            "minimum": 0.019569,
+            "maximum": 0.020253
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 2.207878,
+            "minimum": 2.173159,
+            "maximum": 2.313513
+          }
+        },
+        "image": {
+          "outcomes": {
+            "correct": 0,
+            "incorrect": 0,
+            "unsupported": 3,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 0
+          },
+          "attempts": 3,
+          "retries": 0,
+          "first_attempt_correct": 0,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.006099,
+            "minimum": 0.005892,
+            "maximum": 0.006189
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 0,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "shell_calls": {
+        "n": 3,
+        "median": 10,
+        "minimum": 10,
+        "maximum": 11
+      },
+      "runtime_calls": {
+        "n": 3,
+        "median": 8,
+        "minimum": 8,
+        "maximum": 8
+      },
+      "download_seconds": {
+        "n": 3,
+        "median": 1.136212,
+        "minimum": 0.991108,
+        "maximum": 1.471528
+      },
+      "download_bytes": [
+        1415764
+      ],
+      "usage": {
+        "input_tokens": 823321,
+        "cached_input_tokens": 749952,
+        "output_tokens": 2494,
+        "reasoning_output_tokens": 53,
+        "uncached_input_tokens": 73369
+      },
+      "manual_interventions": 0,
+      "timeouts": 0,
+      "failed_sessions": 0,
+      "clean_exports": {
+        "first_attempt_correct": 9,
+        "attempted": 9
+      },
+      "supported_workflow_breakdown_seconds": {
+        "download": {
+          "n": 3,
+          "median": 1.136212,
+          "minimum": 0.991108,
+          "maximum": 1.471528
+        },
+        "install": {
+          "n": 3,
+          "median": 0.18347,
+          "minimum": 0.08184541693563041,
+          "maximum": 0.203669583924599
+        },
+        "discovery": {
+          "n": 3,
+          "median": 0.005461,
+          "minimum": 0.005414,
+          "maximum": 0.006027
+        },
+        "conversion": {
+          "n": 3,
+          "median": 0.066734,
+          "minimum": 0.064117,
+          "maximum": 0.07059700000000001
+        },
+        "validation": {
+          "n": 3,
+          "median": 9.048139,
+          "minimum": 8.909839999999999,
+          "maximum": 9.256212999999999
+        },
+        "model_client_shell_and_other": {
+          "n": 3,
+          "median": 33.199948,
+          "minimum": 32.41414316502865,
+          "maximum": 38.18520812511063
+        },
+        "supported_workflow_total": {
+          "n": 3,
+          "median": 43.871923,
+          "minimum": 43.197178,
+          "maximum": 48.240894
+        }
+      }
+    },
+    "pandoc": {
+      "runs": 3,
+      "cases": {
+        "report": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 23.856841,
+            "minimum": 21.83751,
+            "maximum": 26.744251
+          },
+          "attempts": 3,
+          "retries": 0,
+          "first_attempt_correct": 3,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.119482,
+            "minimum": 0.117055,
+            "maximum": 0.137515
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 2.251044,
+            "minimum": 2.062904,
+            "maximum": 2.355289
+          }
+        },
+        "guide": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 5.626615,
+            "minimum": 5.091122,
+            "maximum": 7.036518
+          },
+          "attempts": 3,
+          "retries": 0,
+          "first_attempt_correct": 3,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.09338,
+            "minimum": 0.088306,
+            "maximum": 0.104346
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 2.258524,
+            "minimum": 2.035226,
+            "maximum": 2.414735
+          }
+        },
+        "inline": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 6.368783,
+            "minimum": 6.283374,
+            "maximum": 7.095723
+          },
+          "attempts": 3,
+          "retries": 0,
+          "first_attempt_correct": 3,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.091889,
+            "minimum": 0.083113,
+            "maximum": 0.106303
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 2.217958,
+            "minimum": 2.027981,
+            "maximum": 2.262701
+          }
+        },
+        "recovery": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 16.370642,
+            "minimum": 14.780728,
+            "maximum": 17.400126
+          },
+          "attempts": 6,
+          "retries": 3,
+          "first_attempt_correct": 0,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.181961,
+            "minimum": 0.176735,
+            "maximum": 0.188778
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 4.432428,
+            "minimum": 4.285927,
+            "maximum": 4.598097
+          }
+        },
+        "image": {
+          "outcomes": {
+            "correct": 3,
+            "incorrect": 0,
+            "unsupported": 0,
+            "failed": 0
+          },
+          "seconds": {
+            "n": 3,
+            "median": 6.4336,
+            "minimum": 5.169805,
+            "maximum": 6.510744
+          },
+          "attempts": 3,
+          "retries": 0,
+          "first_attempt_correct": 3,
+          "converter_seconds": {
+            "n": 3,
+            "median": 0.09066,
+            "minimum": 0.09046,
+            "maximum": 0.099985
+          },
+          "validation_seconds": {
+            "n": 3,
+            "median": 2.283409,
+            "minimum": 2.209671,
+            "maximum": 2.32486
+          }
+        }
+      },
+      "shell_calls": {
+        "n": 3,
+        "median": 10,
+        "minimum": 10,
+        "maximum": 10
+      },
+      "runtime_calls": {
+        "n": 3,
+        "median": 8,
+        "minimum": 8,
+        "maximum": 8
+      },
+      "download_seconds": {
+        "n": 3,
+        "median": 5.22624,
+        "minimum": 5.113676,
+        "maximum": 5.250382
+      },
+      "download_bytes": [
+        43148194
+      ],
+      "usage": {
+        "input_tokens": 846567,
+        "cached_input_tokens": 799616,
+        "output_tokens": 2223,
+        "reasoning_output_tokens": 78,
+        "uncached_input_tokens": 46951
+      },
+      "manual_interventions": 0,
+      "timeouts": 0,
+      "failed_sessions": 0,
+      "clean_exports": {
+        "first_attempt_correct": 9,
+        "attempted": 9
+      },
+      "supported_workflow_breakdown_seconds": {
+        "download": {
+          "n": 3,
+          "median": 5.22624,
+          "minimum": 5.113676,
+          "maximum": 5.250382
+        },
+        "install": {
+          "n": 3,
+          "median": 1.739475,
+          "minimum": 1.6771630420681838,
+          "maximum": 1.7842953750119648
+        },
+        "discovery": {
+          "n": 3,
+          "median": 0.068401,
+          "minimum": 0.061714,
+          "maximum": 0.072135
+        },
+        "conversion": {
+          "n": 3,
+          "median": 0.486712,
+          "minimum": 0.465209,
+          "maximum": 0.536942
+        },
+        "validation": {
+          "n": 3,
+          "median": 11.159954,
+          "minimum": 10.412038,
+          "maximum": 11.630822
+        },
+        "model_client_shell_and_other": {
+          "n": 3,
+          "median": 35.846709,
+          "minimum": 30.305721746841606,
+          "maximum": 36.642140748448924
+        },
+        "supported_workflow_total": {
+          "n": 3,
+          "median": 54.574798,
+          "minimum": 49.340576,
+          "maximum": 54.576859
+        }
+      }
+    }
+  },
+  "paired_differences_seconds_agent_minus_pandoc": {
+    "report": {
+      "n": 3,
+      "median": -5.162746,
+      "minimum": -6.904289,
+      "maximum": -4.498433,
+      "samples": [
+        -6.904289,
+        -5.162746,
+        -4.498433
+      ]
+    },
+    "guide": {
+      "n": 3,
+      "median": -0.082458,
+      "minimum": -2.063016,
+      "maximum": 0.290572,
+      "samples": [
+        -2.063016,
+        0.290572,
+        -0.082458
+      ]
+    },
+    "inline": {
+      "n": 3,
+      "median": 0.140092,
+      "minimum": -0.415504,
+      "maximum": 0.430898,
+      "samples": [
+        0.430898,
+        -0.415504,
+        0.140092
+      ]
+    },
+    "recovery": {
+      "n": 3,
+      "median": -1.893105,
+      "minimum": -2.843274,
+      "maximum": -0.180975,
+      "samples": [
+        -2.843274,
+        -0.180975,
+        -1.893105
+      ]
+    },
+    "supported_workflow_total": {
+      "n": 3,
+      "median": -6.333904,
+      "minimum": -11.379681,
+      "maximum": -5.468653,
+      "samples": [
+        -11.379681,
+        -5.468653,
+        -6.333904
+      ]
+    }
+  }
+}

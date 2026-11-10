@@ -1,0 +1,7 @@
+Completed installation, discovery, and all five cases in order.
+
+- Report, guide, inline, and image passed on attempt 1.
+- Recovery passed on attempt 2 after the permitted `(#missing)` → `(#results)` edit.
+- The image probe passed with the supplied image and alt text retained.
+
+All EPUBs are in `out/`; all final independent checks passed.

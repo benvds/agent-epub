@@ -1,0 +1,105 @@
+{
+  "return_code": 0,
+  "timed_out": false,
+  "elapsed_seconds": 51.11257,
+  "pair": 1,
+  "tool": "agent",
+  "download": {
+    "url": "https://github.com/benvds/epub-rust/releases/download/v0.5.0/agent-epub-0.5.0-aarch64-apple-darwin.zip",
+    "sha256": "85d5af490bf3629ac14be02712bc3b97e0f67b005d5b739d643dff1a79aa5828",
+    "bytes": 1415764,
+    "seconds": 1.471528
+  },
+  "requested_model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "service_tier": "default",
+  "client_version": "codex-cli 0.167.0-alpha.3.2",
+  "host": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "effective_model": "not exposed by CLI event stream",
+  "python_version": "3.15.2",
+  "run_order": 1,
+  "usage": {
+    "input_tokens": 229313,
+    "cached_input_tokens": 207488,
+    "output_tokens": 849,
+    "reasoning_output_tokens": 19
+  },
+  "changed_protected_sources": [],
+  "manual_interventions": 0,
+  "client_turns": 1,
+  "model_turns": null,
+  "model_turns_note": "CLI does not expose individual model response boundaries; client turns and real command events are retained.",
+  "shell_tool_calls": 11,
+  "runtime_calls": 8,
+  "cases": {
+    "report": {
+      "outcome": "correct",
+      "attempts": 1,
+      "retries": 0,
+      "first_attempt_correct": true,
+      "completion_seconds": 16.952552,
+      "segment_seconds": 16.952552,
+      "converter_seconds": 0.019061,
+      "validation_seconds": 2.426682,
+      "snapshots": [
+        ".measurement/artifacts/report-1.epub"
+      ]
+    },
+    "guide": {
+      "outcome": "correct",
+      "attempts": 1,
+      "retries": 0,
+      "first_attempt_correct": true,
+      "completion_seconds": 21.926054,
+      "segment_seconds": 4.973502,
+      "converter_seconds": 0.013876,
+      "validation_seconds": 2.216642,
+      "snapshots": [
+        ".measurement/artifacts/guide-1.epub"
+      ]
+    },
+    "inline": {
+      "outcome": "correct",
+      "attempts": 1,
+      "retries": 0,
+      "first_attempt_correct": true,
+      "completion_seconds": 28.640326,
+      "segment_seconds": 6.714272,
+      "converter_seconds": 0.017901,
+      "validation_seconds": 2.196937,
+      "snapshots": [
+        ".measurement/artifacts/inline-1.epub"
+      ]
+    },
+    "recovery": {
+      "outcome": "correct",
+      "attempts": 2,
+      "retries": 1,
+      "first_attempt_correct": false,
+      "completion_seconds": 43.197178,
+      "segment_seconds": 14.556852,
+      "converter_seconds": 0.019759,
+      "validation_seconds": 2.207878,
+      "snapshots": [
+        ".measurement/artifacts/recovery-2.epub"
+      ]
+    },
+    "image": {
+      "outcome": "unsupported",
+      "attempts": 1,
+      "retries": 0,
+      "first_attempt_correct": false,
+      "completion_seconds": 47.262491,
+      "segment_seconds": 4.065313,
+      "converter_seconds": 0.005892,
+      "validation_seconds": 0,
+      "snapshots": []
+    }
+  },
+  "shell_calls_by_purpose": {
+    "read_or_prepare": 3,
+    "setup": 1,
+    "discovery": 1,
+    "conversion_or_repair": 6
+  }
+}
