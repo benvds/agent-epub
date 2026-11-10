@@ -78,3 +78,15 @@ workflow comparison. [Raw measurements](milestone-5-benchmark.json).
 Milestone 5a remains a separate comparison, with three paired runs requested
 by the maintainer. Claude/Ollama evaluations remain deferred. Aggregate preflight,
 front-matter metadata import and new publishing features are outside this release.
+
+## v0.5.1 invalid-input follow-up
+
+Final review reproduced a panic (exit 101 with empty JSON stdout) for a link to
+a supplied source consisting only of a footnote definition. Such a source is
+known by path but produces no chapter; the destination lookup indexed a missing
+chapter map entry. The lookup now returns the same localized `unresolved_link`
+diagnostic as other unavailable chapter targets. A CLI regression checks exit
+2, clean JSON, the source line and existing-output preservation. Valid-book
+reading resources are unchanged. Formatting, Clippy and all 40 ordinary tests pass locally. The macOS archive
+passes the clean-install smoke suite. H2 chapter/navigation resources are
+byte-identical to v0.5.0. The native tag workflow gates publication of v0.5.1; the milestone 5a measurements stay pinned to v0.5.0.

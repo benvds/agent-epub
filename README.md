@@ -1,6 +1,6 @@
 # Agent EPUB
 
-**v0.5.0** creates reflowable EPUB reading editions from UTF-8 text and Markdown
+**v0.5.1** creates reflowable EPUB reading editions from UTF-8 text and Markdown
 for agent workflows. It includes simple tables, linked footnotes, nested section
 contents and optional JPEG/PNG covers. Version 0.5 adds detailed repair diagnostics,
 explicit Markdown rules and configurable chapter splitting. Generation runs offline without an AI
@@ -8,7 +8,7 @@ service or Rust installation. MIT licensed.
 
 ## Install
 
-Download a binary from the [v0.5.0 release](https://github.com/benvds/epub-rust/releases/tag/v0.5.0):
+Download a binary from the [v0.5.1 release](https://github.com/benvds/epub-rust/releases/tag/v0.5.1):
 macOS Apple Silicon, Linux x86_64 or Windows x86_64. The repository is private;
 downloads require access. [Installation, checksum verification, runtime boundaries
 and updates](docs/INSTALL.md) include commands for each platform.
@@ -134,8 +134,8 @@ for current support across Agent EPUB and twelve alternatives. A [practical
 three-pair agent workflow comparison against Pandoc](docs/verification/MILESTONE_5A.md)
 records cold setup, warm exports, recovery, quality checks and limitations.
 
-See [usage](docs/USAGE.md), [requirements](https://github.com/benvds/epub-rust/blob/v0.5.0/docs/PRD.md),
+See [usage](docs/USAGE.md), [requirements](https://github.com/benvds/epub-rust/blob/v0.5.1/docs/PRD.md),
 [roadmap](docs/ROADMAP.md),
 [implementation plan](docs/IMPLEMENTATION_PLAN.md),
 [milestone 5 verification](docs/verification/MILESTONE_5.md) and
-[milestone 3 reader observations](https://github.com/benvds/epub-rust/blob/v0.5.0/docs/verification/MILESTONE_3.md).
+[milestone 3 reader observations](https://github.com/benvds/epub-rust/blob/v0.5.1/docs/verification/MILESTONE_3.md).

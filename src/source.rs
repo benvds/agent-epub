@@ -650,7 +650,7 @@ fn resolve_link(
             .ok_or_else(error)?;
         Ok(format!("{}#{id}", chapter_file(*chapter)))
     } else {
-        Ok(chapter_file(first[&target_source]))
+        Ok(chapter_file(*first.get(&target_source).ok_or_else(error)?))
     }
 }
 

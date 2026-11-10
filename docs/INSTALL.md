@@ -1,6 +1,6 @@
 # Install and update Agent EPUB
 
-Version 0.5.0 ships MIT-licensed native binaries. Generation runs offline and
+Version 0.5.1 ships MIT-licensed native binaries. Generation runs offline and
 needs no Rust, Python, Java or AI account. Downloading from this private
 repository requires a GitHub account with repository access, plus a browser
 or the GitHub CLI (`gh auth login`). Repository visibility is unchanged.
@@ -22,11 +22,11 @@ release. The macOS executable is not signed or notarized.
 In a new empty download directory:
 
 ```sh
-gh release download v0.5.0 --repo benvds/epub-rust \
-  --pattern 'agent-epub-0.5.0-aarch64-apple-darwin.zip*'
-shasum -a 256 -c agent-epub-0.5.0-aarch64-apple-darwin.zip.sha256
-unzip agent-epub-0.5.0-aarch64-apple-darwin.zip
-cd agent-epub-0.5.0-aarch64-apple-darwin
+gh release download v0.5.1 --repo benvds/epub-rust \
+  --pattern 'agent-epub-0.5.1-aarch64-apple-darwin.zip*'
+shasum -a 256 -c agent-epub-0.5.1-aarch64-apple-darwin.zip.sha256
+unzip agent-epub-0.5.1-aarch64-apple-darwin.zip
+cd agent-epub-0.5.1-aarch64-apple-darwin
 chmod +x agent-epub
 ./agent-epub --version
 export PATH="$PWD:$PATH"
@@ -39,11 +39,11 @@ your PATH, or add this extracted directory's absolute path to your shell setup.
 ## Linux x86_64
 
 ```sh
-gh release download v0.5.0 --repo benvds/epub-rust \
-  --pattern 'agent-epub-0.5.0-x86_64-unknown-linux-gnu.zip*'
-sha256sum --check agent-epub-0.5.0-x86_64-unknown-linux-gnu.zip.sha256
-unzip agent-epub-0.5.0-x86_64-unknown-linux-gnu.zip
-cd agent-epub-0.5.0-x86_64-unknown-linux-gnu
+gh release download v0.5.1 --repo benvds/epub-rust \
+  --pattern 'agent-epub-0.5.1-x86_64-unknown-linux-gnu.zip*'
+sha256sum --check agent-epub-0.5.1-x86_64-unknown-linux-gnu.zip.sha256
+unzip agent-epub-0.5.1-x86_64-unknown-linux-gnu.zip
+cd agent-epub-0.5.1-x86_64-unknown-linux-gnu
 chmod +x agent-epub
 ./agent-epub --version
 export PATH="$PWD:$PATH"
@@ -57,13 +57,13 @@ Use a source build on systems outside the declared binary boundary.
 Use PowerShell in a new empty download directory:
 
 ```powershell
-gh release download v0.5.0 --repo benvds/epub-rust --pattern 'agent-epub-0.5.0-x86_64-pc-windows-msvc.zip*'
+gh release download v0.5.1 --repo benvds/epub-rust --pattern 'agent-epub-0.5.1-x86_64-pc-windows-msvc.zip*'
 if ($LASTEXITCODE -ne 0) { throw 'Download failed' }
-$archive = 'agent-epub-0.5.0-x86_64-pc-windows-msvc.zip'
+$archive = 'agent-epub-0.5.1-x86_64-pc-windows-msvc.zip'
 $expected = ((Get-Content "$archive.sha256") -split '\s+')[0]
 if ((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected) { throw 'Checksum mismatch' }
 Expand-Archive $archive -DestinationPath .
-Set-Location agent-epub-0.5.0-x86_64-pc-windows-msvc
+Set-Location agent-epub-0.5.1-x86_64-pc-windows-msvc
 .\agent-epub.exe --version
 $env:PATH = "$PWD;$env:PATH"
 ```

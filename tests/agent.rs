@@ -489,3 +489,29 @@ fn historical_markdown_probes_have_current_declared_outcomes() {
         0
     );
 }
+
+#[test]
+fn links_to_sources_without_chapters_fail_as_localized_json_instead_of_panicking() {
+    let dir = tempfile::tempdir().unwrap();
+    let output = dir.path().join("protected.epub");
+    fs::write(&output, b"previous book").unwrap();
+    let book = request(json!([
+        {"name": "main.md", "format": "markdown", "content": "# Main\n\n[Notes](notes.md)\n"},
+        {"name": "notes.md", "format": "markdown", "content": "[^unused]: No chapter text.\n"}
+    ]));
+    let (code, result) = run_request(&book, None, &output);
+    assert_eq!(code, 2, "{result}");
+    assert_eq!(result["status"], "failed");
+    assert_eq!(result["output"], Value::Null);
+    assert_eq!(result["errors"][0]["code"], "invalid_input");
+    assert_eq!(result["errors"][0]["issue_code"], "unresolved_link");
+    assert_eq!(result["errors"][0]["line"], 3);
+    assert_eq!(result["errors"][0]["column"], 1);
+    assert!(
+        result["errors"][0]["source"]
+            .as_str()
+            .unwrap()
+            .ends_with("main.md")
+    );
+    assert_eq!(fs::read(output).unwrap(), b"previous book");
+}

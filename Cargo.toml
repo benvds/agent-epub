@@ -1,12 +1,12 @@
 [package]
 name = "agent-epub"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2024"
 rust-version = "1.88"
 description = "Focused EPUB generation for AI agents"
 license = "MIT"
 repository = "https://github.com/benvds/epub-rust"
-documentation = "https://github.com/benvds/epub-rust/blob/v0.5.0/docs/USAGE.md"
+documentation = "https://github.com/benvds/epub-rust/blob/v0.5.1/docs/USAGE.md"
 readme = "README.md"
 keywords = ["epub", "markdown", "cli", "agents"]
 categories = ["command-line-utilities", "text-processing"]

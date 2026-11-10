@@ -1,4 +1,13 @@
-# Agent EPUB v0.5.0
+# Agent EPUB v0.5.1
+
+This patch fixes a panic when a local link targets a supplied Markdown source
+that contains only footnote definitions and therefore produces no chapter. The
+build now returns exit code 2, clean JSON with `unresolved_link`, its source
+location and a remedy, while preserving existing output.
+
+Valid-book reading resources and the version 1 request/result contract are
+unchanged from v0.5.0. The practical three-pair benchmark remains pinned to
+v0.5.0; its raw measurements are retained in the repository.
 
 Milestone 5 adds predictable chapter boundaries and actionable repair diagnostics.
 
