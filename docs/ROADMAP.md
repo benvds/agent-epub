@@ -1,6 +1,6 @@
 # Agent EPUB tool roadmap
 
-Updated 9 November 2026. Deliver a useful, tested subset in three milestones. Dates are intentionally unset; each milestone ends when its acceptance gates pass.
+Updated 10 November 2026. Deliver a useful, tested subset in three milestones. Dates are intentionally unset; each milestone ends when its acceptance gates pass.
 
 ## Milestone 1 Text and Markdown reading editions
 
@@ -55,7 +55,9 @@ Exit gates:
 
 ## Milestone 3 Selected conveniences
 
-Choose a small set of additions based on actual book-generation needs. Full EPUB support remains outside scope.
+Status: in development for `v0.3.0`. Selected scope: simple semantic Markdown tables, linked footnotes with return links, and nested contents for section headings. These support reports and learning material through the existing file and agent request inputs. Full EPUB support remains outside scope.
+
+Inline images, richer metadata, style presets, accessibility reports, batch generation and reproducible archives remain deferred. The table below records the original candidates, not a commitment to deliver every feature.
 
 Candidate order:
 

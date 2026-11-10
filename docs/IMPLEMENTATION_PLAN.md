@@ -113,7 +113,12 @@ Suggested commit boundaries: request contract; streamed inputs and paths; struct
 
 ## Milestone 3 Implementation sequence
 
-Choose additions from user evidence. For each selected feature, define semantics and diagnostics, add fixtures, implement it through the shared book model, and run the existing corpus before committing.
+Selected release scope: simple Markdown tables, linked footnotes and nested contents. Keep the version 1 request contract and direct CLI inputs unchanged.
+
+1. Add rectangular pipe tables with semantic column headers and alignment. Reject excess or missing cells instead of losing text. Test content, escaping and safe failures; commit a working checkpoint.
+2. Collect footnote definitions per source, number by first reference, place notes at the end of the first referring chapter, and link every reference back. Reject duplicate, unused and nested definitions; keep source-relative links working. Test repeated and cross-chapter references; commit a working checkpoint.
+3. Add nested contents for top-level H2–H6 headings, attaching skipped levels to the nearest preceding shallower heading. Exclude quoted/list/note headings. Verify the complete contents order and targets; commit a working checkpoint.
+4. Update discovery, examples and usage. Run the regression suite, independent EPUBCheck corpus, reader checks and speed benchmark. Record limitations, finalize the release version, commit, then tag and push after CI passes.
 
 Simple tables should preserve header relationships and all cell content. Notes should preserve references and return navigation. Inline images require supplied alternative text or a clear decorative-image choice. Style presets must remain readable with user font settings. Automated accessibility reports must identify their coverage and remaining manual checks.
 
