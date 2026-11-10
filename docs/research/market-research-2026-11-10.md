@@ -4,7 +4,7 @@ Research date: 10 November 2026. Audience: the maintainer deciding where to inve
 
 Planning update later on 10 November: milestone 3 is now complete at `v0.3.0`, including tables, footnotes and nested contents. The observations and priorities below retain their `v0.2.0` research baseline; those delivered features are no longer outstanding work. The [updated roadmap](../ROADMAP.md) records the current release status and remaining work packages.
 
-The [feature comparison matrix](epub-feature-matrix.md) provides a later `v0.4.0` capability baseline across thirteen tools. The roadmap schedules the agent workflow benchmark after milestone 5 and uses GitHub issues for feedback.
+Current-status update: Agent EPUB is released through `v0.5.1`; the [feature matrix](epub-feature-matrix.md) reflects that baseline. The [practical milestone 5a benchmark](../verification/MILESTONE_5A.md) is complete. This research document retains its original `v0.2.0` observations, methods and product judgments; it is not a new market or competitor study. GitHub feedback and broader product decisions remain milestone 6 work.
 
 Agent EPUB has a credible niche as a small local EPUB generation component for agent applications. Its strongest assets are its explicit input contract, protected output publishing and clear reporting of completed checks. Its largest immediate problems are installation friction and a content subset that excludes common report material.
 

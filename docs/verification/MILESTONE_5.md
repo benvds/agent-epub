@@ -75,8 +75,8 @@ The milestone 3 median was 35.353 ms on its recorded environment. These are
 bounded local observations, not a general performance guarantee or an agent
 workflow comparison. [Raw measurements](milestone-5-benchmark.json).
 
-Milestone 5a remains a separate comparison, with three paired runs requested
-by the maintainer. Claude/Ollama evaluations remain deferred. Aggregate preflight,
+The separate [milestone 5a comparison](MILESTONE_5A.md) is complete with three
+paired workflows, as requested by the maintainer. Claude/Ollama evaluations remain deferred. Aggregate preflight,
 front-matter metadata import and new publishing features are outside this release.
 
 ## v0.5.1 invalid-input follow-up
@@ -89,4 +89,9 @@ diagnostic as other unavailable chapter targets. A CLI regression checks exit
 2, clean JSON, the source line and existing-output preservation. Valid-book
 reading resources are unchanged. Formatting, Clippy and all 40 ordinary tests pass locally. The macOS archive
 passes the clean-install smoke suite. H2 chapter/navigation resources are
-byte-identical to v0.5.0. The native tag workflow gates publication of v0.5.1; the milestone 5a measurements stay pinned to v0.5.0.
+byte-identical to v0.5.0. All native gates and publication passed in the
+[v0.5.1 tag workflow](https://github.com/benvds/epub-rust/actions/runs/42792872469)
+on commit `b5ff7b01479662840f3b2e80bbb55e0ba0804c3c`. The
+[v0.5.1 release](https://github.com/benvds/epub-rust/releases/tag/v0.5.1) includes
+all three archives, checksums and native installation reports. Milestone 5a
+measurements remain pinned to v0.5.0.

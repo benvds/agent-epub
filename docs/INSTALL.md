@@ -135,4 +135,4 @@ target/release/agent-epub --version
 
 On Windows use `target/release/agent-epub.exe`. Release packaging and smoke tests
 use Python 3.11 or later as development tooling. The packaging allowlist in
-`scripts/release.py` excludes manuscripts and local evaluation outputs.
+`scripts/release.py` excludes private manuscripts and local evaluation outputs; only the listed synthetic examples are bundled.

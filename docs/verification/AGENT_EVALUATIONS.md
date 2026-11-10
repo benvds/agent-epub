@@ -2,6 +2,8 @@
 
 Evaluation date: 9 November 2026. Claude and Ollama evaluations are deferred at the user's request. The completed live evaluation uses the ChatGPT-authenticated OpenAI Codex CLI, rather than the ChatGPT web or desktop chat interface.
 
+For later live agent-workflow evidence, see the separate [milestone 5a comparison](MILESTONE_5A.md). This record remains the historical milestone 2 usability evaluation.
+
 ## Completed live evaluation
 
 | Measure | Result |

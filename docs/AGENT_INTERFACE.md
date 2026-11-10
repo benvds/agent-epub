@@ -2,7 +2,7 @@
 
 Version 0.5.1 extends the version 1 CLI contract with optional chapter splitting and additive diagnostic fields. [Install a binary and the reusable agent skill](INSTALL.md). The release includes equivalent direct, [file-request](../examples/report-request.json) and [streamed-inline](../examples/report-inline.json) report examples.
 
-Milestone 2 supports generic book requests, streamed input, capability discovery, structured results and supplied cover images. The live OpenAI-agent evaluation passed all 20 corpus tasks. Claude and Ollama evaluations are deferred at the user's request. [Evaluation details](verification/AGENT_EVALUATIONS.md).
+Version 1 requests support supplied files or inline writing, metadata and optional covers. Live Codex evidence includes the [historical milestone 2 evaluation](https://github.com/benvds/epub-rust/blob/main/docs/verification/AGENT_EVALUATIONS.md) and the [three-pair workflow comparison](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md) using v0.5.0. Current v0.5.1 adds an invalid-input guard with unchanged valid-book reading resources. Claude and Ollama live evaluations remain deferred.
 
 ## Discover and build
 
@@ -68,7 +68,8 @@ Detailed codes include `unresolved_link`, `unsupported_link`,
 `invalid_footnote`, `unsupported_front_matter`, `invalid_split_level` and
 `invalid_request`. Other errors retain the category name as their detailed code.
 Footnote semantic errors identify the source but may have no line/column.
-Fix the reported issue and retry; failures remain fail-fast, with no aggregate
+A supplied source containing only definitions has no chapter destination; links
+to it fail as localized `unresolved_link` errors. Fix the reported issue and retry; failures remain fail-fast, with no aggregate
 preflight or output publication. Human diagnostics include the code and remedy
 on stderr. Structured stdout remains one JSON result.
 
@@ -101,7 +102,7 @@ The cover is identified in publication metadata and appears before the contents 
 
 ## Use from an agent runtime
 
-Version 0.3 keeps request schema version 1. Markdown file references and inline `format: "markdown"` content both support rectangular pipe tables, source-local footnotes and nested section contents. No new request fields are needed. `capabilities` lists `markdown_extensions`, detailed `markdown_profile` rules and `section_contents_h2_h6` navigation. Read those rules before constructing tables or notes; malformed rectangular tables and duplicate, empty or unused note definitions fail with exit code 2 and JSON `invalid_input`.
+Request schema version 1 supports rectangular pipe tables, source-local footnotes and nested section contents through file references and inline `format: "markdown"` content. The optional book-level `split_level` chooses chapter boundaries; omission preserves H1 splitting. `capabilities` lists `markdown_extensions`, detailed `markdown_profile` rules and `section_contents_h2_h6` navigation. Read those rules before constructing tables or notes; malformed rectangular tables and duplicate, empty or unused note definitions fail with exit code 2 and JSON `invalid_input`.
 
 The [report example](../examples/research-report.md) demonstrates all three additions. See the [content subset](USAGE.md) for escaping, unmatched-note fallback and nested-heading rules. The direct and streamed-inline request workflows are tested to produce identical report reading resources. This is CLI contract verification; the milestone 2 live OpenAI score is historical and has not been relabeled as a new model evaluation.
 
@@ -109,4 +110,4 @@ Give the agent permission to invoke the executable and access only the sources a
 
 ChatGPT-authenticated Codex CLI was tested through actual tool calls. Claude Code can use the same shell commands when configured with tool access; its live evaluation is deferred. An Ollama-backed runtime can expose a tool that forwards request JSON to the CLI and returns structured stdout; the selected model must support that runtime's tool use. No provider-specific conversation parsing is required, and no live Ollama result is claimed.
 
-The request schema is available in [book-request.v1.json](../schemas/book-request.v1.json). See the [release verification](verification/MILESTONE_2.md) for the tested scope and remaining limitations.
+The request schema is available in [book-request.v1.json](../schemas/book-request.v1.json). See the [current release verification](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5.md) and [workflow benchmark](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md) for tested scope, source preservation checks and remaining limitations.

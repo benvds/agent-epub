@@ -1,6 +1,6 @@
 # Rust CLI implementation plan
 
-Updated 10 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. Milestones 1 through 5 are implemented; their sequences below are the implementation record. Milestone 4 passes native release verification under MIT for macOS Apple Silicon, Linux x86_64 and Windows x86_64 at `v0.4.0`. Milestone 5 passes local checks, two-reader review and native release gates at `v0.5.0`; `v0.5.1` adds a regression-tested invalid-input guard. Milestone 5a records a completed practical three-pair comparison; milestone 6 plans evidence review. The [PRD](PRD.md) stays independent of these programming choices.
+Updated 10 November 2026. Implement the [roadmap](ROADMAP.md) as a standalone CLI named `agent-epub`. Milestones 1 through 5 and the practical milestone 5a comparison are complete; their sequences below are the implementation record. Milestone 4 passes native release verification under MIT for macOS Apple Silicon, Linux x86_64 and Windows x86_64 at `v0.4.0`. Milestone 5 passes local checks, two-reader review and native release gates through `v0.5.1`. Milestone 5a records a completed practical three-pair comparison; milestone 6 plans evidence review. The [PRD](PRD.md) stays independent of these programming choices.
 
 ## Milestone 1 Implementation sequence
 
@@ -139,7 +139,7 @@ Suggested commits: documentation/examples; license and metadata after the mainta
 
 ### Checkpoint B Input rules and structured repair
 
-Milestone 5 selected implementation (10 November 2026): preserve result `code`
+Milestone 5 implementation record (10 November 2026): preserve result `code`
 and exit categories, adding `issue_code`, `source`, one-based Unicode `line` /
 `column` where available, and `remedy` without changing schema version 1.
 Reject leading YAML (`---`) and TOML (`+++`) front-matter blocks; import no
@@ -148,9 +148,11 @@ behavior without blanket punctuation warnings. Add book-wide `split_level`
 (integer 1–6, default 1), exposed as `--split-level` for direct inputs and a
 request property for structured inputs. Split only at root headings of exactly
 that level, preserve source boundaries and preambles, and retain heading ranks.
-The first heading of a split chapter supplies its title and is excluded from
-nested section entries. Keep local verification and commits separate from
-release publication; milestone 5a remains outside this implementation.
+A leading H1 or matching split-level heading supplies the chapter title and is
+excluded from nested section entries. Release verification and the later
+three-pair benchmark are recorded separately in
+[MILESTONE_5.md](verification/MILESTONE_5.md) and
+[MILESTONE_5A.md](verification/MILESTONE_5A.md).
 
 
 1. B1: retain broad error categories while adding stable detailed codes, source references, locations where available and remedies. Define result compatibility before changing serialized output. Test unsupported structures and unresolved links as distinct failures.
@@ -160,6 +162,11 @@ release publication; milestone 5a remains outside this implementation.
 Suggested commits: diagnostic contract and representative errors; Markdown declarations/front-matter policy; split-level behavior; verification and current examples. Do not introduce aggregate preflight or front-matter metadata import incidentally; those require their own declared behavior.
 
 ### Checkpoint C1 Agent workflow benchmark after milestone 5
+
+Completed as three practical paired workflows at the maintainer's request. The
+[protocol](../benchmarks/workflow/PROTOCOL.md),
+[report](verification/MILESTONE_5A.md) and retained events/artifacts record the
+actual scope and limits. The sequence below remains the implementation plan.
 
 1. Immediately after milestone 5, implement the milestone 5a benchmark. Assemble identical completed manuscripts and export requirements for Agent EPUB and a reasonable Pandoc wrapper. Cover supported reports and separate recovery/unsupported cases. Record the integration-recipe preparation effort for both tools.
 2. Instrument the real agent client with the same model/settings, permissions and host resources. Pin versions and exact prompts. Capture setup/discovery/configuration calls, model turns, build attempts, retries, manual interventions, timing and available usage data. Retain artifact snapshots for independent scoring rather than relying on agent self-reports.

@@ -2,7 +2,7 @@
 
 Updated 10 November 2026. This matrix compares 69 publication and workflow capabilities across Agent EPUB and twelve alternatives. Agent EPUB covers a focused reflowable subset; this inventory also exposes the advanced publishing features and integration work outside that subset.
 
-The baseline for Agent EPUB is released **v0.4.0**, not an assumed future build. Milestone 5 changes are listed separately below and do not count as current support. Competitor entries describe reviewed official documentation, not hands-on compatibility results or a speed ranking. Versions and exact configurations must be pinned for the planned benchmark.
+The Agent EPUB baseline is released **v0.5.1**, including detailed diagnostics, explicit Markdown rules and configurable chapter splitting. Competitor columns retain their dated official-documentation evidence. A separate [three-pair benchmark](../verification/MILESTONE_5A.md) tested v0.5.0 against a prepared Pandoc 3.13 wrapper; it does not establish hands-on compatibility or speed for the other alternatives.
 
 ## How to read the matrix
 
@@ -86,7 +86,7 @@ Columns use [Agent EPUB usage](../USAGE.md) and [agent interface](../AGENT_INTER
 | F37 | Generated visible contents page | Y | Y | Y | Y | Y | Y | Y |
 | F38 | Generated reader-native navigation | Y | Y | Y | Y | Y | Y | Y |
 | F39 | Nested section contents | Y | Y | Y | P | Y | Y | Y |
-| F40 | Configurable chapter split level | N | Y | Y | P | Y | P | P |
+| F40 | Configurable chapter split level | Y | Y | Y | P | Y | P | P |
 | F41 | Automatic previous/next links in reading content | Y | ? | ? | ? | ? | ? | ? |
 | F42 | Page-list navigation mapped to print pages | N | ? | ? | ? | ? | ? | ? |
 | F43 | Landmark navigation for publication regions | N | P | P | ? | P | ? | ? |
@@ -126,7 +126,7 @@ Columns use [Agent EPUB usage](../USAGE.md) and [agent interface](../AGENT_INTER
 | F62 | Unattended command-line export | Y | Y | Y | Y | Y | Y | Y |
 | F63 | Capability or supported-format discovery command | Y | Y | P | P | Y | Y | ? |
 | F64 | Structured operation result and artifact status | Y | P | P | Y | ? | ? | ? |
-| F65 | Detailed machine-readable issue codes and locations | P | P | ? | Y | ? | ? | ? |
+| F65 | Detailed machine-readable issue codes and locations | Y | P | ? | Y | ? | ? | ? |
 | F66 | Aggregate source preflight before export | N | P | P | Y | ? | ? | ? |
 | F67 | Preserve previous output when requested checks fail | Y | ? | ? | P | ? | ? | ? |
 | F68 | Packaged agent skill or integration recipe | Y | ? | ? | Y | ? | ? | ? |
@@ -201,7 +201,7 @@ EbookLib and epub-builder are libraries, so M frequently means the application s
 | F37 | Generated visible contents page | Y | Y | Y | Y | Y | Y | Y |
 | F38 | Generated reader-native navigation | Y | Y | Y | Y | Y | Y | Y |
 | F39 | Nested section contents | Y | Y | P | P | Y | Y | Y |
-| F40 | Configurable chapter split level | N | M | P | P | Y | M | M |
+| F40 | Configurable chapter split level | Y | M | P | P | Y | M | M |
 | F41 | Automatic previous/next links in reading content | Y | M | ? | ? | ? | M | M |
 | F42 | Page-list navigation mapped to print pages | N | M | ? | ? | Y | M | ? |
 | F43 | Landmark navigation for publication regions | N | M | P | ? | Y | Y | P |
@@ -241,7 +241,7 @@ EbookLib and epub-builder are libraries, so M frequently means the application s
 | F62 | Unattended command-line export | Y | ? | ? | ? | M | M | M |
 | F63 | Capability or supported-format discovery command | Y | ? | ? | ? | ? | M | M |
 | F64 | Structured operation result and artifact status | Y | ? | ? | ? | ? | M | M |
-| F65 | Detailed machine-readable issue codes and locations | P | ? | ? | ? | ? | M | M |
+| F65 | Detailed machine-readable issue codes and locations | Y | ? | ? | ? | ? | M | M |
 | F66 | Aggregate source preflight before export | N | ? | ? | ? | P | M | M |
 | F67 | Preserve previous output when requested checks fail | Y | ? | ? | ? | ? | M | M |
 | F68 | Packaged agent skill or integration recipe | Y | ? | ? | ? | ? | M | M |
@@ -254,15 +254,17 @@ EbookLib and epub-builder are libraries, so M frequently means the application s
 - F04 through F10: Agent EPUB generates new EPUBs from text and Markdown. It does not import arbitrary HTML, DOCX or existing EPUBs, and it has no mdBook-project adapter or PDF output.
 - F16 and F17: tables need one header row and rectangular cells. Merged cells, multiline cells, captions and complex headers are rejected. F18 includes numbered notes, multiple backlinks and reader-dependent popup behavior.
 - F22 and F55: supplied covers are JPEG/PNG with bounded decoding and alternative text. Inline images remain unsupported, so alternative-text support is currently cover-only.
-- F37 through F43: visible/native nested contents and chapter links are generated. Split level is currently fixed to H1; previous/next links connect chapters. Page-list and landmark navigation are not generated.
+- F37 through F43: visible/native nested contents and chapter links are generated. Root heading split levels 1–6 are configurable, with H1 as the default; previous/next links connect chapters. Page-list and landmark navigation are not generated.
 - F45 through F50: title, language and one optional author are supported. A random identifier and modification time are generated. There are no caller controls for rich metadata, stable identity, RTL/vertical layout or accessibility discovery metadata.
 - F56 is partial: semantic headings, column headers and note roles exist, but do not establish complete accessibility. F58 checks this tool's profile. F59 invokes a separately installed EPUBCheck executable when requested; this is separate from the built-in checker.
-- F60 refers to the existing verification corpus and input-mode equivalence checks, not a per-build preservation manifest. F65 has four broad error categories and messages, sometimes containing locations; detailed structured issue fields remain milestone 5 work. F66 has validation during build, but no aggregate source-only preflight command.
+- F60 refers to the existing verification corpus and input-mode equivalence checks, not a per-build preservation manifest. F65 retains four broad categories and adds stable detailed issue codes, source references, available one-based line/column locations and remedies. Unavailable fields are null; semantic footnote errors may have no location. F66 has validation during build, but no aggregate source-only preflight command.
 - F67 publishes only after requested checks succeed and protects existing outputs. F69 covers generation and built-in checking; optional EPUBCheck uses Java. Python is for developer/release helpers.
 
-Evidence: [supported content](../USAGE.md), [request/results](../AGENT_INTERFACE.md), [native installation boundary](../INSTALL.md), [milestone 3 verification](../verification/MILESTONE_3.md), [milestone 4 verification](../verification/MILESTONE_4.md), [package implementation](../../src/package.rs) and [result implementation](../../src/agent.rs).
+Evidence: [supported content](../USAGE.md), [request/results](../AGENT_INTERFACE.md), [native installation boundary](../INSTALL.md), [milestone 3 verification](../verification/MILESTONE_3.md), [milestone 4 verification](../verification/MILESTONE_4.md), [milestone 5 verification](../verification/MILESTONE_5.md), [workflow benchmark](../verification/MILESTONE_5A.md), [package implementation](../../src/package.rs) and [result implementation](../../src/agent.rs).
 
 ### Command-line alternatives
+
+In the measured Pandoc 3.13 configuration, visible note-return links and supplied-source link rewriting required the prepared wrapper. The [benchmark](../verification/MILESTONE_5A.md) records that integration and its limits; ordinary footnote-link support in F18 remains distinct from visible return links.
 
 Pandoc F06 treats ordinary text through a selected reader rather than offering Agent EPUB's literal-text contract. F12/F64 refer to its JSON document model or logs, not an equivalent versioned book request and artifact-result envelope. F17 has conversion limits. F27/F28/F30/F31 need suitable embedded markup/media and reader support. F59 is N for an integrated official-validator invocation, not an assertion that a wrapper cannot run EPUBCheck. F61 requires declared metadata/time controls. [Pandoc manual](https://pandoc.org/MANUAL.html)
 
@@ -286,14 +288,14 @@ InDesign provides fixed/reflowable export, media, scripts, MathML/SVG options an
 
 EbookLib exposes XHTML/resources and metadata, including media item types; P for media/SMIL does not mean it produces synchronized narration automatically. Its tutorial warns about read/modify/write preservation. epub-builder packages caller content, styles and resources and generates navigation; it is not a Markdown formatter. Its documented metadata limitations explain partial entries. [EbookLib](https://docs.sourcefabric.org/projects/ebooklib/en/latest/tutorial.html), [epub-builder](https://docs.rs/epub-builder/latest/epub_builder/)
 
-## Planned changes are not current feature support
+## Delivered work and conditional candidates
 
-| Planned package | Matrix rows affected | Expected change after verification |
+| Package | Matrix rows affected | Current status |
 | --- | --- | --- |
-| B1 Detailed diagnostics | F65 | Detailed issue codes and structured source locations supplement existing categories |
-| B2 Markdown dialect and front matter | F07, F21, F63 | Clearer input policy and declarations; not general raw-HTML support |
-| B3 Explicit chapter splitting | F40 | Configurable split level through compatible direct and structured inputs |
-| C1 Agent workflow benchmark | F62 through F69 and task-specific content | Evidence for complete workflow speed, tool calls and retries; no new EPUB-format capability |
+| B1 Detailed diagnostics | F65 | Delivered: detailed codes, available structured locations and remedies |
+| B2 Markdown dialect and front matter | F07, F21, F63 | Delivered: recognized front matter rejected; math, strike and alert markers remain literal |
+| B3 Explicit chapter splitting | F40 | Delivered: root levels 1–6 through compatible direct and structured inputs |
+| C1 Agent workflow benchmark | F62 through F69 and task-specific content | Complete: three paired workflows, retained artifacts and bounded conclusions; no new format capability |
 | Conditional local images | F23, F55 | Inline assets and a declared alternative-text policy if selected |
 | Conditional metadata/reproducibility | F46 through F50, F61 | Only the fields and reproducibility controls actually selected and verified |
 | Conditional preflight and manifest | F60, F66 | Aggregate input diagnostics and inspectable preservation evidence if selected |
@@ -303,7 +305,7 @@ The [roadmap](../ROADMAP.md) is the scope authority. GitHub issues supply user f
 
 ## Source register
 
-All external sources were accessed on 10 November 2026. Competitor marks are documentation-based; no competitor EPUBs were generated for this matrix.
+All external sources were accessed on 10 November 2026. Competitor marks remain documentation-based. The later Pandoc workflow comparison is linked separately; no hands-on result is inferred for the other tools.
 
 - Agent EPUB: [usage](../USAGE.md), [agent interface](../AGENT_INTERFACE.md), [installation](../INSTALL.md), [roadmap](../ROADMAP.md).
 - Standards: [EPUB 3.3](https://www.w3.org/TR/epub-33/), [EPUB Accessibility 1.1](https://www.w3.org/TR/epub-a11y-11/), [EPUBCheck](https://www.w3.org/publishing/epubcheck/).

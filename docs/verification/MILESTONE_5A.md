@@ -7,6 +7,10 @@ setup and complete shared workflow. Warm export results were mixed, and neither
 tool reduced clean-export retries or tool calls in this sample.** This is a
 practical local result, not a statistically powered general performance claim.
 
+The current release is v0.5.1, which adds an invalid-input guard for links to
+sources without chapters. Valid chapter/navigation resources are unchanged.
+The benchmark data below remain the original v0.5.0 measurements.
+
 ## Time to an independently correct EPUB
 
 Values are median seconds, with observed minimum–maximum in parentheses.
@@ -161,7 +165,11 @@ performance for large books, private manuscripts, other models, hosts or
 unprepared integrations. No statistically significant population claim is made.
 
 Both tools were scored on the same requested reader contents and source links.
-Extra generated title pages and note-numbering differences were allowed.
+Extra title pages, per-reference repetition of note text and note-numbering
+differences were allowed. Pandoc repeats a note body for each reference, while
+Agent EPUB shares one source-local note definition. The shared scorer checks
+content and working reference/return links; it does not require identical
+note sharing or numbering.
 Agent EPUB's visible previous/next chapter links were not a shared requirement,
 and universal reader behavior and accessibility were not benchmarked.
 

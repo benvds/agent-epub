@@ -1,5 +1,7 @@
 # EPUB tools and supported functionality
 
+Historical research snapshot. Current released support is in the [feature matrix](epub-feature-matrix.md), and the later [practical agent benchmark](../verification/MILESTONE_5A.md) records the measured Pandoc comparison. The original findings below retain their dated scope.
+
 Research date: 9 November 2026. This comparison covers seven creation or editing tools and three quality tools.
 
 The established tools offer strong conversion, book formatting and specialist checks. The opportunity for an agent-facing product is to combine predictable creation with clear capability boundaries, preservation checks and actionable results. That is a product inference from the reviewed documentation, not a claim that no competing product exists.

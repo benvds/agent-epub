@@ -4,7 +4,7 @@ Status: product scope agreed; delivery progress is tracked in the roadmap. Updat
 
 The tool helps AI agents turn supplied writing into dependable EPUBs quickly. An agent should provide content, receive a usable reading edition, and understand any problems without learning EPUB publishing internals.
 
-The initial release focuses on plain text and Markdown, with a table of contents and working chapter navigation. Later releases add general agent inputs, a cover image and selected conveniences. Full EPUB feature coverage is outside the product goal.
+The released subset covers text and Markdown, ordered chapters, nested contents, tables, linked notes, optional covers, structured requests/results and repair diagnostics. Milestones 1 through 5 are delivered through v0.5.1, and milestone 5a has a completed practical comparison. Full EPUB feature coverage remains outside the product goal; the [roadmap](ROADMAP.md) records delivery evidence and remaining decisions.
 
 ## Users and needs
 
@@ -86,6 +86,24 @@ An agent supplies final writing. The product does not need to generate prose, ca
 
 These conveniences work through the existing file and general agent inputs. Inline images, style customization, expanded metadata, batch generation and reproducible archives remain deferred.
 
+## Milestones 4, 5 and 5a requirements
+
+These requirements retain the original content and output-protection promises.
+They describe the delivered product boundary without prescribing its implementation.
+
+| ID | Requirement | Acceptance condition |
+| --- | --- | --- |
+| P19 | Install and reuse the export interface. | Named native release targets include checksums, examples and agent instructions, with recorded installation checks that do not require a source toolchain. |
+| P20 | Make failures repairable without losing existing callers. | Stable detailed issue codes, source references, available locations and remedies supplement existing result categories and exit codes. |
+| P21 | Declare Markdown interpretation and metadata boundaries. | Recognized front matter has an explicit outcome. Rendered and literal extensions are distinguishable; ordinary dollar signs and tildes do not cause blanket warnings. |
+| P22 | Choose chapter boundaries explicitly. | Direct and structured inputs can select root heading levels 1–6. The default remains H1; sources, preambles, heading ranks, contents and links remain consistent. |
+| P23 | Compare a complete real-agent export workflow. | Identical completed manuscripts, requested structures and validation requirements are measured against a prepared alternative, with cold setup and warm export reported separately. |
+| P24 | Keep the practical comparison inspectable and bounded. | Three paired workflows retain failures, timing, actual tool events, exposed usage, artifact snapshots and independent checks. Claims stay within the measured corpus and user resource limits. |
+
+See [milestone 5 verification](verification/MILESTONE_5.md) and the
+[practical comparison](verification/MILESTONE_5A.md). Milestone 6 reviews evidence
+and GitHub feedback before conditional features are selected.
+
 ## Quality and result handling
 
 The release corpus must pass independent EPUBCheck validation. Runtime results must distinguish built-in structural checks from independent conformance validation and from checks that did not run. A structurally checked file must not be described as independently certified. [EPUBCheck](https://www.w3.org/publishing/epubcheck/)
@@ -94,11 +112,11 @@ Failures identify the source or chapter, the problem and a next step. Missing me
 
 A successful book still needs appropriate human review before publication. Later accessibility checks must distinguish automated findings from a complete accessibility assessment. A clean automated report alone does not establish WCAG conformance. [DAISY guidance](https://kb.daisy.org/publishing/docs/epub/validation/ace.html)
 
-Reader testing should cover at least two independent reading systems, including one desktop reader and one device or mobile reading application. Record the tested versions, contents behavior, chapter navigation and enlarged-text behavior. Automated conformance and manual reader checks serve different purposes.
+Reader testing should cover at least two independent reading systems, including one desktop reader and one device or mobile reading application. Record the tested versions, contents behavior, chapter navigation and enlarged-text behavior. Current evidence covers Apple Books and EPUB.js, including a narrow browser layout; physical-device or separate mobile-app review remains outstanding coverage. Automated conformance and manual reader checks serve different purposes.
 
 ## Proposed success measures
 
-These are acceptance targets, not measured product performance.
+These remain acceptance targets. Measured outcomes are recorded separately in the milestone verification records and [workflow benchmark](verification/MILESTONE_5A.md); a local observation is not a general performance guarantee.
 
 | Measure | Target and conditions |
 | --- | --- |
@@ -116,7 +134,7 @@ Publish the benchmark corpus, reference machine and number of runs with results.
 
 Fixed layout, video, audio, synchronized narration, interactive books, DRM, retailer submission and lossless editing of arbitrary existing EPUBs are outside this roadmap. PDF conversion and complex document import are also outside the initial scope.
 
-Milestone 3 candidates need evidence of user value before inclusion. Prioritize simple tables or notes if agents repeatedly need them; do not add features solely because the EPUB format allows them.
+Tables, notes and nested contents are delivered. Remaining conditional candidates need evidence from the benchmark or a concrete user workflow before selection; EPUB format support alone does not justify expanding scope.
 
 Before declaring a milestone complete, record independent-reader evidence and measured performance. Cross-agent integration details belong to milestone 2. Packaging, implementation and language choices belong in the separate [implementation plan](IMPLEMENTATION_PLAN.md).
 
@@ -124,6 +142,8 @@ Before declaring a milestone complete, record independent-reader evidence and me
 
 - [Current ChatGPT capabilities and evidence](research/chatgpt-epub-capabilities.md).
 - [Official EPUB tool comparison](research/epub-tools-analysis.md).
+- [Current release verification](verification/MILESTONE_5.md).
+- [Practical agent workflow comparison](verification/MILESTONE_5A.md).
 - [W3C EPUB 3.3](https://www.w3.org/TR/epub-33/).
 - [EPUBCheck](https://www.w3.org/publishing/epubcheck/).
 - [DAISY accessibility-checking guidance](https://kb.daisy.org/publishing/docs/epub/validation/ace.html).

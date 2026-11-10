@@ -1,6 +1,6 @@
 # Agent EPUB tool roadmap
 
-Updated 10 November 2026. The first three milestones delivered a useful, tested EPUB subset. Milestone 4 adds installation and agent adoption at `v0.4.0`. The remaining milestones improve input handling and diagnostics and test its value against alternatives. Dates and future release versions are intentionally unset; each milestone ends when its acceptance gates pass.
+Updated 10 November 2026. Milestones 1 through 5 are released, with the latest patch at `v0.5.1`. Milestone 5a's practical three-pair comparison against Pandoc is complete. Milestone 6 reviews that evidence and GitHub feedback before selecting further features. Future dates and release versions remain unset; completion depends on recorded acceptance evidence.
 
 The initial audience is developers adding EPUB export for prose-heavy reports and learning guides to an agent workflow. Priorities follow the [market research](research/market-research-2026-11-10.md). The [feature comparison matrix](research/epub-feature-matrix.md) separates released support, planned additions and documented competitor capabilities. Broader publishing features require evidence from benchmark documents or GitHub issues.
 
@@ -89,7 +89,7 @@ Exit gates:
 
 ## Milestone 5 Predictable inputs and actionable diagnostics
 
-Status: implementation, native CI and release gates complete at `v0.5.0`, with a `v0.5.1` invalid-input guard follow-up. Priority: P1. See the [milestone 5 record](verification/MILESTONE_5.md). Reduce source rewriting and agent retries while preserving existing defaults and version 1 callers.
+Status: implementation, native CI and release gates complete through `v0.5.1`. The patch safely rejects links to supplied sources that produce no chapter. Priority: P1. See the [milestone 5 record](verification/MILESTONE_5.md). Reduce source rewriting and agent retries while preserving existing defaults and version 1 callers.
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |
@@ -111,7 +111,7 @@ Status: practical three-pair benchmark complete. See the [results and reproducib
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |
-| C1 Agent workflow benchmark | Shared tasks, instrumented agent runs against Agent EPUB and a reasonable Pandoc wrapper, independent artifact scoring, and a reproducible comparison report. | 2 to 4 days, re-estimate after the run budget is selected | Milestone 5 complete; A3 release binaries and A4 instructions |
+| C1 Agent workflow benchmark | Shared tasks, instrumented agent runs against Agent EPUB and a reasonable Pandoc wrapper, independent artifact scoring, and a reproducible comparison report. | Completed as three practical paired workflows; initial estimate was 2 to 4 days | Milestone 5 complete; A3 release binaries and A4 instructions |
 
 Benchmark protocol:
 

@@ -1,5 +1,7 @@
 # ChatGPT EPUB capabilities and current workflows
 
+Historical research snapshot. Current released support is in the [feature matrix](epub-feature-matrix.md), and the later [practical agent benchmark](../verification/MILESTONE_5A.md) records the measured Pandoc comparison. The original findings below retain their dated scope.
+
 Research date: 9 November 2026. Scope: current capabilities, with evidence separated from possible functionality.
 
 ChatGPT can use code execution to produce an EPUB, but the evidence does not establish one universal EPUB exporter or a guaranteed feature set. Python is a verified route in a local builder. Pandoc is another route prescribed by a locally installed skill. Neither finding proves which route a particular ChatGPT conversation uses.
