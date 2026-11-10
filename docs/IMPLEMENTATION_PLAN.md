@@ -184,6 +184,26 @@ Suggested commits: shared task corpus and scoring rules; agent instrumentation a
 
 Suggested commits: reproducible issue fixtures; any selected comparison extension; revised priorities. Actual provider evaluations remain subject to the existing user-approved scope.
 
+### Selected D1 checkpoint: Local inline images
+
+The maintainer prioritized this package after the practical benchmark. Commit
+this scope checkpoint before implementation. Use a 0.6.0 development version so
+capability caches cannot confuse the new image behavior with released v0.5.1.
+
+1. Share bounded JPEG/PNG inspection with covers; add canonical-path inline asset
+   loading, explicit source bases, alternative/decorative rules and localized
+   errors. Keep remote fetching and other image formats outside scope.
+2. Integrate Markdown images with chapter/footnote rendering, package original
+   bytes and correct manifest resources, and extend generated-profile validation
+   to check all image resources and alternative text. Protect asset inputs from
+   overwrite and preserve existing request/result compatibility.
+3. Test input-mode equivalence, image/cover coexistence, reuse, source-relative
+   paths, limits, missing/corrupt resources and damaged-package rejection.
+4. Add synthetic illustrated examples, update discovery and current docs, run
+   regressions and EPUBCheck, and record reader/narrow-layout observations.
+   Commit working implementation and verification checkpoints on main; release
+   publication remains separate from this implementation request.
+
 ### Conditional work packages
 
 Do not start every conditional candidate as one release. Select the smallest package justified by C1, GitHub issues or a documented earlier workflow. Local images need bounded resource loading and reader checks. Aggregate preflight depends on the detailed diagnostics and input rules. Reproducible archives require explicit identity/time settings and archive metadata checks. A preservation manifest should reuse the independent comparison scoring rather than imply that counts prove meaning.

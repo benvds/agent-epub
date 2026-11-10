@@ -130,6 +130,42 @@ Exit gates:
 3. State whether Agent EPUB is faster, slower or inconclusive for each scenario and overall within the measured corpus. Show quality failures beside speed; do not claim an advantage from fewer checks or missing content.
 4. Record the highest-cost steps and any resulting improvement tasks before selecting further features. Converter-only benchmarks do not satisfy this gate.
 
+## Next delivery: D1 Local inline images
+
+Status: selected as the next P0 implementation priority on 10 November 2026,
+at the maintainer's explicit request. The milestone 5a guide/image case and the
+need to include diagrams and screenshots justify selecting this package before
+the broader milestone 6 review. Other conditional features remain deferred.
+
+Scope: local JPEG/PNG images in Markdown, with original bytes bundled in the
+EPUB. Paths resolve from the source file's directory, or from the explicit
+request base for inline content. Relative parent paths and file symlinks follow
+normal local-file resolution; remote URLs, data URLs, absolute paths, SVG and
+animated formats remain outside this package.
+
+Every image needs meaningful alternative text. An empty alternative is accepted
+only with the explicit Markdown title marker `"decorative"`. Enforce the existing
+10 MiB / 8,000-side / 16-million-pixel decoding limits per image, plus 128 unique
+inline assets and 64 MiB total inline image bytes per book. Reuse canonical-path
+assets and protect image source files from output replacement.
+
+Exit gates:
+
+1. Direct, file-request and streamed requests package equivalent images, including
+   Unicode/space-containing paths, reused assets and H2 chapters.
+2. Missing, corrupt, oversized, unsupported and undescribed images return stable
+   localized diagnostics and preserve existing output. Inline streamed images
+   require an explicit base directory.
+3. Manifest media types match decoded image data, every image target is bundled,
+   alt/decorative semantics survive, and images fit narrow reading areas.
+4. Regression, official EPUBCheck and two-reader checks pass, with any unrun gates
+   recorded explicitly. Update capabilities, examples, current documentation and
+   the completion record together. Preserve the version 1 request schema.
+
+Implementation status and exact evidence: [D1 verification](verification/INLINE_IMAGES.md).
+The latest published v0.5.1 still supports covers only; the new feature is built
+and verified on main before a separate release publication.
+
 ## Milestone 6 Evidence review and GitHub feedback
 
 Status: planned. Priority: P1. Establish whether the focused contract saves enough work to justify adopting another EPUB tool.
@@ -151,13 +187,12 @@ Exit gates:
 3. Select, defer or reject each conditional candidate using benchmark results and relevant GitHub issue evidence; link decisions to their reproductions where available.
 4. Record the resulting product decision: continue the focused engine, improve its integration, narrow its audience or reconsider scope. Missing a target prompts a decision rather than an automatic feature expansion.
 
-## Conditional backlog after the initial adoption work
+## Remaining conditional backlog
 
 These candidates are not committed release scope. Select a small package after reviewing milestone 6 evidence; an earlier selection needs a concrete workflow and recorded rationale.
 
 | ID and priority | Candidate | Estimated effort | Evidence and acceptance boundary |
 | --- | --- | --- | --- |
-| D1 P1 | Local inline images | 3 to 5 days | Benchmark documents or GitHub issues establish a guide workflow needing diagrams. Define source-relative assets, supplied alternative text or an explicit decorative choice, bounded decoding, missing-resource failures and reader checks. Keep remote fetching outside scope. |
 | D2 P2 | Aggregate preflight | 2 to 4 days | Agents repeatedly repair one issue per build. Depends on B1 and B2; return multiple independent issues and a proposed chapter map without publishing output. |
 | D3 P2 | Stable identity and reproducible archives | 1 to 3 days | A repeated publishing or CI workflow needs stable comparisons. Define identifiers, modification time, ZIP metadata and relevant tool versions; verify byte-identical archives under declared settings. |
 | D4 P2 | Content-preservation manifest | 2 to 4 days | Callers need inspectable source-to-chapter mapping, counts and transformations. Reuse C1 fidelity checks and B1 issue conventions; distinguish evidence from a guarantee of preserved meaning. |
