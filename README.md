@@ -13,6 +13,23 @@ Main (`0.6.0-dev`) now supports local PNG/JPEG illustrations in chapters.
 Build from source to use them; published v0.5.1 supports covers only.
 [Image rules and examples](docs/USAGE.md#local-chapter-images).
 
+## See what you get
+
+**[Download the showcase EPUB](https://github.com/benvds/agent-epub/raw/refs/heads/main/examples/showcase.epub)**
+and compare it with the [Markdown source](examples/showcase.md).
+It includes a cover, automatic contents, nested headings, footnotes with return
+links, tables, PNG/JPEG images, lists, quotations, code and a literal-text appendix.
+Open it in an EPUB reader to try the navigation and change the text size.
+
+The checked EPUB is committed to this repository and generated with main's
+`0.6.0-dev` image support. Rebuild it from source with:
+
+```sh
+cargo build --release --locked
+target/release/agent-epub build --request examples/showcase-request.json \
+  --output examples/showcase.epub --overwrite --json
+```
+
 ## A smaller integration to maintain
 
 - **Keep your writing where it is.** Pass existing files in reading order, or

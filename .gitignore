@@ -1,3 +1,4 @@
 /target/
 *.epub
+!/examples/showcase.epub
 __pycache__/

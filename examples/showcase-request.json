@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "title": "Agent EPUB feature showcase",
+    "language": "en",
+    "author": "Agent EPUB contributors"
+  },
+  "split_level": 2,
+  "inputs": [
+    {"path": "showcase.md"},
+    {"path": "Literal text appendix.txt"}
+  ],
+  "cover": {
+    "path": "assets/landscape.jpg",
+    "alt": "Synthetic blue and purple sky above a green landscape"
+  }
+}

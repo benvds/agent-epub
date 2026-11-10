@@ -1,0 +1,10 @@
+This last chapter comes from a supplied UTF-8 text file rather than Markdown.
+
+Plain text is treated literally: **these asterisks** do not create bold text,
+and # this marker does not create a heading.
+
+Characters such as <chapter>, &, café and 日本語 remain visible.
+This line break is preserved inside the paragraph.
+
+Use the generated chapter navigation to return to the illustrated chapter or
+to the contents page.

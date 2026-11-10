@@ -134,3 +134,21 @@ A separate release decision/version/tag is still required before published
 binary users receive chapter images. Current [usage](../USAGE.md#local-chapter-images),
 [agent contract](../AGENT_INTERFACE.md), capability discovery, synthetic examples,
 packaging and bundled agent instructions describe the development behavior.
+
+## Repository feature showcase
+
+The [showcase source](../../examples/showcase.md),
+[request](../../examples/showcase-request.json) and
+[committed EPUB](../../examples/showcase.epub) were added on 10 November 2026
+and linked from the README. The book was generated with `0.6.0-dev` and passes
+built-in validation and official EPUBCheck 5.3.0 with zero errors or warnings.
+It contains four chapters, 18 contents entries, heading levels 1–6, two tables,
+five note references sharing two definitions, three unique inline image assets
+and a separate cover. Inspection confirms original image bytes and literal
+appendix text are retained. This is an additional example check, separate from
+the three-fixture illustrated corpus above; no new reader review is claimed.
+
+Release packaging regenerates the showcase from the bundled source/request;
+clean-install smoke validates its chapter, image and cover results with Rust
+and Java absent from PATH. The local macOS package and smoke checks pass.
+The ignore rule makes an explicit exception only for `examples/showcase.epub`.

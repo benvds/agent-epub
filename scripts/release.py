@@ -26,6 +26,7 @@ FILES = (
     "examples/report-inline.json", "examples/illustrated-guide.md",
     "examples/illustrated-request.json", "examples/illustrated-inline.json",
     "examples/assets/export-flow.png", "examples/assets/landscape.jpg", "examples/assets/divider.png",
+    "examples/showcase.md", "examples/showcase-request.json", "examples/Literal text appendix.txt",
     "examples/title-h2.md",
     "examples/title-h2-request.json", "examples/title-h2-inline.json", "scripts/epubcheck.sh",
     "skills/agent-epub/SKILL.md", "skills/agent-epub/references/examples.md",
@@ -118,6 +119,9 @@ def pack(args):
         illustrated = json.loads(run(executable, ["build", "--request", "examples/illustrated-request.json",
                                                  "--output", "examples/sample-illustrated.epub", "--json"], stage))
         assert illustrated["images"] == 3 and illustrated["cover"] and illustrated["chapters"] == 3
+        showcase = json.loads(run(executable, ["build", "--request", "examples/showcase-request.json",
+                                              "--output", "examples/showcase.epub", "--json"], stage))
+        assert showcase["images"] == 3 and showcase["cover"] and showcase["chapters"] == 4
         with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as package:
             for file in sorted(stage.rglob("*")):
                 if file.is_file():
@@ -217,6 +221,8 @@ def smoke(args):
                 h2_resources = resources
             assert resources == h2_resources
         assert capabilities["inline_images"] is True
+        showcase = json.loads(run(binary, ["validate", "examples/showcase.epub", "--json"], stage, env))
+        assert showcase["images"] == 3 and showcase["cover"] and showcase["chapters"] == 4
         illustrated_inline = (stage / "examples/illustrated-inline.json").read_text(encoding="utf-8")
         image_modes = {
             "direct": (["--input", "examples/illustrated-guide.md", "--split-level", "2", "--title", "Illustrated guide", "--language", "en", "--cover", "examples/assets/landscape.jpg"], None),

@@ -5,6 +5,13 @@ Install a [release binary](INSTALL.md), or build from source with `cargo build -
 This page describes main (`0.6.0-dev`). Local chapter images require a source
 build; the latest published v0.5.1 supports covers only.
 
+For a complete example, compare the [showcase Markdown](../examples/showcase.md)
+with its committed [generated EPUB](../examples/showcase.epub). The
+[request](../examples/showcase-request.json) adds a cover and literal-text
+appendix, and selects H2 chapter splitting. Contents and note return links are
+generated automatically. The sample includes heading levels 1–6, lists,
+quotations, code, two tables, PNG/JPEG illustrations and decorative markup.
+
 ## Generate a book
 
 ```sh
