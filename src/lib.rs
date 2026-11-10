@@ -2,6 +2,7 @@ use std::{fmt, path::PathBuf};
 
 pub mod agent;
 mod cover;
+mod notes;
 mod package;
 mod source;
 mod validation;

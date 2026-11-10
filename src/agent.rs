@@ -195,8 +195,8 @@ pub fn capabilities() -> Value {
         "inputs": ["ordered_files", "request_file", "streamed_request", "inline_content"],
         "navigation": ["contents", "chapter_contents", "previous_next", "return_to_contents"],
         "cover_images": true, "cover_formats": ["jpeg", "png"],
-        "markdown_extensions": ["rectangular_pipe_tables"],
-        "unsupported": ["inline_images", "notes", "task_lists", "raw_html", "fixed_layout", "multimedia", "drm"],
+        "markdown_extensions": ["rectangular_pipe_tables", "footnotes_with_backlinks"],
+        "unsupported": ["inline_images", "nested_notes", "task_lists", "raw_html", "fixed_layout", "multimedia", "drm"],
         "limits": {"source_bytes": 20971520, "total_source_bytes": 67108864, "request_bytes": 67108864, "chapters": 1000, "cover_bytes": 10485760, "cover_max_side": 8000, "cover_max_pixels": 16000000},
         "checks": {"structural_profile": "always", "epubcheck": "optional_external", "reader_review": "not_automated", "accessibility_assessment": "not_automated"}
     })

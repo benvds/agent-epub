@@ -307,6 +307,7 @@ pub fn validate(path: &Path) -> Result<Summary> {
             }
         }
     }
+    validate_notes(&documents)?;
     for (target, media) in items.values() {
         if *media == "application/xhtml+xml"
             && !documents
@@ -383,6 +384,64 @@ pub fn validate(path: &Path) -> Result<Summary> {
         cover: !covers.is_empty(),
         independent_validation: false,
     })
+}
+
+fn validate_notes(documents: &HashMap<&str, Document<'_>>) -> Result<()> {
+    let mut notes = HashMap::new();
+    let mut references = HashMap::new();
+    for (path, document) in documents {
+        for node in document.descendants().filter(|n| n.is_element()) {
+            let kind = node.attribute((EPUB, "type")).unwrap_or("");
+            if kind.split_whitespace().any(|k| k == "footnote") {
+                let id = node
+                    .attribute("id")
+                    .ok_or_else(|| failure("Footnote missing id."))?;
+                notes.insert((path.to_string(), Some(id.to_string())), node);
+            }
+            if kind.split_whitespace().any(|k| k == "noteref") {
+                if !node.has_tag_name((XHTML, "a")) {
+                    return Err(failure("Footnote reference must be a link."));
+                }
+                let id = node
+                    .attribute("id")
+                    .ok_or_else(|| failure("Footnote reference missing id."))?;
+                let target = local_target(path, node.attribute("href").unwrap_or(""))?;
+                references.insert((path.to_string(), Some(id.to_string())), target);
+            }
+        }
+    }
+    if references
+        .values()
+        .any(|target| !notes.contains_key(target))
+    {
+        return Err(failure(
+            "Footnote reference must target an identified footnote.",
+        ));
+    }
+    for (key, note) in notes {
+        let expected = references
+            .iter()
+            .filter(|(_, target)| **target == key)
+            .map(|(reference, _)| reference.clone())
+            .collect::<HashSet<_>>();
+        let actual = note
+            .descendants()
+            .filter(|n| n.has_tag_name((XHTML, "a")))
+            .filter_map(|n| n.attribute("href"))
+            .filter(|href| Url::parse(href).is_err())
+            .map(|href| local_target(&key.0, href))
+            .collect::<Result<Vec<_>>>()?
+            .into_iter()
+            .filter(|target| references.contains_key(target))
+            .collect::<Vec<_>>();
+        let unique = actual.iter().cloned().collect::<HashSet<_>>();
+        if expected.is_empty() || unique != expected || actual.len() != unique.len() {
+            return Err(failure(
+                "Footnote must return to each of its references exactly once.",
+            ));
+        }
+    }
+    Ok(())
 }
 
 fn local_target(from: &str, href: &str) -> Result<(String, Option<String>)> {

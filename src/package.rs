@@ -182,7 +182,7 @@ fn write_package(file: &mut fs::File, book: &Book) -> Result<()> {
     )?;
     put(
         "EPUB/style.css",
-        "body { margin: 5%; line-height: 1.5; }\nh1, h2, h3 { line-height: 1.2; }\np { margin: 0.7em 0; }\npre { white-space: pre-wrap; word-wrap: break-word; }\na, code { word-wrap: break-word; }\nnav { margin: 1em 0; }\ntable { border-collapse: collapse; max-width: 100%; }\nth, td { border: 1px solid; padding: 0.3em; overflow-wrap: anywhere; }\n.cover { text-align: center; }\n.cover img { max-width: 100%; max-height: 90vh; width: auto; height: auto; }\n",
+        "body { margin: 5%; line-height: 1.5; }\nh1, h2, h3 { line-height: 1.2; }\np { margin: 0.7em 0; }\npre { white-space: pre-wrap; word-wrap: break-word; }\na, code { word-wrap: break-word; }\nnav { margin: 1em 0; }\ntable { border-collapse: collapse; max-width: 100%; }\nth, td { border: 1px solid; padding: 0.3em; overflow-wrap: anywhere; }\n.footnote { margin: 1em 0; }\n.cover { text-align: center; }\n.cover img { max-width: 100%; max-height: 90vh; width: auto; height: auto; }\n",
         deflated,
     )?;
     if let Some(cover) = &book.cover {

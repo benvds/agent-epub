@@ -22,6 +22,7 @@ dependencies = [
  "serde_json",
  "tempfile",
  "time",
+ "unicase",
  "url",
  "uuid",
  "zip",

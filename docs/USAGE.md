@@ -16,7 +16,7 @@ Each text file becomes one chapter. Blank lines separate paragraphs, and line br
 
 Each Markdown file begins a chapter. Top-level `#` headings start additional chapters. Text preceding the first heading stays in a chapter named after the file. A heading inside a quotation does not split the surrounding chapter. Empty top-level headings get a `Chapter N` label. Duplicate titles remain distinct contents entries.
 
-Supported Markdown: headings, paragraphs, strong/emphasized text, lists, quotations, inline/fenced code, thematic breaks, line breaks, links and simple pipe tables. Inline images, raw HTML, defined notes and task lists produce explicit errors. Other extensions are not advertised as supported; ordinary CommonMark interpretation applies.
+Supported Markdown: headings, paragraphs, strong/emphasized text, lists, quotations, inline/fenced code, thematic breaks, line breaks, links, simple pipe tables and defined footnotes. Inline images, raw HTML and task lists produce explicit errors. Other extensions are not advertised as supported; ordinary CommonMark interpretation applies.
 
 ## Tables
 
@@ -25,6 +25,12 @@ Use a header row and a Markdown separator row, with optional `:---`, `:---:` or 
 Tables must be outside lists and quotations. Cells support ordinary inline Markdown, including links. Output uses column header cells with `scope="col"`. Merged cells, multiline cells, captions and complex row-header relationships are outside the supported subset. Wide tables still need reader review.
 
 Limits: 20 MiB per source, 64 MiB total source text and 1,000 chapters. This is a focused reflowable EPUB 3 profile. Covers, inline illustrations, arbitrary HTML import and full EPUB feature coverage are not part of milestone 1.
+
+## Footnotes
+
+Write `A claim[^source].` with a separate definition such as `[^source]: Supporting explanation.` Indent continuation paragraphs by four spaces. Definitions are local to their supplied source; labels match without regard to case. Notes are numbered in first-reference order across the book and placed at the end of the first referring chapter. Later chapters link to that same note. Every reference has its own return link.
+
+Definitions may contain ordinary Markdown paragraphs, lists, code and links to supplied chapters. Put definitions outside other containers. Empty, duplicate and unused definitions, references inside a note, and tables inside a note fail explicitly. Unknown markers such as `[^missing]` without a definition remain literal text under the Markdown parser's rules; inspect source spelling if a note appears as text. Raw HTML and inline images remain unsupported inside notes.
 
 ## Link between chapters
 

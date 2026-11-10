@@ -113,6 +113,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
     }
     let mut paths = Vec::new();
     let mut drafts = Vec::new();
+    let mut notes = crate::notes::Notes::default();
     let mut total = 0;
     for (source, source_input) in inputs.iter().enumerate() {
         let input = &source_input.path;
@@ -194,9 +195,6 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                         Event::Start(Tag::Image { .. }) => {
                             Some("inline images (use the separate cover option for a cover)")
                         }
-                        Event::Start(Tag::FootnoteDefinition(_)) | Event::FootnoteReference(_) => {
-                            Some("notes")
-                        }
                         Event::TaskListMarker(_) => Some("task lists"),
                         _ => None,
                     };
@@ -227,6 +225,10 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                     groups.last_mut().unwrap().push(event.into_static());
                 }
                 for events in groups {
+                    let events = notes.extract(source, events, input)?;
+                    if events.is_empty() {
+                        continue;
+                    }
                     let has_title = matches!(
                         events.first(),
                         Some(Event::Start(Tag::Heading {
@@ -305,6 +307,12 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
             }
         }
         draft.events = events;
+        notes.references(
+            draft.source,
+            chapter,
+            &mut draft.events,
+            &paths[draft.source],
+        )?;
     }
     let mut first = HashMap::new();
     for (index, draft) in drafts.iter().enumerate() {
@@ -320,27 +328,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                 .collect::<String>();
             format!("<h1>{}</h1>\n{paragraphs}", xml_text(&draft.title))
         } else {
-            let mut events = Vec::new();
-            for event in draft.events {
-                match event {
-                    Event::Start(Tag::Link {
-                        link_type,
-                        dest_url,
-                        title,
-                        id,
-                    }) => {
-                        let destination =
-                            resolve_link(&dest_url, draft.source, &paths, &first, &targets)?;
-                        events.push(Event::Start(Tag::Link {
-                            link_type,
-                            dest_url: destination.into(),
-                            title,
-                            id,
-                        }));
-                    }
-                    _ => events.push(event),
-                }
-            }
+            let events = rewrite_links(draft.events, draft.source, &paths, &first, &targets)?;
             let mut body = if draft.has_title {
                 String::new()
             } else {
@@ -354,11 +342,45 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
             body,
         });
     }
+    for note in notes.finish(&paths)? {
+        let events = rewrite_links(note.events.clone(), note.source, &paths, &first, &targets)?;
+        chapters[note.chapter]
+            .body
+            .push_str(&note.wrap(&render(events)));
+    }
     Ok(Book {
         metadata,
         chapters,
         cover: None,
     })
+}
+
+fn rewrite_links(
+    events: Vec<Event<'static>>,
+    source: usize,
+    paths: &[PathBuf],
+    first: &HashMap<usize, usize>,
+    targets: &HashMap<(usize, String), (usize, String)>,
+) -> Result<Vec<Event<'static>>> {
+    events
+        .into_iter()
+        .map(|event| {
+            Ok(match event {
+                Event::Start(Tag::Link {
+                    link_type,
+                    dest_url,
+                    title,
+                    id,
+                }) => Event::Start(Tag::Link {
+                    link_type,
+                    dest_url: resolve_link(&dest_url, source, paths, first, targets)?.into(),
+                    title,
+                    id,
+                }),
+                _ => event,
+            })
+        })
+        .collect()
 }
 
 // GFM otherwise silently drops excess cells and pads short rows. Keep this
@@ -600,12 +622,7 @@ mod tests {
 
     #[test]
     fn rejects_features_that_would_otherwise_be_lost() {
-        for text in [
-            "![alt](image.png)",
-            "<script>x</script>",
-            "Text[^1]\n\n[^1]: note",
-            "- [x] task",
-        ] {
+        for text in ["![alt](image.png)", "<script>x</script>", "- [x] task"] {
             assert!(
                 book(&[("b.md", text)])
                     .unwrap_err()

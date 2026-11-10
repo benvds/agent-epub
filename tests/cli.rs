@@ -103,6 +103,85 @@ fn ragged_tables_fail_without_replacing_an_existing_book() {
 }
 
 #[test]
+fn footnotes_share_definitions_across_chapters_and_return_to_each_reference() {
+    let (_dir, mut options) = fixture(
+        "b.md",
+        "[^SOURCE]: A **shared** note. [next](#two)\n\n# One\nFirst[^source], again[^SOURCE].\n\n# Two\nThird[^source].\n",
+    );
+    let other = options.output.with_file_name("other.md");
+    fs::write(
+        &other,
+        "# Other\nIndependent[^source].\n\n[^source]: Other source note.",
+    )
+    .unwrap();
+    options.inputs.push(other);
+    assert_eq!(build(&options).unwrap().chapters, 3);
+    let first = resource(&options.output, "EPUB/chapter-0001.xhtml");
+    let second = resource(&options.output, "EPUB/chapter-0002.xhtml");
+    let third = resource(&options.output, "EPUB/chapter-0003.xhtml");
+    assert_eq!(first.matches("epub:type=\"footnote\"").count(), 1);
+    assert!(first.contains("A <strong>shared</strong> note."));
+    assert!(first.contains("chapter-0002.xhtml#two"));
+    assert!(first.contains("chapter-0001.xhtml#noteref:1:1"));
+    assert!(first.contains("chapter-0001.xhtml#noteref:1:2"));
+    assert!(first.contains("chapter-0002.xhtml#noteref:1:3"));
+    assert!(second.contains("href=\"chapter-0001.xhtml#note:1\""));
+    assert!(!second.contains("epub:type=\"footnote\""));
+    assert!(third.contains("id=\"note:2\""));
+    assert!(third.contains("Other source note."));
+}
+
+#[test]
+fn footnote_failures_preserve_existing_output_and_unmatched_markers_stay_literal() {
+    let (_dir, mut options) = fixture("b.md", "# Original\nKeep me.");
+    build(&options).unwrap();
+    let original = fs::read(&options.output).unwrap();
+    options.overwrite = true;
+    for (text, expected) in [
+        (
+            "Text[^a].\n\n[^a]: First.\n\n[^A]: Duplicate.",
+            "duplicate footnote",
+        ),
+        ("# Book\nText.\n\n[^a]: Unused.", "unused footnote"),
+        (
+            "Text[^a].\n\n[^a]: Nested[^b].\n\n[^b]: Note.",
+            "references inside footnotes",
+        ),
+        ("Text[^a].\n\n[^a]:", "empty footnote"),
+    ] {
+        fs::write(&options.inputs[0], text).unwrap();
+        let error = build(&options).unwrap_err();
+        assert_eq!(error.kind, ErrorKind::Input);
+        assert!(error.message.contains(expected), "{error}");
+        assert_eq!(fs::read(&options.output).unwrap(), original);
+    }
+    fs::write(
+        &options.inputs[0],
+        "# Book\nUnmatched[^missing] and `[^code]` stay literal.",
+    )
+    .unwrap();
+    build(&options).unwrap();
+    let text = resource(&options.output, "EPUB/chapter-0001.xhtml");
+    assert!(text.contains("Unmatched[^missing]"));
+    assert!(text.contains("<code>[^code]</code>"));
+}
+
+#[test]
+fn catches_misdirected_note_references_and_missing_return_links() {
+    for (before, after) in [("#note:1", "#one"), ("#noteref:1:1", "#one")] {
+        let (_dir, options) = fixture("b.md", "# One\nClaim[^a].\n\n[^a]: Evidence.");
+        build(&options).unwrap();
+        rewrite(&options.output, "EPUB/chapter-0001.xhtml", |text| {
+            text.replace(before, after)
+        });
+        assert_eq!(
+            validate(&options.output).unwrap_err().kind,
+            ErrorKind::Validation
+        );
+    }
+}
+
+#[test]
 fn generates_real_archive_with_consistent_contents_and_navigation() {
     let (_dir, options) = fixture(
         "b.md",
@@ -316,6 +395,10 @@ fn independent_epubcheck_corpus() {
     let executable =
         std::env::var_os("EPUBCHECK").expect("Set EPUBCHECK to the validator wrapper path");
     let cases = [
+        (
+            "notes.md",
+            "[^n]: A **note** with a [chapter link](#two) and [web source](https://example.org).\n\n# One\nFirst[^n], again[^n].\n\n# Two\nThird[^n].\n",
+        ),
         (
             "table.md",
             "# Report\n\n| Item | Value |\n| :--- | ---: |\n| **Café** & tea | 2 \\| 3 |\n| [source](https://example.org) | `code` |\n",
