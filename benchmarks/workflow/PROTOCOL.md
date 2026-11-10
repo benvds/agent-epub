@@ -48,7 +48,7 @@ check may verify the harness before measured sessions and must be identified.
 
 Resource ceiling: stop before account-wide weekly usage reaches 12% (a
 conservative margin below the user's 1/7 daily limit and 80% period ceiling),
-and after 1,000,000 reported input-plus-output tokens in measured sessions.
+and after 1,800,000 reported input-plus-output tokens in measured sessions.
 Check account usage between sessions. If a cap prevents completion, publish
 partial evidence and the reason; do not replace missing runs with synthetic data.
 
@@ -73,3 +73,14 @@ failures next to speed. State faster, slower or inconclusive within this small
 corpus; avoid population-level claims. Record costly steps and follow-up tasks.
 No Claude/Ollama evaluations, user recruitment or milestone 6 product expansion
 are authorized by this benchmark.
+
+## Resource amendment before session 2
+
+The first session reported 229,313 input tokens, of which 207,488 were cached,
+plus 849 output tokens. Account-wide usage remained at 3%. Before session 2,
+the self-imposed raw-token ceiling was raised from 1,000,000 to 1,800,000 to
+accommodate six sessions at that observed context scale. The user-specified
+account ceilings, three pairs, order, time/attempt caps, prompts, artifacts and
+scoring remain fixed. All raw/cached usage is retained; no run is dropped or
+replaced. This is a disclosed resource-planning amendment, not a performance
+or correctness adjustment.
