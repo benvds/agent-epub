@@ -14,7 +14,11 @@ pub fn build(options: &BuildOptions) -> Result<Summary> {
 }
 
 pub fn build_with_cover(options: &BuildOptions, cover: Option<&CoverOptions>) -> Result<Summary> {
-    let mut book = prepare(&options.inputs, options.metadata.clone())?;
+    let mut book = prepare(
+        &options.inputs,
+        options.metadata.clone(),
+        options.split_level,
+    )?;
     let mut options = options.clone();
     if let Some(cover) = cover {
         book.cover = Some(crate::cover::load(cover, &book.metadata.title)?);

@@ -16,6 +16,8 @@ pub struct BookRequest {
     pub schema_version: u32,
     pub metadata: Metadata,
     pub inputs: Vec<RequestInput>,
+    #[serde(default = "default_split_level")]
+    pub split_level: u8,
     #[serde(default, deserialize_with = "present")]
     pub cover: Option<CoverOptions>,
 }
@@ -31,6 +33,10 @@ pub struct RequestInput {
     pub format: Option<Format>,
     #[serde(default, deserialize_with = "present")]
     pub name: Option<String>,
+}
+
+fn default_split_level() -> u8 {
+    1
 }
 
 fn present<'de, D, T>(deserializer: D) -> std::result::Result<Option<T>, D::Error>
@@ -73,8 +79,22 @@ pub fn build_request(text: &str, options: &RequestOptions) -> Result<Summary> {
     if text.len() > 64 * 1024 * 1024 {
         return Err(invalid("Request limit: 64 MiB."));
     }
-    let request: BookRequest =
-        serde_json::from_str(text).map_err(|e| invalid(format!("Invalid book request: {e}")))?;
+    let request: BookRequest = serde_json::from_str(text).map_err(|e| {
+        let mut error = invalid(format!("Invalid book request: {e}")).issue(
+            "invalid_request",
+            "Correct the JSON and request field types using the discovered version 1 schema.",
+        );
+        error.source = options.request_path.clone();
+        // serde_json columns are byte-based; convert to Unicode columns.
+        error.line = Some(e.line());
+        error.column = text.lines().nth(e.line().saturating_sub(1)).map(|line| {
+            line.char_indices()
+                .take_while(|(i, _)| *i < e.column().saturating_sub(1))
+                .count()
+                + 1
+        });
+        error
+    })?;
     if request.schema_version != 1 {
         return Err(invalid(format!(
             "Unsupported schema_version {}; expected 1.",
@@ -162,7 +182,8 @@ pub fn build_request(text: &str, options: &RequestOptions) -> Result<Summary> {
         }
         sources.push(source);
     }
-    let mut book = source::prepare_sources(&sources, request.metadata.clone())?;
+    let mut book =
+        source::prepare_sources(&sources, request.metadata.clone(), request.split_level)?;
     let mut protected = sources.iter().map(|s| s.path.clone()).collect::<Vec<_>>();
     if let Some(mut cover) = request.cover {
         if cover.path.as_os_str().is_empty() {
@@ -180,6 +201,7 @@ pub fn build_request(text: &str, options: &RequestOptions) -> Result<Summary> {
             inputs: protected,
             output: options.output.clone(),
             metadata: request.metadata,
+            split_level: request.split_level,
             overwrite: options.overwrite,
             epubcheck: options.epubcheck.clone(),
         },
@@ -194,14 +216,20 @@ pub fn capabilities() -> Value {
         "commands": ["build", "validate", "capabilities"], "formats": ["text", "markdown"],
         "inputs": ["ordered_files", "request_file", "streamed_request", "inline_content"],
         "navigation": ["contents", "chapter_contents", "section_contents_h2_h6", "previous_next", "return_to_contents"],
+        "chapter_splitting": {"option": "split_level", "cli": "--split-level", "default": 1, "minimum": 1, "maximum": 6, "match": "exact_root_heading_level", "preamble": "preserved", "source_boundaries": "always", "heading_ranks": "preserved"},
+        "diagnostics": {"category_field": "code", "detail_field": "issue_code", "source_field": "source", "location": "one_based_unicode_normalized_source_or_request_json", "unavailable": null, "remedy_field": "remedy"},
         "cover_images": true, "cover_formats": ["jpeg", "png"],
         "markdown_extensions": ["rectangular_pipe_tables", "footnotes_with_backlinks"],
         "markdown_profile": {
             "tables": {"header_row": "required", "rows": "equal_cell_counts", "literal_pipe": "escape as \\|, including code spans", "inside_containers": false},
             "footnotes": {"labels": "source_local_case_insensitive", "numbering": "first_reference_order", "placement": "end_of_first_referring_chapter", "backlinks": "every_reference", "unmatched_markers": "literal_text", "duplicate_empty_unused_definitions": "error", "nested_references": false},
-            "section_contents": {"levels": "root_h2_through_h6", "skipped_levels": "nearest_preceding_shallower_heading", "container_headings": "excluded"}
+            "front_matter": {"policy": "reject", "recognized": "leading_yaml_or_toml_fence_with_initial_key_value", "metadata_import": false},
+            "math": "literal_markers_no_math_rendering",
+            "strikethrough": "literal_markers",
+            "alerts": "ordinary_blockquote_with_literal_marker",
+            "section_contents": {"levels": "root_h2_through_h6", "chapter_title_heading": "excluded", "skipped_levels": "nearest_preceding_shallower_heading", "container_headings": "excluded"}
         },
-        "unsupported": ["inline_images", "complex_tables", "nested_notes", "task_lists", "raw_html", "fixed_layout", "multimedia", "drm"],
+        "unsupported": ["inline_images", "complex_tables", "nested_notes", "task_lists", "raw_html", "recognized_front_matter", "fixed_layout", "multimedia", "drm"],
         "limits": {"source_bytes": 20971520, "total_source_bytes": 67108864, "request_bytes": 67108864, "chapters": 1000, "cover_bytes": 10485760, "cover_max_side": 8000, "cover_max_pixels": 16000000},
         "checks": {"structural_profile": "always", "epubcheck": "optional_external", "reader_review": "not_automated", "accessibility_assessment": "not_automated"}
     })
@@ -223,7 +251,7 @@ pub fn result(
         Err(error) => json!({
             "schema_version": 1, "tool_version": env!("CARGO_PKG_VERSION"), "operation": operation, "status": "failed", "output": null,
             "checks": {"structural_profile": "not_claimed", "epubcheck": "not_claimed"},
-            "errors": [{"code": match error.kind { ErrorKind::Input => "invalid_input", ErrorKind::Io => "io_error", ErrorKind::Validation => "invalid_epub", ErrorKind::Validator => "validator_failed" }, "message": error.message}], "elapsed_ms": elapsed_ms
+            "errors": [{"code": match error.kind { ErrorKind::Input => "invalid_input", ErrorKind::Io => "io_error", ErrorKind::Validation => "invalid_epub", ErrorKind::Validator => "validator_failed" }, "message": error.message, "issue_code": error.issue_code, "source": error.source, "line": error.line, "column": error.column, "remedy": error.remedy}], "elapsed_ms": elapsed_ms
         }),
     }
 }

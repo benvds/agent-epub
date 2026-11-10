@@ -20,6 +20,7 @@ fn fixture(name: &str, text: &str) -> (TempDir, BuildOptions) {
             language: "en".into(),
             author: Some("O'Writer".into()),
         },
+        split_level: 1,
         overwrite: false,
         epubcheck: None,
     };
@@ -526,6 +527,16 @@ fn independent_epubcheck_corpus() {
                 .independent_validation
         );
     }
+    for level in 1..=6 {
+        let (_dir, mut options) = fixture("split.md", include_str!("../examples/title-h2.md"));
+        options.split_level = level;
+        options.epubcheck = Some(executable.clone().into());
+        assert!(
+            build(&options)
+                .unwrap_or_else(|e| panic!("H{level}: {e}"))
+                .independent_validation
+        );
+    }
     let output = tempfile::tempdir().unwrap();
     let options = BuildOptions {
         inputs: vec![
@@ -538,6 +549,7 @@ fn independent_epubcheck_corpus() {
             language: "en".into(),
             author: None,
         },
+        split_level: 1,
         overwrite: false,
         epubcheck: Some(executable.into()),
     };

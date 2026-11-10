@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "title": "Field guide",
+    "language": "en"
+  },
+  "split_level": 2,
+  "inputs": [
+    {
+      "path": "title-h2.md"
+    }
+  ]
+}

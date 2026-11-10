@@ -33,7 +33,7 @@ enum Commands {
             conflicts_with = "request"
         )]
         inputs: Vec<PathBuf>,
-        #[arg(long, conflicts_with_all = ["inputs", "title", "language", "author", "cover", "cover_alt"], help = "Book request JSON file, or - for stdin")]
+        #[arg(long, conflicts_with_all = ["inputs", "title", "language", "author", "cover", "cover_alt", "split_level"], help = "Book request JSON file, or - for stdin")]
         request: Option<PathBuf>,
         #[arg(
             long,
@@ -57,6 +57,8 @@ enum Commands {
             help = "Cover alternative text; defaults to Cover of <title>"
         )]
         cover_alt: Option<String>,
+        #[arg(long, value_parser = clap::value_parser!(u8).range(1..=6), help = "Split at root headings of exactly this level (1–6; default 1)")]
+        split_level: Option<u8>,
         #[arg(long)]
         overwrite: bool,
         #[arg(
@@ -147,6 +149,7 @@ fn main() {
             author,
             cover,
             cover_alt,
+            split_level,
             overwrite,
             epubcheck,
         } => {
@@ -173,6 +176,7 @@ fn main() {
                             language: language.unwrap_or_default(),
                             author,
                         },
+                        split_level: split_level.unwrap_or(1),
                         overwrite,
                         epubcheck,
                     },

@@ -22,7 +22,10 @@ pub(crate) struct Note {
 }
 
 fn invalid(path: &Path, message: impl std::fmt::Display) -> Error {
-    Error::new(ErrorKind::Input, format!("{}: {message}", path.display()))
+    let mut error = Error::new(ErrorKind::Input, format!("{}: {message}", path.display()))
+        .issue("invalid_footnote", "Use unique, nonempty, referenced source-local notes outside containers, without nested references.");
+    error.source = Some(path.to_path_buf());
+    error
 }
 
 impl Notes {

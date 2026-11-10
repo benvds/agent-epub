@@ -355,7 +355,13 @@ pub fn validate(path: &Path) -> Result<Summary> {
                 .find(|n| n.has_tag_name((XHTML, "body")))
                 .ok_or_else(|| failure("Chapter missing body."))?;
             let mut levels = vec![1];
-            for heading in body.children().filter(|n| n.is_element()) {
+            for (index, heading) in body.children().filter(|n| n.is_element()).enumerate() {
+                if index == 0
+                    && heading.attribute("data-agent-epub-chapter") == Some("true")
+                    && matches!(heading.tag_name().name(), "h2" | "h3" | "h4" | "h5" | "h6")
+                {
+                    continue;
+                }
                 let level = match heading.tag_name().name() {
                     "h2" => 2,
                     "h3" => 3,

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "title": "Field guide",
+    "language": "en"
+  },
+  "split_level": 2,
+  "inputs": [
+    {
+      "name": "title-h2.md",
+      "format": "markdown",
+      "content": "# Field guide\n\nIntroduction before the first chapter. [Go to Results](#results).\n\n## Methods\n\nWe kept the original heading ranks. See the [detail](#detail).\n\n#### Detail\n\nA skipped heading level stays in the nested contents. A claim[^evidence].\n\n> ## Quoted heading\n> This stays inside the Methods chapter.\n\n## Results\n\nThe second chapter links [back to Methods](#methods) and reuses the note[^evidence].\n\n## Results\n\nA repeated title has its own [heading target](#results-2).\n\n[^evidence]: Synthetic evidence with a [return to Results](#results).\n"
+    }
+  ]
+}

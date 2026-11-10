@@ -33,6 +33,7 @@ fn options(dir: &Path) -> BuildOptions {
             language: "en".into(),
             author: None,
         },
+        split_level: 1,
         overwrite: false,
         epubcheck: None,
     }

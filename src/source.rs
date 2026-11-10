@@ -78,7 +78,7 @@ pub(crate) fn load(input: &std::path::Path) -> Result<Source> {
     Ok(Source { path, text, format })
 }
 
-pub(crate) fn prepare(inputs: &[PathBuf], metadata: Metadata) -> Result<Book> {
+pub(crate) fn prepare(inputs: &[PathBuf], metadata: Metadata, split_level: u8) -> Result<Book> {
     if inputs.len() > 1000 {
         return Err(input_error("Supply at most 1,000 source files."));
     }
@@ -92,10 +92,22 @@ pub(crate) fn prepare(inputs: &[PathBuf], metadata: Metadata) -> Result<Book> {
         }
         sources.push(source);
     }
-    prepare_sources(&sources, metadata)
+    prepare_sources(&sources, metadata, split_level)
 }
 
-pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<Book> {
+pub(crate) fn prepare_sources(
+    inputs: &[Source],
+    metadata: Metadata,
+    split_level: u8,
+) -> Result<Book> {
+    if !(1..=6).contains(&split_level) {
+        return Err(
+            input_error("split_level must be an integer from 1 through 6.").issue(
+                "invalid_split_level",
+                "Choose a split_level from 1 through 6; omit it for H1 splitting.",
+            ),
+        );
+    }
     if metadata.title.trim().is_empty() || !valid_xml_text(&metadata.title) {
         return Err(input_error(
             "Supply a nonempty title containing valid XML characters.",
@@ -123,6 +135,8 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
     let mut paths = Vec::new();
     let mut drafts = Vec::new();
     let mut notes = crate::notes::Notes::default();
+    let mut links = Vec::new();
+    let mut normalized_sources = Vec::new();
     let mut total = 0;
     for (source, source_input) in inputs.iter().enumerate() {
         let input = &source_input.path;
@@ -161,6 +175,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                 "Source filename contains invalid XML characters.",
             ));
         }
+        normalized_sources.push(text.clone());
         match source_input.format.as_str() {
             "txt" => drafts.push(Draft {
                 title: label,
@@ -171,19 +186,47 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                 sections: Vec::new(),
             }),
             "md" | "markdown" => {
+                if front_matter(&text) {
+                    return Err(input_error("Recognized Markdown front matter is unsupported; metadata is not imported.")
+                        .issue("unsupported_front_matter", "Remove the leading YAML/TOML block and supply title, language and author through CLI flags or request metadata; use a fenced code block to display it literally.")
+                        .at(input, &text, 0));
+                }
                 let options =
                     Options::ENABLE_TABLES | Options::ENABLE_FOOTNOTES | Options::ENABLE_TASKLISTS;
                 let mut groups: Vec<Vec<Event<'static>>> = vec![vec![]];
                 let mut depth = 0usize;
                 let mut columns = 0;
+                let mut in_note = false;
                 for (event, range) in Parser::new_ext(&text, options).into_offset_iter() {
+                    if let Event::Start(Tag::Link { dest_url, .. }) = &event {
+                        links.push((source, range.start, dest_url.to_string()));
+                    }
                     match &event {
+                        Event::Start(Tag::FootnoteDefinition(_)) => {
+                            if depth != 0 {
+                                return Err(input_error("Footnote definitions must be outside other containers.")
+                                    .issue("unsupported_footnote", "Move note definitions outside lists, quotations and other notes.")
+                                    .at(input, &text, range.start));
+                            }
+                            in_note = true;
+                        }
+                        Event::End(TagEnd::FootnoteDefinition) => in_note = false,
+                        Event::FootnoteReference(_) if in_note => {
+                            return Err(input_error("references inside footnotes are unsupported.")
+                                .issue("unsupported_footnote", "Move nested note text into the outer note or reference it from the chapter.")
+                                .at(input, &text, range.start));
+                        }
                         Event::Start(Tag::Table(alignments)) => {
                             if depth != 0 {
                                 return Err(input_error(format!(
                                     "{}: tables must be outside lists, quotations and footnotes.",
                                     input.display()
-                                )));
+                                ))
+                                .issue(
+                                    "unsupported_table",
+                                    "Move tables outside lists, quotations and footnotes.",
+                                )
+                                .at(input, &text, range.start));
                             }
                             columns = alignments.len();
                         }
@@ -195,7 +238,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                                 return Err(input_error(format!(
                                     "{}:{line}: table rows must have exactly {columns} cells; escape literal pipes as \\|.",
                                     input.display()
-                                )));
+                                )).issue("invalid_table_shape", r"Give every row the header's cell count and escape literal pipes as \|.").at(input, &text, range.start));
                             }
                         }
                         _ => {}
@@ -209,19 +252,24 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                         _ => None,
                     };
                     if let Some(feature) = unsupported {
+                        let code = match &event {
+                            Event::Start(Tag::Image { .. }) => "unsupported_inline_image",
+                            Event::TaskListMarker(_) => "unsupported_task_list",
+                            _ => "unsupported_raw_html",
+                        };
                         let line = text[..range.start].bytes().filter(|&b| b == b'\n').count() + 1;
                         return Err(input_error(format!(
                             "{}:{line}: unsupported {feature}; supply plain text or supported Markdown instead.",
                             input.display()
-                        )));
+                        )).issue(code, "Replace this structure with supported Markdown or plain text; use --cover for a cover image.").at(input, &text, range.start));
                     }
                     if depth == 0
                         && matches!(
                             event,
                             Event::Start(Tag::Heading {
-                                level: HeadingLevel::H1,
+                                level,
                                 ..
-                            })
+                            }) if heading_number(level) == split_level
                         )
                         && !groups.last().unwrap().is_empty()
                     {
@@ -242,9 +290,9 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                     let has_title = matches!(
                         events.first(),
                         Some(Event::Start(Tag::Heading {
-                            level: HeadingLevel::H1,
+                            level,
                             ..
-                        }))
+                        })) if *level == HeadingLevel::H1 || heading_number(*level) == split_level
                     );
                     let title = if has_title {
                         heading_label(&events[1..])
@@ -305,7 +353,8 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                         }
                     }
                     targets.insert((draft.source, id.clone()), (chapter, id.clone()));
-                    if depth == 0 && *level != HeadingLevel::H1 {
+                    if depth == 0 && *level != HeadingLevel::H1 && !(index == 0 && draft.has_title)
+                    {
                         draft.sections.push(Section {
                             level: heading_number(*level),
                             title: label.clone(),
@@ -313,7 +362,17 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                         });
                     }
                     events.push(Event::Html(
-                        format!("<h{} id=\"{}\">", heading_number(*level), xml_text(&id)).into(),
+                        format!(
+                            "<h{} id=\"{}\"{}>",
+                            heading_number(*level),
+                            xml_text(&id),
+                            if index == 0 && draft.has_title && *level != HeadingLevel::H1 {
+                                " data-agent-epub-chapter=\"true\""
+                            } else {
+                                ""
+                            }
+                        )
+                        .into(),
                     ));
                     if empty {
                         events.push(Event::Text(label.into()));
@@ -341,6 +400,12 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
     let mut first = HashMap::new();
     for (index, draft) in drafts.iter().enumerate() {
         first.entry(draft.source).or_insert(index);
+    }
+    // Check original parser spans before rendering so note and reference-style
+    // links retain their exact source location after chapter splitting.
+    for (source, offset, destination) in links {
+        resolve_link(&destination, source, &paths, &first, &targets)
+            .map_err(|e| e.at(&paths[source], &normalized_sources[source], offset))?;
     }
     let mut chapters = Vec::new();
     for draft in drafts {
@@ -377,6 +442,27 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
         metadata,
         chapters,
         cover: None,
+    })
+}
+
+fn front_matter(text: &str) -> bool {
+    let mut lines = text.lines();
+    let fence = lines.next().unwrap_or("").trim_end();
+    if !matches!(fence, "---" | "+++") {
+        return false;
+    }
+    // Require a metadata-shaped first meaningful line. A leading thematic
+    // break followed by ordinary prose must remain ordinary Markdown.
+    let Some(line) = lines.map(str::trim).find(|l| !l.is_empty()) else {
+        return false;
+    };
+    let separator = if fence == "---" { ':' } else { '=' };
+    line.split_once(separator).is_some_and(|(key, _)| {
+        let key = key.trim();
+        !key.is_empty()
+            && key
+                .chars()
+                .all(|c| c.is_alphanumeric() || matches!(c, '_' | '-'))
     })
 }
 
@@ -512,13 +598,16 @@ fn resolve_link(
         input_error(format!(
             "{}: unresolved or unsupported link {destination:?}; use http(s), mailto, or a supplied source and heading fragment.",
             paths[source].display()
-        ))
+        )).issue("unresolved_link", "Supply the linked source, correct the heading fragment, or use an http(s)/mailto URL.")
     };
     if let Ok(url) = Url::parse(destination) {
         return if matches!(url.scheme(), "http" | "https" | "mailto") {
             Ok(destination.into())
         } else {
-            Err(error())
+            Err(error().issue(
+                "unsupported_link",
+                "Use http, https, mailto, or a relative link to a supplied source.",
+            ))
         };
     }
     if destination.contains(':')
@@ -526,7 +615,10 @@ fn resolve_link(
         || destination.contains('?')
         || destination.contains('\\')
     {
-        return Err(error());
+        return Err(error().issue(
+            "unsupported_link",
+            "Use a relative supplied-source path without a query, or an http(s)/mailto URL.",
+        ));
     }
     let (path, fragment) = destination
         .split_once('#')
@@ -597,6 +689,7 @@ mod tests {
                 language: "nl".into(),
                 author: None,
             },
+            1,
         )
     }
 
