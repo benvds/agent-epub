@@ -207,7 +207,8 @@ capability caches cannot confuse the new image behavior with released v0.5.1.
 D1 implementation checkpoint: bounded loading and shared static-image inspection,
 rendering/packaging/validation, localized errors, capability discovery, 49 passing
 regression tests, three independent conformance corpora, illustrated examples and
-native archive smoke are implemented. Browser narrow-layout review found and
+native archive smoke are implemented. All seven required native CI jobs pass
+on `243b406` across the three supported targets. Browser narrow-layout review found and
 fixed intrinsic table-image overflow. Apple Books review is pending a locked Mac;
 no second-reader or release completion is claimed. See the
 [D1 record](verification/INLINE_IMAGES.md) for exact evidence and timing.

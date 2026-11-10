@@ -133,7 +133,7 @@ Exit gates:
 ## Next delivery: D1 Local inline images
 
 Status: prioritized P0 on 10 November 2026 and implemented on main as
-`0.6.0-dev`. Automated, EPUBCheck and browser reader checks pass; the second
+`0.6.0-dev`. Automated, EPUBCheck, three-platform native CI and browser reader checks pass; the second
 reader gate remains pending because the Mac is locked. Selected
 at the maintainer's explicit request. The milestone 5a guide/image case and the
 need to include diagrams and screenshots justify selecting this package before

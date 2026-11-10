@@ -77,7 +77,12 @@ clean installation on the existing three native targets. The first native CI run
 is rooted but not fully absolute on Windows. Loading now rejects all rooted
 paths, matching the declared relative-only profile on every platform. The
 existing absolute-path diagnostic case exercises this correction in native CI.
-Final remote CI results are recorded below after the push.
+Native CI on implementation commit `243b406` passes all seven required jobs:
+regression/conformance, packaging on macOS Apple Silicon/Linux x86_64/Windows
+x86_64, and clean installation on each target. Release publication is skipped
+because this is a main-branch development build.
+[CI run and job reports](https://github.com/benvds/agent-epub/actions/runs/42805678039).
+The subsequent documentation-only checkpoint records this verified commit.
 
 ## Reader observations
 
@@ -124,7 +129,7 @@ The historical milestone 5a benchmark remains pinned to v0.5.0.
 ## Remaining gate
 
 Run the illustrated guide in Apple Books after unlocking the Mac, record image,
-contents, note-return and enlarged-text observations, and review native CI.
+contents, note-return and enlarged-text observations. Native CI is complete.
 A separate release decision/version/tag is still required before published
 binary users receive chapter images. Current [usage](../USAGE.md#local-chapter-images),
 [agent contract](../AGENT_INTERFACE.md), capability discovery, synthetic examples,
