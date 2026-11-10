@@ -89,7 +89,7 @@ Exit gates:
 
 ## Milestone 5 Predictable inputs and actionable diagnostics
 
-Status: implementation and local verification complete for `v0.5.0`; native CI/release gates pending. Priority: P1. See the [milestone 5 record](verification/MILESTONE_5.md). Reduce source rewriting and agent retries while preserving existing defaults and version 1 callers.
+Status: implementation, native CI and release gates complete at `v0.5.0`. Priority: P1. See the [milestone 5 record](verification/MILESTONE_5.md). Reduce source rewriting and agent retries while preserving existing defaults and version 1 callers.
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |
@@ -107,7 +107,7 @@ Exit gates:
 
 ## Milestone 5a Agent workflow benchmark against Pandoc
 
-Status: planned immediately after milestone 5. Priority: P1. Measure whether Agent EPUB produces a correct EPUB faster through an actual agent workflow, including setup, tool calls and retries.
+Status: practical three-pair benchmark selected after milestone 5, per maintainer instruction. The [bounded protocol](../benchmarks/workflow/PROTOCOL.md) is committed before measured sessions. Priority: P1. Measure whether Agent EPUB produces a correct EPUB faster through an actual agent workflow, including setup, tool calls and retries.
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |

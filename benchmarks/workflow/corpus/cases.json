@@ -1,0 +1,107 @@
+{
+  "report": {
+    "title": "Practical report",
+    "inputs": [
+      "inputs/intro.md",
+      "inputs/report.md"
+    ],
+    "cover": "assets/cover.png",
+    "image_sha256": "3b650dd038776948a835355e6dbb3fe9c284d1dc3819922d00b221d74068c0ee",
+    "table": true,
+    "notes": 3,
+    "contents": [
+      "Introduction",
+      "Findings",
+      "Summary"
+    ],
+    "markers": [
+      "INTRO-MARKER: The complete introduction stays first.",
+      "FINDINGS-MARKER: Café, 日本語 and all table values stay intact.",
+      "SUMMARY-MARKER: The conclusion stays last."
+    ],
+    "chapter_markers": [
+      "INTRO-MARKER:",
+      "FINDINGS-MARKER:",
+      "SUMMARY-MARKER:"
+    ]
+  },
+  "guide": {
+    "title": "Field guide",
+    "inputs": [
+      "inputs/guide.md"
+    ],
+    "split_level": 2,
+    "contents": [
+      "Field guide",
+      "Methods",
+      "Detail",
+      "Results",
+      "Results"
+    ],
+    "markers": [
+      "GUIDE-PREAMBLE: Keep the introduction.",
+      "GUIDE-METHODS: Keep the method.",
+      "GUIDE-DETAIL: A skipped rank stays nested.",
+      "GUIDE-RESULTS: Keep the first result.",
+      "GUIDE-REPEAT: Keep the repeated result."
+    ],
+    "chapter_markers": [
+      "GUIDE-PREAMBLE:",
+      "GUIDE-METHODS:",
+      "GUIDE-RESULTS:",
+      "GUIDE-REPEAT:"
+    ]
+  },
+  "inline": {
+    "title": "Inline export",
+    "content": "# Inline\n\nINLINE-FIRST: Keep the text already held in memory.\n\n# Next\n\nINLINE-NEXT: Keep the second chapter. [Back](#inline).\n",
+    "contents": [
+      "Inline",
+      "Next"
+    ],
+    "markers": [
+      "INLINE-FIRST: Keep the text already held in memory.",
+      "INLINE-NEXT: Keep the second chapter."
+    ],
+    "chapter_markers": [
+      "INLINE-FIRST:",
+      "INLINE-NEXT:"
+    ]
+  },
+  "recovery": {
+    "title": "Recovery export",
+    "inputs": [
+      "work/recovery.md"
+    ],
+    "repair": "Attempt once unchanged, then change only (#missing) to (#results) in work/recovery.md and retry.",
+    "contents": [
+      "Recovery",
+      "Results"
+    ],
+    "markers": [
+      "RECOVERY-BEGIN: Keep this text.",
+      "RECOVERY-END: This is the intended destination."
+    ],
+    "chapter_markers": [
+      "RECOVERY-BEGIN:",
+      "RECOVERY-END:"
+    ]
+  },
+  "image": {
+    "title": "Image booklet",
+    "inputs": [
+      "inputs/image.md"
+    ],
+    "inline_image": true,
+    "image_sha256": "3b650dd038776948a835355e6dbb3fe9c284d1dc3819922d00b221d74068c0ee",
+    "contents": [
+      "Image booklet"
+    ],
+    "markers": [
+      "IMAGE-MARKER: Keep the supplied illustration or report unsupported."
+    ],
+    "chapter_markers": [
+      "IMAGE-MARKER:"
+    ]
+  }
+}

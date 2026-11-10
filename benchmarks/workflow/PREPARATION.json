@@ -1,0 +1,17 @@
+{
+  "basis": "Filesystem creation timestamps through completion of converter/scorer smoke checks; elapsed intervals include shared harness work, CI waiting and interleaved work. Active per-tool effort was not instrumented and is not inferred.",
+  "shared_preparation_started_utc": "2026-11-10T09:11:02.850786+00:00",
+  "smoke_completed_utc": "2026-11-10T09:19:35.163744+00:00",
+  "shared_elapsed_seconds": 512.313,
+  "pandoc_wrapper_elapsed_interval_seconds": 512.313,
+  "agent_recipe": "Reuses released CLI/skill; additional benchmark recipe supplied. Historical recipe preparation is not remeasured.",
+  "pandoc_recipe": "New Python wrapper plus Lua source-link filter and note-return patch; preparation interval overlaps shared harness work.",
+  "pandoc_python_lines": 89,
+  "pandoc_lua_lines": 14,
+  "smoke": {
+    "agent": "passed all five cases including intended recovery and unsupported response",
+    "pandoc": "passed all five cases including recovery and a preserved inline image"
+  },
+  "smoke_excluded_from_agent_measurements": true,
+  "checker_negative_controls": "Both valid guide publications are rejected when the expected source marker is intentionally wrong; broken fragments fail for both generators before repair."
+}

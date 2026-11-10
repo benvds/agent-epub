@@ -41,9 +41,13 @@ out-of-range values and request/CLI split conflicts fail.
 The macOS release archive passes clean-install smoke checks with Rust and Java
 absent from PATH. The packaged binary exercises all three ordinary and H2 input
 modes, detailed diagnostics, output preservation and failed/unrun checks.
-Native macOS/Linux/Windows CI gates and the tag workflow must pass before the
-release is published; release assets include exact archive hashes and native
-smoke reports. Final CI/release evidence is recorded after those runs finish.
+All native gates passed in [branch CI](https://github.com/benvds/epub-rust/actions/runs/42787388529)
+on commit `d25689f29ad16bf7b82f8c8c4d5db8929cfe7442`. The
+[tag workflow](https://github.com/benvds/epub-rust/actions/runs/42788266538)
+repeated every gate and published [v0.5.0](https://github.com/benvds/epub-rust/releases/tag/v0.5.0).
+All three published native smoke reports identify the exact archive hashes and
+pass H2 input modes and detailed diagnostics. ZIPs, individual checksums,
+SHA256SUMS and native smoke reports are attached to the release.
 
 ## Reader observations
 

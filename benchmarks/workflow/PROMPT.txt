@@ -1,0 +1,19 @@
+Complete the supplied EPUB export workflow using the local tool as its user.
+Work only in this directory. Read RECIPE.md and cases.json, then install,
+discover and perform report, guide, inline, recovery and image in that exact
+order. Use actual tool calls. Inspect the independent check result and repair
+failures within three build attempts per case. Image is a separate support
+probe: retain a valid image or report unsupported; do not rewrite it away.
+Do not read or modify .measurement, ./tool, installed/, download/, inputs/,
+assets/, RECIPE.md or cases.json. You may write requests/ and out/, and make
+only the explicitly allowed fragment edit to work/recovery.md after its first
+failed attempt. Do not inspect the product repository, install other software,
+access external services, alter the harness, or delegate. The official archives
+are already downloaded; use ./tool install to extract/configure this workspace.
+Use /opt/homebrew/bin/python3 for JSON helpers to avoid host shell shims.
+Use existing files without duplicating manuscripts. Stream the inline content
+from cases.json. Do not launch parallel builds. Each ./tool invocation snapshots
+and independently validates the resulting book before reporting its outcome;
+no extra validation call is required after a passed common check. Stop retrying
+at three attempts per case and continue to the next case. End with a short
+accurate outcome report. All source data is synthetic.
