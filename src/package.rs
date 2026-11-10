@@ -120,7 +120,11 @@ fn same_file(a: &Path, b: &Path) -> bool {
         _ => false,
     }
 }
-#[cfg(not(unix))]
+#[cfg(windows)]
+fn same_file(a: &Path, b: &Path) -> bool {
+    same_file::is_same_file(a, b).unwrap_or(false)
+}
+#[cfg(not(any(unix, windows)))]
 fn same_file(_: &Path, _: &Path) -> bool {
     false
 }

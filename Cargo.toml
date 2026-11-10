@@ -1,9 +1,15 @@
 [package]
 name = "agent-epub"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2024"
 rust-version = "1.88"
 description = "Focused EPUB generation for AI agents"
+license = "MIT"
+repository = "https://github.com/benvds/epub-rust"
+documentation = "https://github.com/benvds/epub-rust/blob/main/docs/USAGE.md"
+readme = "README.md"
+keywords = ["epub", "markdown", "cli", "agents"]
+categories = ["command-line-utilities", "text-processing"]
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
@@ -20,3 +26,6 @@ url = "2"
 uuid = { version = "1", features = ["v4"] }
 unicase = "2"
 zip = { version = "2.4", default-features = false, features = ["deflate"] }
+
+[target."cfg(windows)".dependencies]
+same-file = "1.0.6"

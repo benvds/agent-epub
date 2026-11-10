@@ -96,7 +96,7 @@ fn inline_requests_work_without_creating_source_files() {
     assert_eq!(result["chapters"], 3);
     assert_eq!(result["checks"]["structural_profile"], "passed");
     assert_eq!(result["checks"]["epubcheck"], "not_run");
-    assert!(result["output"].as_str().unwrap().starts_with('/'));
+    assert!(std::path::Path::new(result["output"].as_str().unwrap()).is_absolute());
     assert!(!dir.path().join("one.md").exists());
     assert_eq!(fs::read_dir(dir.path()).unwrap().count(), 1);
 }

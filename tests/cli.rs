@@ -417,6 +417,19 @@ fn reports_cli_success_and_distinct_failure_categories() {
     );
 }
 
+#[test]
+fn protects_sources_reached_through_hard_links() {
+    let (_dir, mut options) = fixture("source.txt", "Original source.");
+    std::fs::hard_link(&options.inputs[0], &options.output).unwrap();
+    let original = std::fs::read(&options.inputs[0]).unwrap();
+    options.overwrite = true;
+    let error = agent_epub::build(&options).unwrap_err();
+    assert_eq!(error.kind, ErrorKind::Input);
+    assert!(error.message.contains("input source"));
+    assert_eq!(std::fs::read(&options.inputs[0]).unwrap(), original);
+    assert_eq!(std::fs::read(&options.output).unwrap(), original);
+}
+
 #[cfg(unix)]
 #[test]
 fn protects_sources_reached_through_symbolic_and_hard_links() {
