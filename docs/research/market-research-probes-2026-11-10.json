@@ -223,7 +223,7 @@
         "errors": [
           {
             "code": "invalid_input",
-            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported tables; supply plain text or supported Markdown instead."
+            "message": "<WORKSPACE>/source.md:3: unsupported tables; supply plain text or supported Markdown instead."
           }
         ],
         "operation": "build",
@@ -247,7 +247,7 @@
         "errors": [
           {
             "code": "invalid_input",
-            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported notes; supply plain text or supported Markdown instead."
+            "message": "<WORKSPACE>/source.md:3: unsupported notes; supply plain text or supported Markdown instead."
           }
         ],
         "operation": "build",
@@ -271,7 +271,7 @@
         "errors": [
           {
             "code": "invalid_input",
-            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported inline images (use the separate cover option for a cover); supply plain text or supported Markdown instead."
+            "message": "<WORKSPACE>/source.md:3: unsupported inline images (use the separate cover option for a cover); supply plain text or supported Markdown instead."
           }
         ],
         "operation": "build",
@@ -295,7 +295,7 @@
         "errors": [
           {
             "code": "invalid_input",
-            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported task lists; supply plain text or supported Markdown instead."
+            "message": "<WORKSPACE>/source.md:3: unsupported task lists; supply plain text or supported Markdown instead."
           }
         ],
         "operation": "build",
@@ -319,7 +319,7 @@
         "errors": [
           {
             "code": "invalid_input",
-            "message": "/Users/benvds/code/epub-rust/source.md:3: unsupported raw HTML; supply plain text or supported Markdown instead."
+            "message": "<WORKSPACE>/source.md:3: unsupported raw HTML; supply plain text or supported Markdown instead."
           }
         ],
         "operation": "build",
@@ -354,8 +354,8 @@
       },
       "stderr": "",
       "chapter_xhtml": {
-        "EPUB/chapter-0001.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>source</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1>source</h1>\n<hr />\n<h2 id=\"title-my-report-author-someone\">title: My report\nauthor: Someone</h2>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a> \u00b7 <a rel=\"next\" href=\"chapter-0002.xhtml\">Next chapter</a></p></nav></body></html>\n",
-        "EPUB/chapter-0002.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>Introduction</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1 id=\"introduction\">Introduction</h1>\n<p>Body.</p>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a> \u00b7 <a rel=\"prev\" href=\"chapter-0001.xhtml\">Previous chapter</a></p></nav></body></html>\n"
+        "EPUB/chapter-0001.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>source</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1>source</h1>\n<hr />\n<h2 id=\"title-my-report-author-someone\">title: My report\nauthor: Someone</h2>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a> · <a rel=\"next\" href=\"chapter-0002.xhtml\">Next chapter</a></p></nav></body></html>\n",
+        "EPUB/chapter-0002.xhtml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" lang=\"en\" xml:lang=\"en\"><head><title>Introduction</title><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" /></head><body><h1 id=\"introduction\">Introduction</h1>\n<p>Body.</p>\n<nav aria-label=\"Chapter navigation\"><p><a href=\"nav.xhtml\">Contents</a> · <a rel=\"prev\" href=\"chapter-0001.xhtml\">Previous chapter</a></p></nav></body></html>\n"
       }
     },
     {
@@ -479,7 +479,7 @@
         "errors": [
           {
             "code": "invalid_input",
-            "message": "/Users/benvds/code/epub-rust/source.md: unresolved or unsupported link \"#missing\"; use http(s), mailto, or a supplied source and heading fragment."
+            "message": "<WORKSPACE>/source.md: unresolved or unsupported link \"#missing\"; use http(s), mailto, or a supplied source and heading fragment."
           }
         ],
         "operation": "build",
@@ -495,5 +495,6 @@
     "fcf24b0ff9f7317fa1ee64a8fd0c9f65d815b5a46b9883541743d313e1856167",
     "2f99dbec349f33df7baed0782f4d9f17bb537ac4a4f1b522c1a1990f5b175ff0"
   ],
-  "byte_identical": false
+  "byte_identical": false,
+  "path_normalization": "Historical absolute checkout paths in diagnostic messages are represented as <WORKSPACE>; recorded inputs, outcomes and binary hashes are unchanged."
 }

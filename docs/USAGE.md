@@ -105,4 +105,4 @@ python3 scripts/benchmark.py target/release/agent-epub
 
 The independent corpus test is explicitly ignored in ordinary tests because it requires a separately installed official validator. The CI workflow downloads a checksum-pinned EPUBCheck release and runs that test. The benchmark is a development helper; its Python dependency is separate from the generator.
 
-See the [milestone 5 verification record](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5.md) for release checks, reader observations and remaining limitations.
+See the [milestone 5 verification record](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5.md) for release checks, reader observations and remaining limitations.

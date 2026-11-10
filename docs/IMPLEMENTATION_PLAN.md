@@ -178,7 +178,7 @@ Suggested commits: shared task corpus and scoring rules; agent instrumentation a
 
 ### Evidence review and GitHub issues
 
-1. After C1, review benchmark findings and feedback reported through [GitHub issues](https://github.com/benvds/epub-rust/issues). Request version, command/request, expected and actual behavior, and a minimal non-private reproduction when needed. No user recruitment or observation study is required.
+1. After C1, review benchmark findings and feedback reported through [GitHub issues](https://github.com/benvds/agent-epub/issues). Request version, command/request, expected and actual behavior, and a minimal non-private reproduction when needed. No user recruitment or observation study is required.
 2. Reuse C1 scoring and extend competitor comparisons to mdbindery only when repository-based workflows justify it.
 3. Publish results against the roadmap's proposed decision targets. Record a decision for each conditional candidate and whether the evidence favors the engine, an integration improvement or a narrower audience.
 

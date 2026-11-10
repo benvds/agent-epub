@@ -32,7 +32,7 @@ Java or AI service. Optional EPUBCheck is installed separately. See
 `docs/verification/MILESTONE_5.md` in the repository for exact evidence and limits.
 Accessibility and individual publication appearance need separate review.
 Claude and Ollama live evaluations remain deferred. The completed
-[practical three-pair benchmark](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md)
+[practical three-pair benchmark](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md)
 compares v0.5.0 with a prepared Pandoc 3.13 wrapper. Both passed all shared tasks;
 Agent EPUB was faster in the observed cold workflows, while warm export results
 were mixed. These small local measurements do not establish a universal speed

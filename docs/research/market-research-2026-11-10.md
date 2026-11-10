@@ -179,7 +179,7 @@ More information: [agent request schema](../../schemas/book-request.v1.json) def
 
 The current evidence supports technical feasibility and a plausible niche. It does not yet support a revenue forecast. Prices for author applications show that people pay for publishing convenience, but those buyers purchase a different workflow from a CLI component. [Vellum pricing](https://vellum.pub/), [Atticus pricing](https://www.atticus.io/)
 
-Use the agent workflow benchmark after milestone 5 to measure setup time, tool calls, retries, manual repairs and time to a correct EPUB against Pandoc. Collect feedback through [GitHub issues](https://github.com/benvds/epub-rust/issues). Useful reports include a version, command or request, expected versus actual behavior and a minimal non-private reproduction. The plan does not require a recruited user study.
+Use the agent workflow benchmark after milestone 5 to measure setup time, tool calls, retries, manual repairs and time to a correct EPUB against Pandoc. Collect feedback through [GitHub issues](https://github.com/benvds/agent-epub/issues). Useful reports include a version, command or request, expected versus actual behavior and a minimal non-private reproduction. The plan does not require a recruited user study.
 
 Use explicit decision criteria for the benchmark and issue-driven priorities. Suggested thresholds below are product targets, not measured market facts:
 

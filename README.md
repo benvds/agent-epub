@@ -28,11 +28,11 @@ Built for repeated report and guide exports from agents that can run local comma
 Our prepared Pandoc baseline needed 89 Python lines and 14 Lua lines for its
 export recipe, source links and visible note returns. Agent EPUB supplies those
 book behaviors through its native interface.
-[Integration preparation and benchmark](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md).
+[Integration preparation and benchmark](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md).
 
 ## Install and try a report
 
-Download **[v0.5.1](https://github.com/benvds/epub-rust/releases/tag/v0.5.1)** for
+Download **[v0.5.1](https://github.com/benvds/agent-epub/releases/tag/v0.5.1)** for
 your platform, verify its checksum, extract it and put the executable on PATH.
 The repository is private, so downloads require access.
 [Installation commands and supported platforms](docs/INSTALL.md).
@@ -118,7 +118,7 @@ checks. Median times included agent interaction and validation:
 Agent EPUB was faster in each cold pair. Warm results were mixed; tool-call
 and retry counts were similar. Improvised exporters were not measured. Current
 v0.5.1 adds an invalid-input guard with unchanged valid-book reading resources.
-[Protocol, raw events, artifacts and limits](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md).
+[Protocol, raw events, artifacts and limits](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md).
 
 ## Fit and limits
 
@@ -127,7 +127,7 @@ reports and guides. Inline illustrations,
 raw HTML, task lists, complex tables and nested notes are outside that subset.
 Recognized YAML/TOML front matter is rejected with a repair hint. Math, strike
 and alert markers retain literal CommonMark behavior.
-[Full rules and limits](docs/USAGE.md), [feature comparison](https://github.com/benvds/epub-rust/blob/main/docs/research/epub-feature-matrix.md).
+[Full rules and limits](docs/USAGE.md), [feature comparison](https://github.com/benvds/agent-epub/blob/main/docs/research/epub-feature-matrix.md).
 
 Live agent evidence is recorded for Codex. Claude and Ollama evaluations remain
 deferred; the interface is available to runtimes with executable/file access.
@@ -136,10 +136,10 @@ deferred; the interface is available to runtimes with executable/file access.
 
 - [Install and update](docs/INSTALL.md); [request/result contract](docs/AGENT_INTERFACE.md)
   and [JSON schema](schemas/book-request.v1.json).
-- [Content rules](docs/USAGE.md), [release verification](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5.md)
-  and [practical workflow comparison](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md).
-- [Product requirements](https://github.com/benvds/epub-rust/blob/main/docs/PRD.md), [roadmap](https://github.com/benvds/epub-rust/blob/main/docs/ROADMAP.md) and
-  [implementation record](https://github.com/benvds/epub-rust/blob/main/docs/IMPLEMENTATION_PLAN.md).
+- [Content rules](docs/USAGE.md), [release verification](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5.md)
+  and [practical workflow comparison](https://github.com/benvds/agent-epub/blob/main/docs/verification/MILESTONE_5A.md).
+- [Product requirements](https://github.com/benvds/agent-epub/blob/main/docs/PRD.md), [roadmap](https://github.com/benvds/agent-epub/blob/main/docs/ROADMAP.md) and
+  [implementation record](https://github.com/benvds/agent-epub/blob/main/docs/IMPLEMENTATION_PLAN.md).
 
 Source builds require Rust 1.88 or later. Release CI uses Rust 1.95.0.
 

@@ -134,7 +134,7 @@ Exit gates:
 
 Status: planned. Priority: P1. Establish whether the focused contract saves enough work to justify adopting another EPUB tool.
 
-Use the milestone 5a comparison corpus and [GitHub issues](https://github.com/benvds/epub-rust/issues) to prioritize further work. Feedback is issue-driven, with no recruitment, scheduled observation or user-study completion gate. Ask issue reporters for the tool version, command or request, expected versus actual behavior and a minimal non-private reproduction when needed. Add mdbindery if repository-based workflows justify extending the comparison; keep that extension separate from the required Agent EPUB versus Pandoc benchmark.
+Use the milestone 5a comparison corpus and [GitHub issues](https://github.com/benvds/agent-epub/issues) to prioritize further work. Feedback is issue-driven, with no recruitment, scheduled observation or user-study completion gate. Ask issue reporters for the tool version, command or request, expected versus actual behavior and a minimal non-private reproduction when needed. Add mdbindery if repository-based workflows justify extending the comparison; keep that extension separate from the required Agent EPUB versus Pandoc benchmark.
 
 Evaluate installation and first export, agent attempts, manual interventions, content fidelity and reading behavior from the benchmark and reproducible issues. Time generation and independent validation separately. Include failures and compare equivalent validation conditions; successful conversion time alone is insufficient.
 

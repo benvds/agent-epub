@@ -140,7 +140,9 @@ The [protocol](../../benchmarks/workflow/PROTOCOL.md),
 [hash/environment manifest](workflow-runs/MANIFEST.json) reproduce the comparison.
 All 30 produced snapshots are retained, including the three invalid first
 recovery outputs. Original workspace-relative `.measurement/artifacts/` paths
-in logs map to the exported session's `artifacts/` directory.
+in logs map to the exported session's `artifacts/` directory. Repository URLs in retained
+results were normalized after the repository rename; the evidence manifest
+records that normalization. Measurement values and artifact hashes are unchanged.
 
 Runs used Codex CLI 0.167.0-alpha.3.2 with explicitly requested `gpt-6.1-sol`,
 high reasoning and default service tier, Python 3.15.2, macOS 27.2 arm64 and

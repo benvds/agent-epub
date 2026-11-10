@@ -41,10 +41,10 @@ out-of-range values and request/CLI split conflicts fail.
 The macOS release archive passes clean-install smoke checks with Rust and Java
 absent from PATH. The packaged binary exercises all three ordinary and H2 input
 modes, detailed diagnostics, output preservation and failed/unrun checks.
-All native gates passed in [branch CI](https://github.com/benvds/epub-rust/actions/runs/42787388529)
+All native gates passed in [branch CI](https://github.com/benvds/agent-epub/actions/runs/42787388529)
 on commit `d25689f29ad16bf7b82f8c8c4d5db8929cfe7442`. The
-[tag workflow](https://github.com/benvds/epub-rust/actions/runs/42788266538)
-repeated every gate and published [v0.5.0](https://github.com/benvds/epub-rust/releases/tag/v0.5.0).
+[tag workflow](https://github.com/benvds/agent-epub/actions/runs/42788266538)
+repeated every gate and published [v0.5.0](https://github.com/benvds/agent-epub/releases/tag/v0.5.0).
 All three published native smoke reports identify the exact archive hashes and
 pass H2 input modes and detailed diagnostics. ZIPs, individual checksums,
 SHA256SUMS and native smoke reports are attached to the release.
@@ -90,8 +90,8 @@ diagnostic as other unavailable chapter targets. A CLI regression checks exit
 reading resources are unchanged. Formatting, Clippy and all 40 ordinary tests pass locally. The macOS archive
 passes the clean-install smoke suite. H2 chapter/navigation resources are
 byte-identical to v0.5.0. All native gates and publication passed in the
-[v0.5.1 tag workflow](https://github.com/benvds/epub-rust/actions/runs/42792872469)
+[v0.5.1 tag workflow](https://github.com/benvds/agent-epub/actions/runs/42792872469)
 on commit `b5ff7b01479662840f3b2e80bbb55e0ba0804c3c`. The
-[v0.5.1 release](https://github.com/benvds/epub-rust/releases/tag/v0.5.1) includes
+[v0.5.1 release](https://github.com/benvds/agent-epub/releases/tag/v0.5.1) includes
 all three archives, checksums and native installation reports. Milestone 5a
 measurements remain pinned to v0.5.0.

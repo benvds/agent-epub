@@ -5,7 +5,7 @@
   "pair": 2,
   "tool": "agent",
   "download": {
-    "url": "https://github.com/benvds/epub-rust/releases/download/v0.5.0/agent-epub-0.5.0-aarch64-apple-darwin.zip",
+    "url": "https://github.com/benvds/agent-epub/releases/download/v0.5.0/agent-epub-0.5.0-aarch64-apple-darwin.zip",
     "sha256": "85d5af490bf3629ac14be02712bc3b97e0f67b005d5b739d643dff1a79aa5828",
     "bytes": 1415764,
     "seconds": 1.136212

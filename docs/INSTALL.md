@@ -22,7 +22,7 @@ release. The macOS executable is not signed or notarized.
 In a new empty download directory:
 
 ```sh
-gh release download v0.5.1 --repo benvds/epub-rust \
+gh release download v0.5.1 --repo benvds/agent-epub \
   --pattern 'agent-epub-0.5.1-aarch64-apple-darwin.zip*'
 shasum -a 256 -c agent-epub-0.5.1-aarch64-apple-darwin.zip.sha256
 unzip agent-epub-0.5.1-aarch64-apple-darwin.zip
@@ -39,7 +39,7 @@ your PATH, or add this extracted directory's absolute path to your shell setup.
 ## Linux x86_64
 
 ```sh
-gh release download v0.5.1 --repo benvds/epub-rust \
+gh release download v0.5.1 --repo benvds/agent-epub \
   --pattern 'agent-epub-0.5.1-x86_64-unknown-linux-gnu.zip*'
 sha256sum --check agent-epub-0.5.1-x86_64-unknown-linux-gnu.zip.sha256
 unzip agent-epub-0.5.1-x86_64-unknown-linux-gnu.zip
@@ -57,7 +57,7 @@ Use a source build on systems outside the declared binary boundary.
 Use PowerShell in a new empty download directory:
 
 ```powershell
-gh release download v0.5.1 --repo benvds/epub-rust --pattern 'agent-epub-0.5.1-x86_64-pc-windows-msvc.zip*'
+gh release download v0.5.1 --repo benvds/agent-epub --pattern 'agent-epub-0.5.1-x86_64-pc-windows-msvc.zip*'
 if ($LASTEXITCODE -ne 0) { throw 'Download failed' }
 $archive = 'agent-epub-0.5.1-x86_64-pc-windows-msvc.zip'
 $expected = ((Get-Content "$archive.sha256") -split '\s+')[0]

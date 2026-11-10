@@ -38,7 +38,7 @@ now uses the platform's path rules. Generation and request/result schemas are
 otherwise unchanged.
 
 All native packaging and clean-install gates passed in
-[CI run 42782531302](https://github.com/benvds/epub-rust/actions/runs/42782531302)
+[CI run 42782531302](https://github.com/benvds/agent-epub/actions/runs/42782531302)
 on commit `144a1c5ff4f2c4338c435d85af56acb170fa9605`. Formatting, Clippy,
 regressions and both independent conformance corpora passed in the same run.
 
@@ -65,7 +65,7 @@ successfully. Skill validation passes; these are CLI workflow checks rather than
 a fresh live-agent evaluation.
 
 The tag workflow repeats the native gates before publishing. The
-[v0.4.0 release](https://github.com/benvds/epub-rust/releases/tag/v0.4.0)
+[v0.4.0 release](https://github.com/benvds/agent-epub/releases/tag/v0.4.0)
 attaches the final archives, individual `.sha256` files, `SHA256SUMS` and three
 `<target>-smoke.json` reports identifying each published ZIP's exact hash.
 Initial CI archive hashes are not substituted for the final release hashes.

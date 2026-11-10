@@ -167,10 +167,10 @@ def fetch(workspace, tool):
     started = time.monotonic()
     download = workspace / 'download'
     if tool == 'agent':
-        subprocess.run(['gh', 'release', 'download', 'v0.5.0', '--repo', 'benvds/epub-rust', '--pattern', AGENT_ARCHIVE, '--pattern', AGENT_ARCHIVE + '.sha256', '--dir', str(download)], check=True, capture_output=True, timeout=90)
+        subprocess.run(['gh', 'release', 'download', 'v0.5.0', '--repo', 'benvds/agent-epub', '--pattern', AGENT_ARCHIVE, '--pattern', AGENT_ARCHIVE + '.sha256', '--dir', str(download)], check=True, capture_output=True, timeout=90)
         original = download / AGENT_ARCHIVE
         expected = (download / (AGENT_ARCHIVE + '.sha256')).read_text().split()[0]
-        url = 'https://github.com/benvds/epub-rust/releases/download/v0.5.0/' + AGENT_ARCHIVE
+        url = 'https://github.com/benvds/agent-epub/releases/download/v0.5.0/' + AGENT_ARCHIVE
         original.rename(download / 'tool.zip')
     else:
         subprocess.run(['curl', '--fail', '--location', '--silent', '--show-error', '--max-time', '90', '-o', str(download / 'tool.zip'), PANDOC_URL], check=True, capture_output=True, timeout=95)
