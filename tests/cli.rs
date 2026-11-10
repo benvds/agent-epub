@@ -62,6 +62,47 @@ fn rewrite(path: &Path, name: &str, change: impl Fn(&str) -> String) {
 }
 
 #[test]
+fn tables_preserve_semantics_alignment_and_escaped_cell_content() {
+    let (_dir, options) = fixture(
+        "b.md",
+        "# Report\n\n| Name | Value |\n| :--- | ---: |\n| **Café** & tea | 2 \\| 3 |\n| [link](#report) | `code` |\n",
+    );
+    build(&options).unwrap();
+    let html = resource(&options.output, "EPUB/chapter-0001.xhtml");
+    let doc = roxmltree::Document::parse(&html).unwrap();
+    let headers = doc
+        .descendants()
+        .filter(|n| n.has_tag_name("th"))
+        .collect::<Vec<_>>();
+    assert_eq!(headers.len(), 2);
+    assert!(headers.iter().all(|h| h.attribute("scope") == Some("col")));
+    assert_eq!(headers[1].attribute("style"), Some("text-align: right"));
+    assert!(html.contains("<strong>Café</strong> &amp; tea"));
+    assert!(html.contains("2 | 3"));
+    assert!(html.contains("chapter-0001.xhtml#report"));
+}
+
+#[test]
+fn ragged_tables_fail_without_replacing_an_existing_book() {
+    let (_dir, mut options) = fixture("b.md", "# Original\nKeep me.");
+    build(&options).unwrap();
+    let original = fs::read(&options.output).unwrap();
+    options.overwrite = true;
+    for row in ["| one |", "| one | two | lost |", "one | two | lost"] {
+        fs::write(&options.inputs[0], format!("| A | B |\n|---|---|\n{row}\n")).unwrap();
+        let error = build(&options).unwrap_err();
+        assert_eq!(error.kind, ErrorKind::Input);
+        assert!(
+            error
+                .message
+                .contains(":3: table rows must have exactly 2 cells"),
+            "{error}"
+        );
+        assert_eq!(fs::read(&options.output).unwrap(), original);
+    }
+}
+
+#[test]
 fn generates_real_archive_with_consistent_contents_and_navigation() {
     let (_dir, options) = fixture(
         "b.md",
@@ -275,6 +316,10 @@ fn independent_epubcheck_corpus() {
     let executable =
         std::env::var_os("EPUBCHECK").expect("Set EPUBCHECK to the validator wrapper path");
     let cases = [
+        (
+            "table.md",
+            "# Report\n\n| Item | Value |\n| :--- | ---: |\n| **Café** & tea | 2 \\| 3 |\n| [source](https://example.org) | `code` |\n",
+        ),
         (
             "plain.txt",
             "Literal <XML> & café.\nSecond line.\n\nAnother paragraph.",

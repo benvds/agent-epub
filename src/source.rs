@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs, path::PathBuf};
 
 use percent_encoding::percent_decode_str;
-use pulldown_cmark::{Event, HeadingLevel, Options, Parser, Tag, TagEnd, html};
+use pulldown_cmark::{Alignment, Event, HeadingLevel, Options, Parser, Tag, TagEnd, html};
 use url::Url;
 
 use crate::{Error, ErrorKind, Metadata, Result, valid_xml_text, xml_text};
@@ -164,13 +164,36 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
                     Options::ENABLE_TABLES | Options::ENABLE_FOOTNOTES | Options::ENABLE_TASKLISTS;
                 let mut groups: Vec<Vec<Event<'static>>> = vec![vec![]];
                 let mut depth = 0usize;
+                let mut columns = 0;
                 for (event, range) in Parser::new_ext(&text, options).into_offset_iter() {
+                    match &event {
+                        Event::Start(Tag::Table(alignments)) => {
+                            if depth != 0 {
+                                return Err(input_error(format!(
+                                    "{}: tables must be outside lists and quotations.",
+                                    input.display()
+                                )));
+                            }
+                            columns = alignments.len();
+                        }
+                        Event::Start(Tag::TableHead | Tag::TableRow) => {
+                            let row = text[range.clone()].lines().next().unwrap_or("");
+                            if table_cells(row) != columns {
+                                let line =
+                                    text[..range.start].bytes().filter(|&b| b == b'\n').count() + 1;
+                                return Err(input_error(format!(
+                                    "{}:{line}: table rows must have exactly {columns} cells; escape literal pipes as \\|.",
+                                    input.display()
+                                )));
+                            }
+                        }
+                        _ => {}
+                    }
                     let unsupported = match &event {
                         Event::Html(_) | Event::InlineHtml(_) => Some("raw HTML"),
                         Event::Start(Tag::Image { .. }) => {
                             Some("inline images (use the separate cover option for a cover)")
                         }
-                        Event::Start(Tag::Table(_)) => Some("tables"),
                         Event::Start(Tag::FootnoteDefinition(_)) | Event::FootnoteReference(_) => {
                             Some("notes")
                         }
@@ -323,7 +346,7 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
             } else {
                 format!("<h1>{}</h1>\n", xml_text(&draft.title))
             };
-            html::push_html(&mut body, events.into_iter());
+            body.push_str(&render(events));
             body
         };
         chapters.push(Chapter {
@@ -336,6 +359,58 @@ pub(crate) fn prepare_sources(inputs: &[Source], metadata: Metadata) -> Result<B
         chapters,
         cover: None,
     })
+}
+
+// GFM otherwise silently drops excess cells and pads short rows. Keep this
+// profile rectangular so a successful build cannot hide supplied cell text.
+fn table_cells(row: &str) -> usize {
+    let row = row.trim();
+    let mut pipes = Vec::new();
+    let mut escaped = false;
+    for (index, ch) in row.char_indices() {
+        if ch == '|' && !escaped {
+            pipes.push(index);
+        }
+        escaped = ch == '\\' && !escaped;
+    }
+    pipes.len() + 1
+        - usize::from(pipes.first() == Some(&0))
+        - usize::from(pipes.last().is_some_and(|&i| i + 1 == row.len()))
+}
+
+fn render(events: Vec<Event<'static>>) -> String {
+    let mut alignments = Vec::new();
+    let mut header = false;
+    let mut column = 0;
+    let events = events.into_iter().map(|event| match event {
+        Event::Start(Tag::Table(ref values)) => {
+            alignments = values.clone();
+            event
+        }
+        Event::Start(Tag::TableHead | Tag::TableRow) => {
+            header = matches!(event, Event::Start(Tag::TableHead));
+            column = 0;
+            event
+        }
+        Event::Start(Tag::TableCell) => {
+            let tag = if header { "th scope=\"col\"" } else { "td" };
+            let align = match alignments[column] {
+                Alignment::None => "",
+                Alignment::Left => " style=\"text-align: left\"",
+                Alignment::Center => " style=\"text-align: center\"",
+                Alignment::Right => " style=\"text-align: right\"",
+            };
+            Event::Html(format!("<{tag}{align}>").into())
+        }
+        Event::End(TagEnd::TableCell) => {
+            column += 1;
+            Event::Html(if header { "</th>" } else { "</td>" }.into())
+        }
+        _ => event,
+    });
+    let mut body = String::new();
+    html::push_html(&mut body, events);
+    body
 }
 
 fn heading_number(level: HeadingLevel) -> u8 {
@@ -528,7 +603,6 @@ mod tests {
         for text in [
             "![alt](image.png)",
             "<script>x</script>",
-            "| A | B |\n|---|---|\n| a | b |",
             "Text[^1]\n\n[^1]: note",
             "- [x] task",
         ] {
