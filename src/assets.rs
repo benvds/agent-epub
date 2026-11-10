@@ -114,7 +114,7 @@ impl Assets {
             .decode_utf8()
             .map_err(|_| unsupported())?;
         if path.is_empty()
-            || Path::new(path.as_ref()).is_absolute()
+            || Path::new(path.as_ref()).has_root()
             || path.contains([':', '\\', '?', '#', '\0'])
         {
             return Err(unsupported());

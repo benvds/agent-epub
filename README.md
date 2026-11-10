@@ -38,7 +38,7 @@ book behaviors through its native interface.
 
 Download **[v0.5.1](https://github.com/benvds/agent-epub/releases/tag/v0.5.1)** for
 your platform, verify its checksum, extract it and put the executable on PATH.
-The repository is private, so downloads require access.
+Releases are publicly downloadable.
 [Installation commands and supported platforms](docs/INSTALL.md).
 
 Every archive includes examples, a sample EPUB, schema, agent skill and license

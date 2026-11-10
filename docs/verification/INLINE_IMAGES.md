@@ -73,8 +73,11 @@ The native macOS development archive passes clean-install smoke with Rust and
 Java absent from PATH, including illustrated input-mode resource equivalence,
 image counts, covers, ordinary report/H2 behavior, diagnostics and failed/unrun
 checks. CI adds the illustrated EPUBCheck corpus and exercises packaging and
-clean installation on the existing three native targets. Current remote CI
-results are recorded below after the push.
+clean installation on the existing three native targets. The first native CI run exposed a Windows rooted-path discrepancy: `/tmp/x`
+is rooted but not fully absolute on Windows. Loading now rejects all rooted
+paths, matching the declared relative-only profile on every platform. The
+existing absolute-path diagnostic case exercises this correction in native CI.
+Final remote CI results are recorded below after the push.
 
 ## Reader observations
 

@@ -1,9 +1,9 @@
 # Install and update Agent EPUB
 
 Version 0.5.1 ships MIT-licensed native binaries. Generation runs offline and
-needs no Rust, Python, Java or AI account. Downloading from this private
-repository requires a GitHub account with repository access, plus a browser
-or the GitHub CLI (`gh auth login`). Repository visibility is unchanged.
+needs no Rust, Python, Java or AI account. Download from the public
+[releases page](https://github.com/benvds/agent-epub/releases) in a browser,
+or use the GitHub CLI (`gh`). The commands below assume `gh` is configured.
 
 Main is developing `0.6.0-dev` with local chapter images. This feature requires
 a [source build](#source-build); the download
