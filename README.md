@@ -1,141 +1,151 @@
 # Agent EPUB
 
-**v0.5.1** creates reflowable EPUB reading editions from UTF-8 text and Markdown
-for agent workflows. It includes simple tables, linked footnotes, nested section
-contents and optional JPEG/PNG covers. Version 0.5 adds detailed repair diagnostics,
-explicit Markdown rules and configurable chapter splitting. Generation runs offline without an AI
-service or Rust installation. MIT licensed.
+Turn your agent's finished report into a checked EPUB with one local command.
 
-## Install
+Chapters, contents, source links and note returns add work to an export
+integration. Agent EPUB packages that behavior behind a versioned request/result
+contract. Supply the writing and read the JSON result to return a book or
+repair an input problem.
 
-Download a binary from the [v0.5.1 release](https://github.com/benvds/epub-rust/releases/tag/v0.5.1):
-macOS Apple Silicon, Linux x86_64 or Windows x86_64. The repository is private;
-downloads require access. [Installation, checksum verification, runtime boundaries
-and updates](docs/INSTALL.md) include commands for each platform.
+Built for repeated report and guide exports from agents that can run local commands.
 
-Every archive includes the executable, license and dependency notices, request
-schema, examples, generated sample EPUB and a reusable agent skill. After
-extraction, put the executable on PATH and work from the extracted directory.
+## A smaller integration to maintain
 
-## Stream a book request
+- **Keep your writing where it is.** Pass existing files in reading order, or
+  stream content your application already holds. Inline requests need no
+  intermediate manuscript file.
+- **Use one request/result contract.** Discover capabilities, submit a version 1
+  request and inspect JSON stdout. Success gives you an absolute artifact path;
+  failures give you issue codes and remedies.
+- **Include the reading features.** Chapter splitting, nested contents,
+  source links, footnotes with return links, simple tables and optional covers
+  are part of the exporter. [Supported content](docs/USAGE.md).
+- **Run locally.** Generation works offline on macOS Apple Silicon, Linux x86_64
+  and Windows x86_64. The executable needs no Rust, Python, Java or AI service.
+  Optional independent EPUBCheck is installed separately.
+  [Runtime and installation details](docs/INSTALL.md).
 
-No intermediate manuscript file is needed. In a POSIX shell:
+Our prepared Pandoc baseline needed 89 Python lines and 14 Lua lines for its
+export recipe, source links and visible note returns. Agent EPUB supplies those
+book behaviors through its native interface.
+[Integration preparation and benchmark](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md).
+
+## Install and try a report
+
+Download **[v0.5.1](https://github.com/benvds/epub-rust/releases/tag/v0.5.1)** for
+your platform, verify its checksum, extract it and put the executable on PATH.
+The repository is private, so downloads require access.
+[Installation commands and supported platforms](docs/INSTALL.md).
+
+Every archive includes examples, a sample EPUB, schema, agent skill and license
+notices. From the extracted directory with the executable on PATH:
 
 ```sh
 agent-epub capabilities
-agent-epub build --request - --output guide.epub --json <<'JSON'
-{"schema_version":1,"metadata":{"title":"A guide","language":"en"},"inputs":[{"name":"guide.md","format":"markdown","content":"# Start\n\nA claim[^note].\n\n## Results\n\n| Item | Value |\n| --- | ---: |\n| Example | 1 |\n\n[^note]: Synthetic example."}]}
-JSON
-agent-epub validate guide.epub --json
+agent-epub build --input examples/research-report.md \
+  --output report.epub --title "Agent EPUB sample report" --language en --json
 ```
 
-For the complete report sample, including repeated notes and nested headings:
+Open `report.epub` to inspect its tables, repeated notes and nested headings.
+The same book is bundled as `examples/sample-report.epub`.
+
+Install the bundled [agent skill](skills/agent-epub/SKILL.md) with these
+[instructions](docs/INSTALL.md#agent-skill). Discover capabilities once per tool
+version and reuse the build/result steps.
+
+## Stream writing from your application
+
+Send a JSON request through stdin when your application already holds the text.
+For example, in a POSIX shell:
 
 ```sh
-agent-epub build --request - --output report.epub --json < examples/report-inline.json
+agent-epub build --request - --output guide.epub --json <<'JSON'
+{
+  "schema_version": 1,
+  "metadata": {"title": "A guide", "language": "en"},
+  "inputs": [{
+    "name": "guide.md",
+    "format": "markdown",
+    "content": "# Start\n\nA short guide.\n\n# Next\n\n[Back to Start](#start)."
+  }]
+}
+JSON
 ```
 
-In PowerShell, use UTF-8 input:
+The bundled `examples/report-inline.json` contains a complete report request.
 
-```powershell
-$OutputEncoding = [System.Text.UTF8Encoding]::new($false)
-Get-Content -Raw -Encoding utf8 examples/report-inline.json |
-  agent-epub build --request - --output report.epub --json
-```
+H1 splitting is the default. For H2 chapters, use `--split-level 2` with files
+or `"split_level": 2` in JSON. Preambles and heading ranks stay intact.
+[H2 request example](examples/title-h2-request.json).
 
-Require exit code 0 and `status: success`. Successful JSON contains the absolute
-`output` path, chapter count, check results and remaining review items. A typical
-check result is:
+Request-file paths are relative to that file. Streamed file references require
+`--base-dir`; inline-only requests do not. [Contract and path rules](docs/AGENT_INTERFACE.md);
+[PowerShell examples](docs/INSTALL.md).
+
+## Handle the result
+
+Require exit code 0 and `status: success`, then return the reported `output`
+through your application. Every build checks its temporary EPUB before publishing
+the file. A typical check result is:
 
 ```json
 {"structural_profile":"passed","epubcheck":"not_run"}
 ```
 
-This means built-in checks passed and EPUBCheck did not run. Failures return a
-nonzero exit code, `status: failed`, an error category/message, detailed `issue_code`, source/location when available
-and a `remedy` and `output: null`.
-Do not present an older file as the result of a failed build. Logs and independent
-validator reports stay on stderr. [Full agent contract](docs/AGENT_INTERFACE.md).
+Built-in checks passed; EPUBCheck did not run. Add `--epubcheck <executable>`
+for your installed independent validator; missing or failed validators fail the
+build. Appearance and accessibility need separate review.
+[Check coverage](docs/USAGE.md#check-output-and-handle-failures).
 
-## Use existing files
+Failures return nonzero, `status: failed`, `output: null`, an `issue_code` and
+`remedy`, plus available source locations. Diagnostics stay off JSON stdout.
+Existing files need explicit `--overwrite`; failed builds preserve previous
+output even with overwrite enabled.
+[Result and repair contract](docs/AGENT_INTERFACE.md#repair-a-failed-request).
 
-```sh
-agent-epub build --input examples/research-report.md \
-  --output report.epub --title "Agent EPUB sample report" --language en --json
-agent-epub build --request examples/report-request.json --output requested.epub --json
-```
+## What the small benchmark showed
 
-Repeat `--input` in reading order. File-request paths resolve relative to the
-request file. Streamed file references require `--base-dir`; purely inline
-streams do not. Each source starts a chapter; root H1 headings split Markdown
-into further chapters. Preambles stay intact. Root H2–H6 headings enter nested
-contents, and previous/next chapter and return-to-contents links are automatic.
+Three paired Codex workflows compared Agent EPUB **v0.5.0** with a prepared
+Pandoc **3.13** wrapper using the same requested model/settings and independent
+checks. Median times included agent interaction and validation:
 
-For a book title followed by H2 chapters, use `--split-level 2`:
+| Measured outcome | Agent EPUB | Pandoc wrapper |
+| --- | ---: | ---: |
+| Cold download, install and first checked EPUB | 17.0 s | 23.9 s |
+| Complete four-task shared workflow | 43.9 s | 54.6 s |
+| Clean exports correct on the first attempt | 9/9 | 9/9 |
 
-```sh
-agent-epub build --input examples/title-h2.md --split-level 2 \
-  --output field-guide.epub --title "Field guide" --language en --json
-agent-epub build --request examples/title-h2-request.json --output requested-guide.epub --json
-agent-epub build --request - --output inline-guide.epub --json < examples/title-h2-inline.json
-```
+Agent EPUB was faster in each cold pair. Warm results were mixed; tool-call
+and retry counts were similar. Improvised exporters were not measured. Current
+v0.5.1 adds an invalid-input guard with unchanged valid-book reading resources.
+[Protocol, raw events, artifacts and limits](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md).
 
-The default remains H1. Sources and preambles are preserved; only root headings
-at the selected level start chapters. Request mode uses `"split_level": 2`.
+## Fit and limits
 
-The [synthetic report source](examples/research-report.md) has equivalent
-[file](examples/report-request.json) and [inline](examples/report-inline.json)
-requests. Its generated `examples/sample-report.epub` is bundled in each release
-ZIP. Open it in an EPUB reader to inspect appearance. Return the tool's reported
-output file as the artifact in an agent environment; it is not automatically
-uploaded anywhere.
+Agent EPUB supports UTF-8 text and a declared Markdown subset for reflowable
+reports and guides. Inline illustrations,
+raw HTML, task lists, complex tables and nested notes are outside that subset.
+Recognized YAML/TOML front matter is rejected with a repair hint. Math, strike
+and alert markers retain literal CommonMark behavior.
+[Full rules and limits](docs/USAGE.md), [feature comparison](https://github.com/benvds/epub-rust/blob/main/docs/research/epub-feature-matrix.md).
 
-Existing output files are preserved unless `--overwrite` is explicitly supplied.
-Invalid input or failed requested validation preserves previous output even with
-overwrite enabled. Sources cannot be replaced by the output.
+Live agent evidence is recorded for Codex. Claude and Ollama evaluations remain
+deferred; the interface is available to runtimes with executable/file access.
 
-## Supported content and checks
+## Documentation and development
 
-Ordinary CommonMark headings, paragraphs, emphasis, lists, quotations, code and
-links are supported, plus rectangular pipe tables and source-local footnotes
-with return links. Local links must target supplied sources. Inline images,
-raw HTML, task lists, complex tables and nested notes are unsupported. Leading YAML/TOML front matter with an initial key/value field is rejected with
-a repair hint. Math, strikethrough and alert markers retain literal CommonMark
-behavior. No remote resources are fetched. [Exact content rules and limits](docs/USAGE.md).
+- [Install and update](docs/INSTALL.md); [request/result contract](docs/AGENT_INTERFACE.md)
+  and [JSON schema](schemas/book-request.v1.json).
+- [Content rules](docs/USAGE.md), [release verification](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5.md)
+  and [practical workflow comparison](https://github.com/benvds/epub-rust/blob/main/docs/verification/MILESTONE_5A.md).
+- [Product requirements](https://github.com/benvds/epub-rust/blob/main/docs/PRD.md), [roadmap](https://github.com/benvds/epub-rust/blob/main/docs/ROADMAP.md) and
+  [implementation record](https://github.com/benvds/epub-rust/blob/main/docs/IMPLEMENTATION_PLAN.md).
 
-Every build reopens and checks its temporary EPUB before publication: ZIP
-integrity, package metadata, manifest/spine references, chapter order, contents
-hierarchy, heading fragments, note returns and adjacent-chapter links. The same
-profile checker is available through `validate`. It does not validate arbitrary
-EPUBs or certify accessibility, CSS appearance or retailer acceptance.
-
-Optional `--epubcheck <executable>` runs an independently installed EPUBCheck
-wrapper before publishing output. Java and EPUBCheck are separate dependencies;
-missing or failed requested validators are failures. Reader review and
-accessibility review remain separate from both automated checks.
-
-## Agent integration and development
-
-Install the bundled [agent skill](skills/agent-epub/SKILL.md) as described in
-[installation](docs/INSTALL.md). It uses the same CLI and examples across agent
-runtimes. The milestone 2 live OpenAI evaluation passed 20 tasks; Claude and
-Ollama live evaluations remain deferred. Version 0.4 adds packaged workflow
-verification, not a new live model score.
-
-Source builds require Rust 1.88 or later:
+Source builds require Rust 1.88 or later. Release CI uses Rust 1.95.0.
 
 ```sh
 cargo build --release --locked
 cargo test --locked
 ```
 
-See the [EPUB feature comparison matrix](docs/research/epub-feature-matrix.md)
-for current support across Agent EPUB and twelve alternatives. A [practical
-three-pair agent workflow comparison against Pandoc](docs/verification/MILESTONE_5A.md)
-records cold setup, warm exports, recovery, quality checks and limitations.
-
-See [usage](docs/USAGE.md), [requirements](https://github.com/benvds/epub-rust/blob/v0.5.1/docs/PRD.md),
-[roadmap](docs/ROADMAP.md),
-[implementation plan](docs/IMPLEMENTATION_PLAN.md),
-[milestone 5 verification](docs/verification/MILESTONE_5.md) and
-[milestone 3 reader observations](https://github.com/benvds/epub-rust/blob/v0.5.1/docs/verification/MILESTONE_3.md).
+[MIT licensed](LICENSE).
