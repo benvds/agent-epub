@@ -1,6 +1,6 @@
 # Agent interface
 
-Version 0.4.0 packages the unchanged version 1 CLI contract. [Install a binary and the reusable agent skill](INSTALL.md). The release includes equivalent direct, [file-request](../examples/report-request.json) and [streamed-inline](../examples/report-inline.json) report examples.
+Version 0.5.0 extends the version 1 CLI contract with optional chapter splitting and additive diagnostic fields. [Install a binary and the reusable agent skill](INSTALL.md). The release includes equivalent direct, [file-request](../examples/report-request.json) and [streamed-inline](../examples/report-inline.json) report examples.
 
 Milestone 2 supports generic book requests, streamed input, capability discovery, structured results and supplied cover images. The live OpenAI-agent evaluation passed all 20 corpus tasks. Claude and Ollama evaluations are deferred at the user's request. [Evaluation details](verification/AGENT_EVALUATIONS.md).
 
@@ -35,7 +35,7 @@ File-request paths are relative to the request file's directory. `--base-dir` ca
 
 Inline input names act as logical source filenames for links. Two inline inputs named `one.md` and `two.md` can link to each other as ordinary Markdown sources. Names cannot contain directories or parent traversal. Input source files retain their actual source-relative link behavior. The tool does not create inline sources on disk or fetch remote resources.
 
-Title, language and author flags are mutually exclusive with request mode. Output location, overwrite and optional external-validation choices remain explicit command options. Request files and supplied sources are protected against output aliasing.
+Title, language, author and split-level flags are mutually exclusive with request mode. Output location, overwrite and optional external-validation choices remain explicit command options. Request files and supplied sources are protected against output aliasing.
 
 ## Inspect the result
 
@@ -44,6 +44,52 @@ Title, language and author flags are mutually exclusive with request mode. Outpu
 Failure results contain an error code and message, and do not identify a newly created artifact. Exit codes retain their [milestone 1 meanings](USAGE.md). Available error categories are `invalid_input`, `io_error`, `invalid_epub` and `validator_failed`.
 
 Independent-validator reports may appear on stderr; they do not contaminate structured stdout. `--help` and `--version` keep their standard command-line behavior. A success result with `epubcheck: not_run` describes built-in checking only.
+
+## Repair a failed request
+
+Result schema version 1 and `errors[].code` retain the broad categories above.
+New additive fields are `issue_code`, `source`, `line`, `column` and `remedy`.
+Callers should ignore unknown fields and fall back to the broad category for an
+unrecognized detailed code. `source` is the supplied file path or the logical
+inline filename resolved against the request base. Locations are one-based;
+columns count Unicode characters. Source locations use normalized line endings
+and exclude a leading BOM. Unavailable sources or locations are JSON `null`.
+JSON syntax/type errors refer to the request document itself; streamed JSON has
+no file source. Parser locations identify the start of the affected structure,
+including a link's opening bracket rather than its destination text.
+
+```json
+{"code":"invalid_input","issue_code":"unresolved_link","message":"...","source":"/work/guide.md","line":3,"column":1,"remedy":"Supply the linked source, correct the heading fragment, or use an http(s)/mailto URL."}
+```
+
+Detailed codes include `unresolved_link`, `unsupported_link`,
+`unsupported_inline_image`, `unsupported_raw_html`, `unsupported_task_list`,
+`unsupported_table`, `invalid_table_shape`, `unsupported_footnote`,
+`invalid_footnote`, `unsupported_front_matter`, `invalid_split_level` and
+`invalid_request`. Other errors retain the category name as their detailed code.
+Footnote semantic errors identify the source but may have no line/column.
+Fix the reported issue and retry; failures remain fail-fast, with no aggregate
+preflight or output publication. Human diagnostics include the code and remedy
+on stderr. Structured stdout remains one JSON result.
+
+## Choose chapter boundaries
+
+Optional book-level `"split_level": 2` selects root H2 headings. The integer
+range is 1–6; omission preserves H1 splitting. Direct inputs use
+`--split-level 2`; mixing that flag with `--request` is an argument error.
+All input sources share the selected policy, and text inputs remain one chapter.
+Only headings of exactly the selected level split: shallower and deeper
+headings retain their original ranks and text. Every source begins independently,
+and text before the first matching heading remains a preamble chapter.
+A leading H1 or matching heading supplies the chapter title; otherwise the
+filename supplies it. A heading used as the chapter title is excluded from
+nested contents. Root H2–H6 section headings otherwise keep the existing nesting
+rules. Headings inside quotations, lists and notes never split chapters.
+
+The [H2 source](../examples/title-h2.md),
+[file request](../examples/title-h2-request.json) and
+[inline request](../examples/title-h2-inline.json) show a title/preamble, skipped
+levels, repeated chapter titles and cross-chapter links and note returns.
 
 ## Supply a cover
 

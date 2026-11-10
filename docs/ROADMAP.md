@@ -89,7 +89,7 @@ Exit gates:
 
 ## Milestone 5 Predictable inputs and actionable diagnostics
 
-Status: planned. Priority: P1. Reduce source rewriting and agent retries while preserving existing defaults and version 1 callers.
+Status: implementation and local verification complete for `v0.5.0`; native CI/release gates pending. Priority: P1. See the [milestone 5 record](verification/MILESTONE_5.md). Reduce source rewriting and agent retries while preserving existing defaults and version 1 callers.
 
 | Work package | Deliverable | Estimated effort | Dependencies |
 | --- | --- | --- | --- |

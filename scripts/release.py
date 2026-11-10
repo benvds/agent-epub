@@ -23,7 +23,8 @@ FILES = (
     "docs/AGENT_INTERFACE.md", "schemas/book-request.v1.json",
     "examples/introduction.txt", "examples/guide.md", "examples/book-request.json",
     "examples/research-report.md", "examples/report-request.json",
-    "examples/report-inline.json", "scripts/epubcheck.sh",
+    "examples/report-inline.json", "examples/title-h2.md",
+    "examples/title-h2-request.json", "examples/title-h2-inline.json", "scripts/epubcheck.sh",
     "skills/agent-epub/SKILL.md", "skills/agent-epub/references/examples.md",
 )
 
@@ -192,6 +193,23 @@ def smoke(args):
             assert inspect_report(output) == original
             checked = json.loads(run(binary, ["validate", output, "--json"], stage, env))
             assert checked["status"] == "success"
+        h2_inline = (stage / "examples/title-h2-inline.json").read_text(encoding="utf-8")
+        h2_modes = {
+            "direct": (["--input", "examples/title-h2.md", "--split-level", "2", "--title", "Field guide", "--language", "en"], None),
+            "request": (["--request", "examples/title-h2-request.json"], None),
+            "streamed": (["--request", "-"], h2_inline),
+        }
+        h2_resources = None
+        for mode, (options, content) in h2_modes.items():
+            output = stage / f"h2-{mode}.epub"
+            result = json.loads(run(binary, ["build", *options, "--output", output, "--json"], stage, env, content))
+            assert result["chapters"] == 4 and result["status"] == "success"
+            with zipfile.ZipFile(output) as archive:
+                resources = {name: archive.read(name) for name in archive.namelist()
+                             if name == "EPUB/nav.xhtml" or name.startswith("EPUB/chapter-")}
+            if h2_resources is None:
+                h2_resources = resources
+            assert resources == h2_resources
         protected = stage / "direct.epub"
         before = protected.read_bytes()
         failed = json.loads(run(binary, ["build", "--request", "-", "--output", protected,
@@ -200,6 +218,10 @@ def smoke(args):
                                             "inputs": [{"format": "markdown", "content": "![image](missing.png)"}]}), 2))
         assert failed["status"] == "failed" and failed["output"] is None
         assert failed["errors"][0]["code"] == "invalid_input"
+        issue = failed["errors"][0]
+        assert issue["issue_code"] == "unsupported_inline_image"
+        assert issue["line"] == 1 and issue["column"] == 1 and issue["remedy"]
+        assert issue["source"]
         for operation, options in [
             ("build", ["--request", "examples/report-request.json", "--output", protected, "--overwrite"]),
             ("validate", [protected]),
@@ -213,7 +235,8 @@ def smoke(args):
                                            "--output", protected, "--json"], stage, env, code=2))
         assert conflict["status"] == "failed" and protected.read_bytes() == before
         report.update(status="passed", input_modes=list(modes), sample_content="passed",
-                      failed_and_unrun_checks="passed", output_protection="passed")
+                      failed_and_unrun_checks="passed", output_protection="passed",
+                      h2_input_modes="passed", detailed_diagnostics="passed")
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))

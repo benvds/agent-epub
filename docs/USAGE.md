@@ -16,7 +16,24 @@ Each text file becomes one chapter. Blank lines separate paragraphs, and line br
 
 Each Markdown file begins a chapter. Top-level `#` headings start additional chapters. Text preceding the first heading stays in a chapter named after the file. A heading inside a quotation does not split the surrounding chapter. Empty top-level headings get a `Chapter N` label. Duplicate titles remain distinct contents entries.
 
-Supported Markdown: headings, paragraphs, strong/emphasized text, lists, quotations, inline/fenced code, thematic breaks, line breaks, links, simple pipe tables and defined footnotes. Inline images, raw HTML and task lists produce explicit errors. Other extensions are not advertised as supported; ordinary CommonMark interpretation applies.
+Supported Markdown: headings, paragraphs, strong/emphasized text, lists, quotations, inline/fenced code, thematic breaks, line breaks, links, simple pipe tables and defined footnotes. Inline images, raw HTML and task lists produce explicit errors. Math delimiters (`$x$`, `$$x$$`), strikethrough (`~~text~~`) and alert
+markers (`> [!WARNING]`) remain literal markers under ordinary CommonMark
+interpretation: no formula rendering, strike styling or alert box is added.
+Ordinary dollar signs and tildes produce no blanket extension warnings.
+
+Leading YAML `---` or TOML `+++` fences followed by an initial nonblank simple
+key/value field (`title: value` or `title = "value"`) are recognized as front
+matter and rejected, including unclosed blocks. Remove the block and supply
+metadata explicitly through CLI flags or request metadata, or wrap it in a code
+fence to display it. Metadata is never imported or given implicit precedence.
+Other delimiter/prose combinations retain CommonMark interpretation; this is
+recognition of the declared subset, not a general YAML/TOML/JSON parser.
+
+Use `--split-level 2` for a book title followed by H2 chapters. Levels 1–6 are
+accepted, defaulting to 1. Only root headings of exactly that level split;
+source boundaries, preambles and heading ranks are preserved. The selected
+level applies to all Markdown inputs. See [chapter rules and equivalent request
+examples](AGENT_INTERFACE.md#choose-chapter-boundaries).
 
 ## Tables
 
@@ -38,7 +55,7 @@ Use heading fragments such as `[section](#getting-started)`. Heading identifiers
 
 Link to another supplied file with `[chapter](other.md)` or `[section](other.md#heading)`. Paths are relative to the source containing the link; percent-encoded filenames and fragments are accepted. Only supplied source files can become local destinations. HTTP, HTTPS and mailto links remain external. The tool does not fetch content or check live website availability.
 
-The visible contents page, reader contents navigation, previous/next links and return-to-contents links are generated automatically. The contents page itself precedes the chapters in reading order. Root-level H2–H6 headings appear as nested entries under their chapter. A skipped level attaches to the nearest preceding shallower heading; an H4 directly after H1 is a direct child of the chapter. Headings inside quotations, lists or notes stay in the reading content and do not enter the contents. Chapters without section headings keep a single contents entry.
+The visible contents page, reader contents navigation, previous/next links and return-to-contents links are generated automatically. The contents page itself precedes the chapters in reading order. Root-level H2–H6 headings appear as nested entries under their chapter, excluding a heading used as the chapter title. A skipped level attaches to the nearest preceding shallower heading; an H4 directly after H1 is a direct child of the chapter. Headings inside quotations, lists or notes stay in the reading content and do not enter the contents. Chapters without section headings keep a single contents entry.
 
 The built-in checker validates the complete section order, destinations and nesting in newly generated books. It also accepts the flat contents produced by versions 0.1 and 0.2.
 
@@ -60,7 +77,7 @@ An existing output is preserved unless `--overwrite` is supplied. Even with over
 | 4 | Structural publication checks failed. |
 | 5 | Requested external validator failed or could not run. |
 
-Diagnostics go to stderr. Success identifies whether EPUBCheck ran. Use `--json` for the [structured request/result contract](AGENT_INTERFACE.md).
+Diagnostics include stable detailed issue codes, available source locations and repair hints; human diagnostics go to stderr. Success identifies whether EPUBCheck ran. Use `--json` for the [structured request/result contract](AGENT_INTERFACE.md).
 
 ## Run independent EPUBCheck
 
@@ -88,4 +105,4 @@ python3 scripts/benchmark.py target/release/agent-epub
 
 The independent corpus test is explicitly ignored in ordinary tests because it requires a separately installed official validator. The CI workflow downloads a checksum-pinned EPUBCheck release and runs that test. The benchmark is a development helper; its Python dependency is separate from the generator.
 
-See the [milestone 3 verification record](verification/MILESTONE_3.md) for release checks, reader observations and remaining limitations.
+See the [milestone 5 verification record](verification/MILESTONE_5.md) for release checks, reader observations and remaining limitations.

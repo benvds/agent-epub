@@ -1,13 +1,14 @@
 # Agent EPUB
 
-**v0.4.0** creates reflowable EPUB reading editions from UTF-8 text and Markdown
+**v0.5.0** creates reflowable EPUB reading editions from UTF-8 text and Markdown
 for agent workflows. It includes simple tables, linked footnotes, nested section
-contents and optional JPEG/PNG covers. Generation runs offline without an AI
+contents and optional JPEG/PNG covers. Version 0.5 adds detailed repair diagnostics,
+explicit Markdown rules and configurable chapter splitting. Generation runs offline without an AI
 service or Rust installation. MIT licensed.
 
 ## Install
 
-Download a binary from the [v0.4.0 release](https://github.com/benvds/epub-rust/releases/tag/v0.4.0):
+Download a binary from the [v0.5.0 release](https://github.com/benvds/epub-rust/releases/tag/v0.5.0):
 macOS Apple Silicon, Linux x86_64 or Windows x86_64. The repository is private;
 downloads require access. [Installation, checksum verification, runtime boundaries
 and updates](docs/INSTALL.md) include commands for each platform.
@@ -51,7 +52,8 @@ check result is:
 ```
 
 This means built-in checks passed and EPUBCheck did not run. Failures return a
-nonzero exit code, `status: failed`, an error code/message and `output: null`.
+nonzero exit code, `status: failed`, an error category/message, detailed `issue_code`, source/location when available
+and a `remedy` and `output: null`.
 Do not present an older file as the result of a failed build. Logs and independent
 validator reports stay on stderr. [Full agent contract](docs/AGENT_INTERFACE.md).
 
@@ -69,6 +71,18 @@ streams do not. Each source starts a chapter; root H1 headings split Markdown
 into further chapters. Preambles stay intact. Root H2–H6 headings enter nested
 contents, and previous/next chapter and return-to-contents links are automatic.
 
+For a book title followed by H2 chapters, use `--split-level 2`:
+
+```sh
+agent-epub build --input examples/title-h2.md --split-level 2 \
+  --output field-guide.epub --title "Field guide" --language en --json
+agent-epub build --request examples/title-h2-request.json --output requested-guide.epub --json
+agent-epub build --request - --output inline-guide.epub --json < examples/title-h2-inline.json
+```
+
+The default remains H1. Sources and preambles are preserved; only root headings
+at the selected level start chapters. Request mode uses `"split_level": 2`.
+
 The [synthetic report source](examples/research-report.md) has equivalent
 [file](examples/report-request.json) and [inline](examples/report-inline.json)
 requests. Its generated `examples/sample-report.epub` is bundled in each release
@@ -85,8 +99,9 @@ overwrite enabled. Sources cannot be replaced by the output.
 Ordinary CommonMark headings, paragraphs, emphasis, lists, quotations, code and
 links are supported, plus rectangular pipe tables and source-local footnotes
 with return links. Local links must target supplied sources. Inline images,
-raw HTML, task lists, complex tables and nested notes are unsupported. No remote
-resources are fetched. [Exact content rules and limits](docs/USAGE.md).
+raw HTML, task lists, complex tables and nested notes are unsupported. Leading YAML/TOML front matter with an initial key/value field is rejected with
+a repair hint. Math, strikethrough and alert markers retain literal CommonMark
+behavior. No remote resources are fetched. [Exact content rules and limits](docs/USAGE.md).
 
 Every build reopens and checks its temporary EPUB before publication: ZIP
 integrity, package metadata, manifest/spine references, chapter order, contents
@@ -117,8 +132,8 @@ cargo test --locked
 See the [EPUB feature comparison matrix](docs/research/epub-feature-matrix.md)
 for current support across Agent EPUB and twelve alternatives.
 
-See [usage](docs/USAGE.md), [requirements](https://github.com/benvds/epub-rust/blob/v0.4.0/docs/PRD.md),
+See [usage](docs/USAGE.md), [requirements](https://github.com/benvds/epub-rust/blob/v0.5.0/docs/PRD.md),
 [roadmap](docs/ROADMAP.md),
 [implementation plan](docs/IMPLEMENTATION_PLAN.md),
-[milestone 4 verification](https://github.com/benvds/epub-rust/blob/v0.4.0/docs/verification/MILESTONE_4.md) and
-[milestone 3 reader observations](https://github.com/benvds/epub-rust/blob/v0.4.0/docs/verification/MILESTONE_3.md).
+[milestone 5 verification](docs/verification/MILESTONE_5.md) and
+[milestone 3 reader observations](https://github.com/benvds/epub-rust/blob/v0.5.0/docs/verification/MILESTONE_3.md).

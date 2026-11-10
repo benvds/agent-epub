@@ -40,3 +40,13 @@ does not establish full conformance, accessibility or reading appearance.
 The same CLI contract can be used by different agent runtimes with shell access.
 Claude and Ollama live evaluations remain deferred; do not claim tested provider
 support from these instructions.
+
+For title-plus-H2 manuscripts, select `--split-level 2` with direct files or
+`"split_level": 2` in a version 1 request. Default H1 splitting is unchanged.
+Use the bundled `examples/title-h2-*` requests. Preserve source files; do not
+rewrite all headings just to choose chapter boundaries.
+
+On failure, retain the broad `errors[].code` category and inspect `issue_code`,
+`source`, available one-based `line`/`column`, and `remedy` before retrying.
+Recognized leading YAML/TOML front matter is rejected; move metadata to explicit
+fields. Math, strike and alert markers remain literal CommonMark text.
